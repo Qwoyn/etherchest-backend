@@ -223,10 +223,23 @@ module.exports = {
          "guild": "",
          "friends": []
       },
-   "blacklist": {
+      "news": {
+         "a": [],
+         "b": [],
+         "c": [],
+         "d": [],
+         "f": [],
+         "g": [],
+         "h": [],
+         "i": [],
+         "t": [],
+         "e": []
+      },
+      "payday": [],
+      "blacklist": {
       "zonguin": true,
       "steembeem": true
-   },
-   "cs": {},
-}
+      },
+      "cs": {},
+   }
 }
