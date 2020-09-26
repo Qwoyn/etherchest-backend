@@ -324,10 +324,10 @@ app.get('/delegation/:user', (req, res, next) => {
     res.send(JSON.stringify(op, null, 3))
 });
 
-app.listen(port, () => console.log(`HASHKINGS token API listening on port ${port}!`))
+app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
 var startingBlock = ENV.STARTINGBLOCK || 47262000; //GENESIS BLOCK
-const username = ENV.ACCOUNT || 'hashkings'; //account with all the SP
+const username = ENV.ACCOUNT || 'etherchest'; //account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
 const ago = ENV.ago || 47262000;
@@ -339,7 +339,7 @@ var recents = [];
 const transactor = steemTransact(client, steem, prefix);
 
 /****ISSUE****/
-//I think this is where the app can get the hash from hashkings_report that is saved in state.js and use it
+//I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
 //to start the app.  this should prevent the app having to start from GENESIS BLOCK
 steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
   if (err){
@@ -467,12 +467,12 @@ function startApp() {
             /* post edit
             state.refund.push(['ssign',[["comment",
                                  {"parent_author": "",
-                                  "parent_permlink": 'hashkings',
+                                  "parent_permlink": 'etherchest',
                                   "author": streamname,
                                   "permlink": 'h'+num,
                                   "title": `Farmers Guide | ${num}`,
                                   "body": body,
-                                  "json_metadata": JSON.stringify({tags:["hashkings"]})}],
+                                  "json_metadata": JSON.stringify({tags:["etherchest"]})}],
                                 ["comment_options",
                                  {"author": streamname,
                                   "permlink": 'h'+num,
@@ -505,12 +505,12 @@ function startApp() {
                                  ["comment",
                                   {
                                       "parent_author": "",
-                                      "parent_permlink": 'hashkings',
+                                      "parent_permlink": 'etherchest',
                                       "author": streamname,
                                       "permlink": 'h'+num,
                                       "title": `Farmers Guide | ${num}`,
                                       "body": body,
-                                      "json_metadata": JSON.stringify({tags:["hashkings"]})
+                                      "json_metadata": JSON.stringify({tags:["etherchest"]})
                                    }
                                   ],
                                     ["comment_options",
@@ -539,12 +539,12 @@ function startApp() {
             body = body + listBens(state.payday[0])
             state.refund.push(['ssign',[["comment",
                                  {"parent_author": "",
-                                  "parent_permlink": 'hashkings',
+                                  "parent_permlink": 'etherchest',
                                   "author": streamname,
                                   "permlink": 'h'+num,
                                   "title": `Farmers Guide | ${num}`,
                                   "body": body,
-                                  "json_metadata": JSON.stringify({tags:["hashkings"]})}],
+                                  "json_metadata": JSON.stringify({tags:["etherchest"]})}],
                                 ["comment_options",
                                  {"author": streamname,
                                   "permlink": 'h'+num,
@@ -583,7 +583,7 @@ function startApp() {
 //
 //===========================================
 //                                          |
-//         ****Hashkings Market****         |
+//         ****etherchest Market****         |
 //                                          |
 //===========================================
 
@@ -1884,10 +1884,10 @@ processor.on('market_cancel_buds', function(json, from) {
     });
 
     processor.on('grant', function(json, from) {
-        if(from=='hashkings'){state.users[json.to].v = 1}
+        if(from=='etherchest'){state.users[json.to].v = 1}
     });
 
-    // This checks for a json from hashkings and sends seeds, pollen and buds to users requested
+    // This checks for a json from etherchest and sends seeds, pollen and buds to users requested
     processor.on('patreon_tier3', function(json, from) {
 
         // if the user has not delegated then create user in state.users
@@ -1938,7 +1938,7 @@ processor.on('market_cancel_buds', function(json, from) {
                     father: 'sensimilla'
                 }
             }
-            if(from=='hashkings'){state.users[json.to].buds.push(buds)}
+            if(from=='etherchest'){state.users[json.to].buds.push(buds)}
             return buds;
             }
 
@@ -1957,7 +1957,7 @@ processor.on('market_cancel_buds', function(json, from) {
                     father: 'sensimilla'
                 }
             }
-            if(from=='hashkings'){state.users[json.to].pollen.push(pollen)}
+            if(from=='etherchest'){state.users[json.to].pollen.push(pollen)}
             return pollen;
             }
 
@@ -1976,7 +1976,7 @@ processor.on('market_cancel_buds', function(json, from) {
                     father: 'sensimilla'
                 }
             }
-            if(from=='hashkings'){state.users[json.to].seeds.push(seeds)}
+            if(from=='etherchest'){state.users[json.to].seeds.push(seeds)}
             return seeds;
             }
 
@@ -1989,7 +1989,7 @@ processor.on('market_cancel_buds', function(json, from) {
     
     //creates the weather reports
     processor.on('news', function(json, from) {
-        if(from=='hashkings'){
+        if(from=='etherchest'){
             if(!state.news){
                 state.news = {a:[],b:[],c:[],d:[],f:[],g:[],h:[],i:[],t:[]}
             }
@@ -2445,7 +2445,7 @@ processor.on('market_cancel_buds', function(json, from) {
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased land at plot #${addr}`
                     } else {
                         state.refund.push(['xfer', json.from, amount, 
-                        '<h3>Automated Hashkings Response</h3>\nThanks for trying to lease a plot on Hashkings but it looks like you have used up your plot credits and may need to delegate more STEEM POWER. Please return to the [Hashkings Market](https://www.hashkings.app/markets) to delegate more SP\nIf you feel this is an error please contact our DEV TEAM in our [Discord Server](https://discord.gg/xabv5az)\n<h5>Thank you so much for you support!</h5>\n<a href="https://www.hashkings.app"><img src="https://i.imgur.com/MQYSNVK.png"></a>'])
+                        '<h3>Automated etherchest Response</h3>\nThanks for trying to lease a plot on etherchest but it looks like you have used up your plot credits and may need to delegate more STEEM POWER. Please return to the [etherchest Market](https://www.etherchest.app/markets) to delegate more SP\nIf you feel this is an error please contact our DEV TEAM in our [Discord Server](https://discord.gg/xabv5az)\n<h5>Thank you so much for you support!</h5>\n<a href="https://www.etherchest.app"><img src="https://i.imgur.com/MQYSNVK.png"></a>'])
                     }
                     // purchasing seeds
                 } else if (want == 'rseed' && amount == state.stats.prices.listed.seeds.reg || 
@@ -2622,7 +2622,7 @@ processor.on('market_cancel_buds', function(json, from) {
 
                         delete state.users[seller].seeds[0][type];
                         
-                        //pay hashkings
+                        //pay etherchest
                         const c = parseInt(amount * 0.01)
                         state.bal.c += c
                         state.bal.b += amount - c
@@ -2956,10 +2956,10 @@ function popWeather (loc){
 
 /*function autoPoster (loc, num) {
     var body = `\nhttps://source.unsplash.com/user/kimzy/1600x900# \n${state.stats.env[loc].name} Growers Daily News\n`, bens = ''
-    var footer = `\n<center><h1>Hashkings Official Links</h1>
-    \n[Hashkings Web App](https://www.hashkings.app)
-    \n[Hashkings Discord](https://discord.gg/QW6tWF9)
-    \n[Hashkings Github Repository](https://github.com/dpdanpittman/Hashkings-2D-UI)
+    var footer = `\n<center><h1>etherchest Official Links</h1>
+    \n[etherchest Web App](https://www.etherchest.app)
+    \n[etherchest Discord](https://discord.gg/QW6tWF9)
+    \n[etherchest Github Repository](https://github.com/dpdanpittman/etherchest-2D-UI)
     \n</center>
     \n
     \n<center>![divider.png](https://smoke.io/imageupload_data/ee12bc223b16e8b3b16671dc95795f597b986400)</center>
@@ -2967,7 +2967,7 @@ function popWeather (loc){
     \nWe love community and the [Canna-Curate Server](https://discord.gg/DcsPHUG) has the most knowledgeable growers and smokers on the Blockchain.  Stop by and stay a while, spark up a bowl and chat with some of the members.
     \n<a href="https://discord.gg/DcsPHUG"><img src="https://steemitimages.com/640x0/https://cdn.steemitimages.com/DQmV9PhMNu2JaR9BEJFhSdxjd4SA7nWj7yG131z9sRRYHJc/JPEG_20180729_131244.jpg">
     \n***canna-curate | The #1 Cannabis Curation Trail on STEEM***
-    \n***Read what our farmers have to say [here](https://steempeak.com/hashkings/@chronocrypto/invest-in-the-game-and-get-beneficiary-rewards-hashkings) and please don't hesitate to reach out in the comments below!***`
+    \n***Read what our farmers have to say [here](https://steempeak.com/etherchest/@chronocrypto/invest-in-the-game-and-get-beneficiary-rewards-etherchest) and please don't hesitate to reach out in the comments below!***`
     if (state.news[loc].length > 0){
         body = body + state.news[loc][0];state.news[loc].shift();
     }
@@ -2977,10 +2977,10 @@ function popWeather (loc){
     body = body + listBens(state.payday[0])
     var ops = [["comment",
                          {"parent_author": "",
-                          "parent_permlink": 'hashkings',
+                          "parent_permlink": 'etherchest',
                           "author": streamname,
                           "permlink": 'h'+num,
-                          "title": `Hashkings Almanac for ${state.stats.env[loc].name} | ${num}`,
+                          "title": `etherchest Almanac for ${state.stats.env[loc].name} | ${num}`,
                           "body": body,
                           "json_metadata": JSON.stringify({tags:["hk-stream"]})}]]
     if(state.payday.length){
@@ -3052,7 +3052,7 @@ function metWind(deg){
 }
 
 function listBens (bens){
-    var text = `\n<h4>All Hashkings Rewards go directly to our users!</h4>
+    var text = `\n<h4>All etherchest Rewards go directly to our users!</h4>
                 \n
                 \nThis post benefits:
                 \n`
