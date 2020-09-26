@@ -1,5 +1,5 @@
 var steem = require('dsteem');
-var steemjs = require('steem-js-patched');
+var steemjs = require('steem');
 var steemState = require('./processor');
 var steemTransact = require('steem-transact');
 var fs = require('fs');
@@ -59,7 +59,7 @@ app.use(cors());
 
 /*plot info from state.js by plot number
             {
-            "owner": "etherchest",
+            "owner": "qwoyn",
             "strain": "",
             "xp": 0,
             "care": [
@@ -100,7 +100,7 @@ app.get('/logs', (req, res, next) => {
 /*detailed list of seeds a user owns from state.js by username\
         [
         {
-            "owner": "etherchest",
+            "owner": "qwoyn",
             "strain": "",
             "xp": 0,
             "care": [
@@ -126,7 +126,7 @@ app.get('/logs', (req, res, next) => {
             "id": "a10"
         },
         {
-            "owner": "etherchest",
+            "owner": "qwoyn",
             "strain": "hk",
             "xp": 2250,
             "care": [
@@ -153,7 +153,7 @@ app.get('/logs', (req, res, next) => {
             "sex": null
         },
         {
-            "owner": "etherchest",
+            "owner": "qwoyn",
             "strain": "mis",
             "xp": 1,
             "care": [
@@ -305,7 +305,7 @@ app.get('/u/:user', (req, res, next) => {
 
 /*delegation information by user
 {
-   "delegator": "etherchest",
+   "delegator": "qwoyn",
    "vests": 4900485891391,
    "available": 123,
    "used": 2
@@ -346,7 +346,7 @@ steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
     console.log(err)
     startWith(sh)
   } else {
-    let ebus = result.filter( tx => tx[1].op[1].id === 'etherchest_report' )
+    let ebus = result.filter( tx => tx[1].op[1].id === 'qwoyn_report' )
     for(i=ebus.length -1; i>=0; i--){
       if(JSON.parse(ebus[i][1].op[1].json).stateHash !== null)recents.push(JSON.parse(ebus[i][1].op[1].json).stateHash)
     }
@@ -410,10 +410,10 @@ function startApp() {
                 td.push(`${o}${((sun-state.stats.offsets[o])*4)}`, `${o}${((sun-state.stats.offsets[o])*4)-1}`, `${o}${((sun-state.stats.offsets[o])*4)-2}`, `${o}${((sun-state.stats.offsets[o])*4)-3}`);
             }
             if (sun - state.stats.offsets[o] == 1200) {
-               popWeather(o).then((r)=>{console.log(r);autoPoster(r,num)}).catch((e)=>{console.log(e)})
+               popWeather(o).then((r)=>{console.log(r);/*autoPoster(r,num)*/}).catch((e)=>{console.log(e)})
             }
             if (sun - state.stats.offsets[o] == 1500) {
-               state.refund.push(['sign',[["vote",{"author":streamname,"permlink":`h${num-300}`,"voter":username,"weight":10000}]]])
+               //state.refund.push(['sign',[["vote",{"author":streamname,"permlink":`h${num-300}`,"voter":username,"weight":10000}]]])
             }
         }
         for (var i = 0; i < td.length; i++) {
@@ -456,119 +456,15 @@ function startApp() {
               }
             }
             state.payday[0] = sortExtentions(state.payday[0],'account')
-        var body = `\nhttps://i.imgur.com/jTxih7O.png
-        \n
-        \n<center><h1>What is Kief?</h1></center>
-        \n
-        \n>Ever wonder what to call all those tiny, sticky crystals that cover cannabis flower? They’re called kief, also known as dry sift or pollen.
-        \n>
-        \n>Kief refers to the resin glands which contain the terpenes and cannabinoids that make cannabis so unique. While marijuana sans kief still contains cannabinoids, the resin glands that develop on flower buds pack the biggest punch.*
-        \n>
-        \n><h8>_Source: [Leafly](https://www.leafly.com)_</h8>
-        \n
-        \n***The Kief(KFQ) in-game currency is just that, a sticky terpene filled resin gland loaded with cannabanoids aka, The Life Blood of HashKings.***
-        \n
-        \n
-        \n<center><h1>Kief Specs</h1></center>
-        \n
-        \n**Total Supply: 4,200,000 KFQ**
-        \n**Decimals: 8**
-        \n
-        \n<u>Distribution</u>|<u>Capabilities</u>|
-        \n-|-|
-        \nAirdrop: 444,719 KFQ| Staking|
-        \nDev Fund: 15%| Mining|
-        \n60/40 Split: 1,680,000 KFQ (Locked)|	|
-        \nAvailable: 1,697,281 KFQ| |
-        \n
-        \n
-        \n<center><h1>What is Kief Token(KFQ) used for?</h1></center>
-        \n
-        \n<h4><u>In-Game Currency</u></h4>
-        \nKief is an in-game currency used to buy nutrients, greenhouses, soil and various farm equipment.
-        \n
-        \n<h4><u>Staking</u></h4>
-        \nKief can also be used to help the HashKings Economy by becoming an active participant in the survival of the Game.  Stake your tokens to earn many of the benefits listed in the next section.
-        \n
-        \n
-        \n<center><h1>What are the benefits of Kief Token?</h1></center>
-        \n<h4>Farmers Association Board</h4>
-        \n
-        \nBecome a board member and vote on important decisions in the HashKings ecosystem. The minimum stake for applying to become part of the board is 21,000 KFQ.
-        \n
-        \nDuties of the Board Members include but are not limited to
-        \n- Voting on Strains
-        \n- Voting on Regions
-        \n- Voting on HashKings Features
-        \n- Voting on Item Prices
-        \n
-        \n<h4>Staking Rewards</h4>
-        \n
-        \nStaking is the easiest way to earn KFQ has a 4 week cooldown period and rewards are halved every 100,000 Kief Tokens.
-        \n
-        \n_The table below describes the weekly payout._
-        \n
-        \nStaked Amount| Payout
-        \n-|-
-        \n500 KFQ| 10 KFQ
-        \n1000 KFQ| 25 KFQ
-        \n2500 KFQ| 50 KFQ
-        \n5000 KFQ| 100 KFQ
-        \n10000 KFQ| 200 KFQ
-        \n21000 KFQ | 500 KFQ
-        \n
-        \n<h4>Discounts</h4>
-        \n
-        \nStaking the tokens earns you discounts in the HashKings Dispensary.
-        \n
-        \n<u>Staked Amount</u>|<u>Discount</u>|
-        \n-|-|
-        \n1000  KFQ| 1%|
-        \n2500  KFQ| 5%|
-        \n5000  KFQ| 10%|
-        \n10000 KFQ| 15%|
-        \n21000 KFQ| 25%
-        \n
-        \n
-        \n<center><h1>Why Kief Tokens?</h1></center>
-        \n
-        \n- This in-game currency has a very low supply of 4.2 million which makes it extremely rare and the value of in-game items are determined by the market.
-        \n 
-        \n- Staking KFQ is the only way to become a board member with a minimum entry of 21,000. 
-        \n
-        \n- HashKings is a top 100 dApp out of 2500+ according to [Stateofthedapps.com](https://www.stateofthedapps.com).  
-        \n
-        \n- **Limited supply** once they are gone the only way to purchase them is on an exchange. 
-        \n
-        \n- We are partnered with the #1 Cannabis Curation Trail and Community on STEEM, Canna-Curate.\n`
-        var footer = `\n<center><h1>Hashkings Official Links</h1></center>
-        \n
-        \n<center>[Hashkings Web App](https://www.hashkings.app)    
-        \n[Hashkings Discord](https://discord.gg/QW6tWF9)      
-        \n[Hashkings Github Repository](https://github.com/dpdanpittman/Hashkings-2D-UI)</center>
-        \n
-        \n        
-        \n<center>![divider.png](https://smoke.io/imageupload_data/ee12bc223b16e8b3b16671dc95795f597b986400)</center>
-        \n        
-        \n<center><h1>STEEM Community Showcase</h1></center>
-        \n
-        \n       
-        \nWe love community and the [Canna-Curate Server](https://discord.gg/DcsPHUG) has the most knowledgeable growers and smokers on the Blockchain.  Stop by and stay a while, spark up a bowl and chat with some of the members.
-        \n
-        \n<center>
-        <a href="https://discord.gg/DcsPHUG"><img src="https://steemitimages.com/640x0/https://cdn.steemitimages.com/DQmV9PhMNu2JaR9BEJFhSdxjd4SA7nWj7yG131z9sRRYHJc/JPEG_20180729_131244.jpg"></center>
-        \n
-        \n***canna-curate | The #1 Cannabis Curation Trail on STEEM***
-        \n
-        \n       
-        \n### Read what our farmers have to say [here](https://steempeak.com/hashkings/@chronocrypto/invest-in-the-game-and-get-beneficiary-rewards-hashkings) and please don't hesitate to reach out in the comments below!
-        \n`
+        var body = `\n`
+        var footer = `\n`  //edits
             if (state.news.h.length > 0){
                 body = body + state.news.h[0] + footer ;state.news.h.shift();
             } else {
                 body = body + footer
             }
             body = body + listBens(state.payday[0])
+            /* post edit
             state.refund.push(['ssign',[["comment",
                                  {"parent_author": "",
                                   "parent_permlink": 'hashkings',
@@ -586,127 +482,23 @@ function startApp() {
                                   "allow_curation_rewards": true,
                                   "extensions":
                                   [[0,
-                                    {"beneficiaries":state.payday[0]}]]}]] ])
+                                    {"beneficiaries":state.payday[0]}]]}]] ])*/
             state.payday.shift()
     }
-        if (num % 28800 === 20300 && state.payday && state.payday[0].length) {
+        /*if (num % 28800 === 20300 && state.payday && state.payday[0].length) {
             state.refund.push(['sign',[["vote",{"author":streamname,"permlink":`h${num-300}`,"voter":username,"weight":10000}]]])
         }
         if (num % 28800 === 25000 && state.payday.length) {
 
             state.payday[0] = sortExtentions(state.payday[0],'account')
-            var body = `\nhttps://i.imgur.com/jTxih7O.png
-            \n
-            \n<center><h1>What is Kief?</h1></center>
-            \n
-            \n>Ever wonder what to call all those tiny, sticky crystals that cover cannabis flower? They’re called kief, also known as dry sift or pollen.
-            \n>
-            \n>Kief refers to the resin glands which contain the terpenes and cannabinoids that make cannabis so unique. While marijuana sans kief still contains cannabinoids, the resin glands that develop on flower buds pack the biggest punch.*
-            \n>
-            \n><h8>_Source: [Leafly](https://www.leafly.com)_</h8>
-            \n
-            \n***The Kief(KFQ) in-game currency is just that, a sticky terpene filled resin gland loaded with cannabanoids aka, The Life Blood of HashKings.***
-            \n
-            \n
-            \n<center><h1>Kief Specs</h1></center>
-            \n
-            \n**Total Supply: 4,200,000 KFQ**
-            \n**Decimals: 8**
-            \n
-            \n<u>Distribution</u>|<u>Capabilities</u>|
-            \n-|-|
-            \nAirdrop: 444,719 KFQ| Staking|
-            \nDev Fund: 15%| Mining|
-            \n60/40 Split: 1,680,000 KFQ (Locked)|	|
-            \nAvailable: 1,697,281 KFQ| |
-            \n
-            \n
-            \n<center><h1>What is Kief Token(KFQ) used for?</h1></center>
-            \n
-            \n<h4><u>In-Game Currency</u></h4>
-            \nKief is an in-game currency used to buy nutrients, greenhouses, soil and various farm equipment.
-            \n
-            \n<h4><u>Staking</u></h4>
-            \nKief can also be used to help the HashKings Economy by becoming an active participant in the survival of the Game.  Stake your tokens to earn many of the benefits listed in the next section.
-            \n
-            \n
-            \n<center><h1>What are the benefits of Kief Token?</h1></center>
-            \n<h4>Farmers Association Board</h4>
-            \n
-            \nBecome a board member and vote on important decisions in the HashKings ecosystem. The minimum stake for applying to become part of the board is 21,000 KFQ.
-            \n
-            \nDuties of the Board Members include but are not limited to
-            \n- Voting on Strains
-            \n- Voting on Regions
-            \n- Voting on HashKings Features
-            \n- Voting on Item Prices
-            \n
-            \n<h4>Staking Rewards</h4>
-            \n
-            \nStaking is the easiest way to earn KFQ has a 4 week cooldown period and rewards are halved every 100,000 Kief Tokens.
-            \n
-            \n_The table below describes the weekly payout._
-            \n
-            \nStaked Amount| Payout
-            \n-|-
-            \n500 KFQ| 10 KFQ
-            \n1000 KFQ| 25 KFQ
-            \n2500 KFQ| 50 KFQ
-            \n5000 KFQ| 100 KFQ
-            \n10000 KFQ| 200 KFQ
-            \n21000 KFQ | 500 KFQ
-            \n
-            \n<h4>Discounts</h4>
-            \n
-            \nStaking the tokens earns you discounts in the HashKings Dispensary.
-            \n
-            \n<u>Staked Amount</u>|<u>Discount</u>|
-            \n-|-|
-            \n1000  KFQ| 1%|
-            \n2500  KFQ| 5%|
-            \n5000  KFQ| 10%|
-            \n10000 KFQ| 15%|
-            \n21000 KFQ| 25%
-            \n
-            \n
-            \n<center><h1>Why Kief Tokens?</h1></center>
-            \n
-            \n- This in-game currency has a very low supply of 4.2 million which makes it extremely rare and the value of in-game items are determined by the market.
-            \n 
-            \n- Staking KFQ is the only way to become a board member with a minimum entry of 21,000. 
-            \n
-            \n- HashKings is a top 100 dApp out of 2500+ according to [Stateofthedapps.com](https://www.stateofthedapps.com).  
-            \nd supply** once they are gone the only way to purchase them is on an exchange. 
-            \n
-            \n- We are partnered with the #1 Cannabis Curation Trail and Community on STEEM, Canna-Curate.\n`
-            var footer = `\n<center><h1>Hashkings Official Links</h1></center>
-            \n
-            \n<center>[Hashkings Web App](https://www.hashkings.app)    
-            \n[Hashkings Discord](https://discord.gg/QW6tWF9)      
-            \n[Hashkings Github Repository](https://github.com/dpdanpittman/Hashkings-2D-UI)</center>
-            \n
-            \n        
-            \n<center>![divider.png](https://smoke.io/imageupload_data/ee12bc223b16e8b3b16671dc95795f597b986400)</center>
-            \n        
-            \n<center><h1>STEEM Community Showcase</h1></center>
-            \n
-            \n       
-            \nWe love community and the [Canna-Curate Server](https://discord.gg/DcsPHUG) has the most knowledgeable growers and smokers on the Blockchain.  Stop by and stay a while, spark up a bowl and chat with some of the members.
-            \n
-            \n<center>
-            \n<a href="https://discord.gg/DcsPHUG"><img src="https://steemitimages.com/640x0/https://cdn.steemitimages.com/DQmV9PhMNu2JaR9BEJFhSdxjd4SA7nWj7yG131z9sRRYHJc/JPEG_20180729_131244.jpg"></center>
-            \n
-            \n***canna-curate | The #1 Cannabis Curation Trail on STEEM***
-            \n
-            \n       
-            \n### Read what our farmers have to say [here](https://steempeak.com/hashkings/@chronocrypto/invest-in-the-game-and-get-beneficiary-rewards-hashkings) and please don't hesitate to reach out in the comments below!
-            \n`
+            var body = `\n`
             if (state.news.i.length > 0){
                 body = body + state.news.i[0] + footer ;state.news.i.shift();
             } else {
                 body = body + footer
             }
             body = body + listBens(state.payday[0])
+            
             state.refund.push(
                               ['ssign',
                                 [
@@ -732,118 +524,13 @@ function startApp() {
                                           "extensions":
                                         [[0,{"beneficiaries":state.payday[0]}]]}]]])
             state.payday.shift()
-    }
-        if (num % 28800 === 25300 && state.payday && state.payday.length) {
+    }*/
+       /* if (num % 28800 === 25300 && state.payday && state.payday.length) {
     state.refund.push(['sign',[["vote",{"author":streamname,"permlink":`h${num-300}`,"voter":username,"weight":10000}]]])
     }
         if (num % 28800 === 22000 && state.payday[0].length) {
             state.payday[0] = sortExtentions(state.payday[0],'account')
-        var body = `\nhttps://i.imgur.com/jTxih7O.png\n
-            \n<center><h1>What is Kief?</h1></center>
-            \n
-            \n>Ever wonder what to call all those tiny, sticky crystals that cover cannabis flower? They’re called kief, also known as dry sift or pollen.
-            \n>
-            \n>Kief refers to the resin glands which contain the terpenes and cannabinoids that make cannabis so unique. While marijuana sans kief still contains cannabinoids, the resin glands that develop on flower buds pack the biggest punch.*
-            \n>
-            \n><h8>_Source: [Leafly](https://www.leafly.com)_</h8>
-            \n
-            \n***The Kief(KFQ) in-game currency is just that, a sticky terpene filled resin gland loaded with cannabanoids aka, The Life Blood of HashKings.***
-            \n
-            \n
-            \n<center><h1>Kief Specs</h1></center>
-            \n
-            \n**Total Supply: 4,200,000 KFQ**
-            \n**Decimals: 8**
-            \n
-            \n<u>Distribution</u>|<u>Capabilities</u>|
-            \n-|-|
-            \nAirdrop: 444,719 KFQ| Staking|
-            \nDev Fund: 15%| Mining|
-            \n60/40 Split: 1,680,000 KFQ (Locked)|	|
-            \nAvailable: 1,697,281 KFQ| |
-            \n
-            \n
-            \n<center><h1>What is Kief Token(KFQ) used for?</h1></center>
-            \n
-            \n<h4><u>In-Game Currency</u></h4>
-            \nKief is an in-game currency used to buy nutrients, greenhouses, soil and various farm equipment.
-            \n
-            \n<h4><u>Staking</u></h4>
-            \nKief can also be used to help the HashKings Economy by becoming an active participant in the survival of the Game.  Stake your tokens to earn many of the benefits listed in the next section.
-            \n
-            \n
-            \n<center><h1>What are the benefits of Kief Token?</h1></center>
-            \n<h4>Farmers Association Board</h4>
-            \n
-            \nBecome a board member and vote on important decisions in the HashKings ecosystem. The minimum stake for applying to become part of the board is 21,000 KFQ.
-            \n
-            \nDuties of the Board Members include but are not limited to
-            \n- Voting on Strains
-            \n- Voting on Regions
-            \n- Voting on HashKings Features
-            \n- Voting on Item Prices
-            \n
-            \n<h4>Staking Rewards</h4>
-            \n
-            \nStaking is the easiest way to earn KFQ has a 4 week cooldown period and rewards are halved every 100,000 Kief Tokens.
-            \n
-            \n_The table below describes the weekly payout._
-            \n
-            \nStaked Amount| Payout
-            \n-|-
-            \n500 KFQ| 10 KFQ
-            \n1000 KFQ| 25 KFQ
-            \n2500 KFQ| 50 KFQ
-            \n5000 KFQ| 100 KFQ
-            \n10000 KFQ| 200 KFQ
-            \n21000 KFQ | 500 KFQ
-            \n
-            \n<h4>Discounts</h4>
-            \n
-            \nStaking the tokens earns you discounts in the HashKings Dispensary.
-            \n
-            \n<u>Staked Amount</u>|<u>Discount</u>|
-            \n-|-|
-            \n1000  KFQ| 1%|
-            \n2500  KFQ| 5%|
-            \n5000  KFQ| 10%|
-            \n10000 KFQ| 15%|
-            \n21000 KFQ| 25%
-            \n
-            \n
-            \n<center><h1>Why Kief Tokens?</h1></center>
-            \n
-            \n- This in-game currency has a very low supply of 4.2 million which makes it extremely rare and the value of in-game items are determined by the market.
-            \n 
-            \n- Staking KFQ is the only way to become a board member with a minimum entry of 21,000. 
-            \n
-            \n- HashKings is a top 100 dApp out of 2500+ according to [Stateofthedapps.com](https://www.stateofthedapps.com).  
-            \n
-            \n- **Limited supply** once they are gone the only way to purchase them is on an exchange. 
-            \n
-            \n- We are partnered with the #1 Cannabis Curation Trail and Community on STEEM, Canna-Curate.\n`
-            var footer = `\n<center><h1>Hashkings Official Links</h1></center>
-            \n
-            \n<center>[Hashkings Web App](https://www.hashkings.app)    
-            \n[Hashkings Discord](https://discord.gg/QW6tWF9)      
-            \n[Hashkings Github Repository](https://github.com/dpdanpittman/Hashkings-2D-UI)</center>
-            \n
-            \n        
-            \n<center>![divider.png](https://smoke.io/imageupload_data/ee12bc223b16e8b3b16671dc95795f597b986400)</center>
-            \n        
-            \n<center><h1>STEEM Community Showcase</h1></center>
-            \n
-            \n       
-            \nWe love community and the [Canna-Curate Server](https://discord.gg/DcsPHUG) has the most knowledgeable growers and smokers on the Blockchain.  Stop by and stay a while, spark up a bowl and chat with some of the members.
-            \n
-            \n<center>
-            <a href="https://discord.gg/DcsPHUG"><img src="https://steemitimages.com/640x0/https://cdn.steemitimages.com/DQmV9PhMNu2JaR9BEJFhSdxjd4SA7nWj7yG131z9sRRYHJc/JPEG_20180729_131244.jpg"></center>
-            \n
-            \n***canna-curate | The #1 Cannabis Curation Trail on STEEM***
-            \n
-            \n       
-            \n### Read what our farmers have to say [here](https://steempeak.com/hashkings/@chronocrypto/invest-in-the-game-and-get-beneficiary-rewards-hashkings) and please don't hesitate to reach out in the comments below!
-            \n`
+        var body = `\n`
             if (state.news.t.length > 0){
                 body = body + state.news.t[0] + footer ;state.news.t.shift();
             } else {
@@ -869,40 +556,225 @@ function startApp() {
                                   [[0,
                                     {"beneficiaries":state.payday[0]}]]}]] ])
             state.payday.shift()
-    }
-    if (num % 28800 === 22300) {
+    }*/
+    /*if (num % 28800 === 22300) {
     state.refund.push(['sign',[["vote",{"author":streamname,"permlink":`h${num-300}`,"voter":username,"weight":10000}]]])
     }
         if (num % 28800 === 28750) {
             state.payday = whotopay()
-        }
+        }*/
         if (num % 28800 === 0) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d) {
-                state.refund.push(['xfer', 'etherchest-dev', d, 'Dev Cut'])
-                state.refund.push(['xfer', 'etherchest-fund', parseInt(2 * d), 'Funds'])
-                state.refund.push(['xfer', 'etherchest', d, 'Producer Cut'])
+                state.refund.push(['xfer', 'qwoyn-dev', d, 'Dev Cut'])
+                state.refund.push(['xfer', 'qwoyn-fund', parseInt(2 * d), 'Funds'])
+                state.refund.push(['xfer', 'qwoyn', d, 'Producer Cut'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
-                //state.refund.push(['xfer', 'etherchest-chest', state.bal.c, 'Warchest'])
+                //state.refund.push(['xfer', 'qwoyn-chest', state.bal.c, 'Warchest'])
                 state.bal.c = 0
                 state.refund.push(['power', username, state.bal.b, 'Power to the people!'])
             }
     }
   })
-    // search for etherchest_harvest from user on blockchain since genesis
+
+//----------------------------------------------------------------------------------------
+//
+//===========================================
+//                                          |
+//         ****Hashkings Market****         |
+//                                          |
+//===========================================
+
+
+//---------posting sales-----------//
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_market_post_seed&json=%7B%22price%22%3A5000,%22seedPosted%22%3A%5B%22mis%22%5D%7D
+processor.on('market_post_seed', function(json, from) {
+    let postedSeed = json.seedPosted,
+        seednames = ''
+
+        seednames += `${postedSeed}`;
+
+        try {
+            if (state.users[from].seeds[0][seednames].owner === from && state.users[from].seeds[0][seednames].forSale === false) {
+
+               /* // add seed to market
+                const postedToMarket = {
+                    price:  json.price,
+                    posted: json.block_num
+                }
+                state.users[from].seeds[0][seednames].push(postedToMarket);*/
+
+                // set price and when it was posted
+                state.users[from].seeds[0][seednames].price = json.price;
+                state.users[from].seeds[0][seednames].datePosted = json.block_num;
+
+                // set posted seed forSale to true in users inventory
+                state.users[from].seeds[0][seednames].forSale = true;
+
+            }
+        } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
+        }
+
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.seedPosted} seed for sale for ${json.price / 1000} STEEM`
+});
+
+processor.on('market_post_pollen', function(json, from) {
+    let postedPollen = json.pollenPosted,
+        pollennames = ''
+
+        pollennames += `${postedPollen}`;
+
+        try {
+            if (state.users[from].pollen[0][pollennames].owner === from && state.users[from].pollen[0][pollennames].forSale === false) {
+
+                // add pollen to market
+                const postedToMarket = {
+                    [from]: [
+                        {
+                        [postedPollen]: [
+                            {
+                                price:  json.price,
+                                posted: json.block_num
+                            }
+                        ]
+                        }
+                    ]
+                }
+                state.market.pollen.push(postedToMarket);
+
+                // set posted pollen forSale to true in users inventory
+                state.users[from].pollen[0][pollennames].forSale = true;
+
+            }
+        } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
+        }
+
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted ${json.pollenPosted} pollen for sale for ${json.price / 1000} STEEM`
+}); 
+
+processor.on('market_post_buds', function(json, from) {
+    let postedBud = json.budPosted,
+        budnames = ''
+
+        budnames += `${postedBud}`;
+
+        try {
+            if (state.users[from].buds[0][budnames].owner === from && state.users[from].buds[0][budnames].forSale === false) {
+
+                // add bud to market
+                const postedToMarket = {
+                    [from]: [
+                        {
+                        [postedBud]: [
+                            {
+                                price:  json.price,
+                                posted: json.block_num
+                            }
+                        ]
+                        }
+                    ]
+                }
+                state.market.buds.push(postedToMarket);
+
+                // set posted bud forSale to true in users inventory
+                state.users[from].buds[0][budnames].forSale = true;
+
+            }
+        } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
+        }
+
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.budPosted} bud for sale for ${json.price / 1000} STEEM`
+});
+
+//---------cancel sales-----------//
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_market_cancel_seed&json=%7B%22seedToCancel%22%3A%5B%22mis%22%5D%7D
+processor.on('market_cancel_seed', function(json, from) {
+    let cancelSeed = json.seedToCancel,
+        seednames = ''
+
+        seednames += `${cancelSeed}`;
+        
+        var seed=''
+
+        try {
+            if (state.users[from].seeds[0][seednames].owner === from && state.users[from].seeds[0][seednames].forSale === true) {
+
+                // reset price and posted time to 0
+                state.users[from].seeds[0][seednames].price = 0;
+                state.users[from].seeds[0][seednames].datePosted = 0;
+
+                // set canceled seed forSale to false in users inventory
+                state.users[from].seeds[0][seednames].forSale = false;
+
+            }
+        } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't cancel what is not theirs`
+        }
+
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully canceled a ${json.seedToCancel} seed sale.`
+});
+
+processor.on('market_cancel_pollen', function(json, from) {
+    let pollen = json.pollen,
+        pollennames = ''
+        try {
+        for (var i = 0; i < pollen.length; i++) {
+            try {
+            if (state.users.from[pollen[i]].owner === from) {
+                state.users.from[pollen[i]].forSale = 0;
+                pollennames += `${pollen[i]} `
+            }
+            } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
+            }
+        }
+        } catch {
+            (console.log(from + ' tried to post ' + pollennames +' pollen for sale but an error occured'))
+        }
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted ${pollennames} pollen for sale`
+});
+
+processor.on('market_cancel_buds', function(json, from) {
+    let buds = json.buds,
+        budNames = ''
+        try {
+        for (var i = 0; i < buds.length; i++) {
+            try {
+            if (state.users.from[buds[i]].owner === from) {
+                state.users.from[buds[i]].forSale = 0;
+                budNames += `${buds[i]} `
+            }
+            } catch (e){
+            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
+            }
+        }
+        } catch {
+            (console.log(from + ' tried to post a ' + budNames +' bud for sale but an error occured'))
+        }
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${budNames} bud for sale`
+});
+
+//--------purchasing----------//
+// found on transfer
+
+//---------------------End Market---------------------------------------------------------
+    
+// search for qwoyn_harvest from user on blockchain since genesis
     processor.on('harvest', function(json, from) {
         let plants = json.plants,
-            plantnames = '',
-            harvester = json.from
+            plantnames = ''
+
         for (var i = 0; i < plants.length; i++) {
             try {
             if (state.land[plants[i]].owner === from) {
                 state.land[plants[i]].care.unshift([processor.getCurrentBlockNumber(), 'harvested']);
                 plantnames += `${plants[i]} `
             
-///---------------------------------------------------------------------------------------
         //female harvested pollinated plant
             try {
             if (state.land[plants[i]].sex === 'female' && state.land[plants[i]].pollinated === true && state.land[plants[i]].stage > 3){
@@ -914,7 +786,7 @@ function startApp() {
                     thc: 'coming soon',
                     cbd: 'coming soon',
                     breeder: state.land[plants[i]].owner,
-                    familyTree: state.land[plants[i]].strain,
+                    familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                     pollinated: false,
                     father: [],
                 }
@@ -925,7 +797,7 @@ function startApp() {
                     terps: [],
                     thc: 'coming soon',
                     cbd: 'coming soon',
-                    familyTree: state.land[plants[i]].strain,
+                    familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                     pollinated: false,
                     father: [],
                 }
@@ -966,7 +838,7 @@ function startApp() {
                         terps: [state.land[plants[i]].strain.terps],
                         thc: 'coming soon',
                         cbd: 'coming soon',
-                        familyTree: state.land[plants[i]].strain,
+                        familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                         father: 'Sensimilla'
                     }
                     var bud2 = {
@@ -976,7 +848,7 @@ function startApp() {
                         thc: 'coming soon',
                         cbd: 'coming soon',
                         terps: [state.land[plants[i]].strain.terps],
-                        familyTree: state.land[plants[i]].strain,
+                        familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                         father: 'Sensimilla'
                     }
 
@@ -1004,7 +876,6 @@ function startApp() {
                         console.log('buds harvested', e.message)
                     }
                     
-
             //pollen at harvest if male
             try {
             if (state.land[plants[i]].sex === 'male' && state.land[plants[i]].stage > 3){
@@ -1015,7 +886,7 @@ function startApp() {
                     terps: [],
                     thc: 'coming soon',
                     cbd: 'coming soon',
-                    familyTree: state.land[plants[i]].strain,
+                    familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                     father: 'Sensimilla'
                 }
                 var pollen2 = {
@@ -1025,7 +896,7 @@ function startApp() {
                     terps: [],
                     thc: 'coming soon',
                     cbd: 'coming soon',
-                    familyTree: state.land[plants[i]].strain,
+                    familyTree: state.land[plants[i]].strain + ' ' + state.land[plants[i]].father,
                     father: 'Sensimilla'
                 }
 
@@ -1057,69 +928,78 @@ function startApp() {
           state.cs[`${json.block_num}:${from}`] = `${from} can't harvest what is not theirs`
         }
             }
-            
-///----------------------------------------------------------------------------------------
-
         state.cs[`${json.block_num}:${from}`] = `${from} harvested ${plantnames}`
     });
     
-    // search for etherchest_water from user on blockchain since genesis
+    //search for qwoyn_water from user on blockchain since genesis
     //steemconnect link
-    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
+    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
     processor.on('water', function(json, from) {
         let plants = json.plants,
             plantnames = ''
-        for (var i = 0; i < plants.length; i++) {
             try {
-            if (state.land[plants[i]].owner === from) {
-                state.land[plants[i]].care.unshift([processor.getCurrentBlockNumber(), 'watered']);
-                plantnames += `${plants[i]} `
+            for (var i = 0; i < plants.length; i++) {
+                try {
+                if (state.land[plants[i]].owner === from) {
+                    state.land[plants[i]].care.unshift([processor.getCurrentBlockNumber(), 'watered']);
+                    plantnames += `${plants[i]} `
+                }
+                } catch (e){
+                state.cs[`${json.block_num}:${from}`] = `${from} can't water what is not theirs`
+                }
             }
-            } catch (e){
-              state.cs[`${json.block_num}:${from}`] = `${from} can't water what is not theirs`
+            } catch {
+                (console.log(from + ' tried to water ' + plantnames +' but an error occured'))
             }
-        }
-        state.cs[`${json.block_num}:${from}`] = `${from} watered ${plantnames}`
+        state.cs[`${json.block_num}:${from}`] = `${from} succesfully watered ${plantnames}`
     });
     
-    //search for etherchest_breeder_name from user on blockchain since genesis
+    //search for qwoyn_breeder_name from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
     processor.on('breeder_name', function(json, from) {
         let breeder = json.breeder,
             breederName = ''
-        for (var i = 0; i < 1; i++) {
-                state.users[from].breeder = breeder[i];
-                breederName += `${breeder[i]}`
-            state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
-            state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'pollinated']);
-        }
+            try {
+                for (var i = 0; i < 1; i++) {
+                        state.users[from].breeder = breeder[i];
+                        breederName += `${breeder[i]}`
+                    state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
+                } 
+            } catch {
+                (console.log(from + ' tried to change their breeder name to ' + breederName + ' but an error occured'))
+            }
         
         state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${breederName}`
     });
 
-    //search for etherchest_farmer_type from user on blockchain since genesis
+    //search for qwoyn_farmer_type from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
     processor.on('farmer_type', function(json, from) {
         let farmer = json.farmer,
-            farmerName = 1
-        for (var i = 0; i < 1; i++) {
-                state.users[from].farmer = farmer[i];
-                farmerName += farmer[i]
-            state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
+            farmerType = 1
+            try {
+                for (var i = 0; i < 1; i++) {
+                        state.users[from].farmer = farmer[i];
+                        farmerType += farmer[i]
+                    state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
+                }
+             } catch {
+            (console.log(from + ' tried to change their farmyer type to ' + farmerType + ' but an error occured'))
         }
-        state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'changed_farmer_type']);
+        //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'changed_farmer_type']);
 
-        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${farmerName}`
+        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${farmerType}`
     });
 
-    //search for etherchest_add_friend from user on blockchain since genesis
+    //search for qwoyn_add_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
     processor.on('add_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
+            try {
             for (var i = 0; i < 1; i++) {
                 friendName += friend[i]
 
@@ -1130,76 +1010,86 @@ function startApp() {
                 }
 
                 state.users[from].friends.push(friends)
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'added_friend']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'added_friend']);
 
                 state.cs[`${json.block_num}:${from}`] = `${from} can't change another users friend list`
             }
+        } catch {
+            (console.log(from + ' tried to add ' + friendName + ' as a friend but an error occured'))
+        }
 
         state.cs[`${json.block_num}:${from}`] = `${from} added ${friendName} as a friend`
     });
 
-    //search for etherchest_remove_friend from user on blockchain since genesis
+    //search for qwoyn_remove_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('remove_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
-        for (var i = 0; i < 1; i++) {
-            friendName += friend[i]
+            try{
+                for (var i = 0; i < 1; i++) {
+                    friendName += json.friend
 
-            var friends = ''
+                    var friends = ''
 
-                try{
-                    for (var i = 0;i < state.users[from].friends.length; i++){
-                        if(state.users[from].pollen[i].strain == json.friends){friends=state.users[from].friends.splice(i, 1)[0];break;}
-                    }
-                } catch (e) {}
-                if (!friends){
-                    try {
-                        if(state.users[from].friends.length)friends == state.users[from].friends.splice(0, 1)[0]
-                    }catch (e) {}
+                        try{
+                            for (var i = 0;i < state.users[from].friends.length; i++) {
+                                if(state.users[from].pollen[i].strain == json.friends) {
+                                    friends=state.users[from].friends.splice(i, 1)[0];
+                                    break;
+                                }
+                            }
+                        } catch (e) {}
+                        
+                    state.cs[`${json.block_num}:${from}`] = `${from} can't change another users friend list`
                 }
+            } catch {
+                (console.log(from + ' tried to remove ' + friendName + ' as a friend but an error occured'))    }
 
-            state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'removed_friend']);
-
-            state.cs[`${json.block_num}:${from}`] = `${from} can't change another users friend list`
-        }
         state.cs[`${json.block_num}:${from}`] = `${from} removed ${friendName} as a friend`
     });
 
     //****ISSUE****//
-    //search for etherchest_join_alliance from user on blockchain since genesis
+    //search for qwoyn_join_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
-   /* processor.on('join_alliance', function(json, from) {
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+   processor.on('join_alliance', function(json, from) {
         let alliance = json.alliance,
             allianceName = ''
-        for (var i = 0; i < state.stats.alliances.length; i++) {
+            try {
+        for (var i = 0; i < 1; i++) {
                 state.users[from].alliance = alliance[i];
                 allianceName += alliance[i]
 
                 try{
-                    for (var i = 0;i < state.users[from].alliance.length; i++){
+                    for (var i = 0; i < state.users[from].alliance.length; i++){
                         var myAlliance = {
                             alliance: json.alliance
                         }
-                        // not properly updating the name
-                        if(state.users[from].alliance[i] != json.alliance){state.users[from].alliance = myAlliance;break;}
-                        var newMember = json.from
-                        if(state.users[from].alliance[i] == json.alliance){state.stats.alliances[alliance].push(newMember);break;}
+                        
+                        if(state.users[from].alliance != json.alliance){state.users[from].alliance = myAlliance;break;}
+                        
+                        var newMember ={
+                            memberNames: [json.from]
+                        }
+                        state.stats.alliances[alliance].members++;
+                        state.stats.alliances[alliance].push(newMember);
+                        break;
                     }
                 } catch (e) {}
 
             state.cs[`${json.block_num}:${from}`] = `${from} can't change another users alliance`
         }
-        state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'joined_alliance']);
+    } catch {
+        (console.log(from + ' tried to join the ' + allianceName + ' alliance but an error occured'))
+    }
+    state.cs[`${json.block_num}:${from}`] = `${from} changed their alliance to ${allianceName}`
+    });
 
-        state.cs[`${json.block_num}:${from}`] = `${from} changed their alliance to ${allianceName}`
-    });*/
-
-    //search for etherchest_alliance from user on blockchain since genesis
+    //search for qwoyn_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('create_alliance', function(json, from) {
         let newAlliance = json.newAlliance,
             newAllianceName = ''
@@ -1212,14 +1102,14 @@ function startApp() {
                     memberNames: [from],
                 }
                 state.stats.alliances.push(allianceState)
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'created_alliance']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'created_alliance']);
 
             state.cs[`${json.block_num}:${from}`] = `${from} can't create an alliance`
         }
         state.cs[`${json.block_num}:${from}`] = `${from} created alliance named ${newAllianceName}`
     });
 
-    // search for etherchest_pollinate from user on blockchain since genesis
+    // search for qwoyn_pollinate from user on blockchain since genesis
     processor.on('pollinate', function(json, from) {
         let plants = json.plants,
             plantnames = '',
@@ -1235,8 +1125,11 @@ function startApp() {
                 var pollens = ''
 
                 try{
-                    for (var i = 0;i < state.users[from].pollen.length; i++){
-                        if(state.users[from].pollen[i].strain == json.pollen){pollens=state.users[from].pollen.splice(i, 1)[0];break;}
+                    for (var i = 0;i < state.users[from].pollen.length; i++) {
+                        if(state.users[from].pollen[i].strain == json.pollen) {
+                            pollens=state.users[from].pollen.splice(i, 1)[0];
+                            break;
+                        }
                     }
                 } catch (e) {}
                 if (!pollens){
@@ -1257,7 +1150,7 @@ function startApp() {
         return pollenName;
     });
 
-    // search for etherchest_craft_oil from user on blockchain since genesis
+    // search for qwoyn_craft_oil from user on blockchain since genesis
     processor.on('craft_bubblehash', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1265,8 +1158,11 @@ function startApp() {
         var bud = ''
 
             try{
-                for (var i = 0;i < state.users[from].buds.length; i++){
-                    if(state.users[from].buds[i].strain == json.buds){bud=state.users[from].buds.splice(i, 1)[0];break;}
+                for (var i = 0;i < state.users[from].buds.length; i++) {
+                    if(state.users[from].buds[i].strain == json.buds) {
+                        bud=state.users[from].buds.splice(i, 1)[0];
+                        break;
+                    }
                 }
             } catch (e) {}
             if (!bud){
@@ -1276,7 +1172,7 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_bubblehash']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_bubblehash']);
                 budNames += `${buds}`;
              
                 state.users[from].bubblebags--;
@@ -1293,7 +1189,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} created bubblehash with ${budNames}`
     });
 
-    // search for etherchest_craft_oil from user on blockchain since genesis
+    // search for qwoyn_craft_oil from user on blockchain since genesis
     processor.on('craft_oil', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1312,7 +1208,7 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_oil']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_oil']);
                 budNames += `${buds}`;
              
                 state.users[from].vacoven--;
@@ -1330,7 +1226,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} created oil with ${budNames}`
     });
 
-    // search for etherchest_kief from user on blockchain since genesis
+    // search for qwoyn_kief from user on blockchain since genesis
     processor.on('craft_kief', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1349,7 +1245,8 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_kief']);
+            if(state.users[from].kiefbox > 0) {
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_kief']);
                 budNames += `${buds}`;
              
                 state.users[from].kiefbox--;
@@ -1362,13 +1259,13 @@ function startApp() {
                 if(state.users[from].xps > 99){
                 state.users[from].kief.push(kief)
                 }
+            }
         }
 
-        state.users[from].xps += 50;
         state.cs[`${json.block_num}:${from}`] = `${from} crafted kief with ${budNames}`
     });
 
-    // search for etherchest_edibles from user on blockchain since genesis
+    // search for craft_edibles from user on blockchain since genesis
     processor.on('craft_edibles', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1377,7 +1274,7 @@ function startApp() {
 
             try{
                 for (var i = 0;i < state.users[from].buds.length; i++){
-                    if(state.users[from].buds[i].strain == json.buds){bud=state.users[from].buds.splice(i, 1)[0];break;}
+                    if(state.users[from].buds[i].strain == json.buds && state.users[from].xps > 9999){bud=state.users[from].buds.splice(i, 1)[0];break;}
                 }
             } catch (e) {}
             if (!bud){
@@ -1387,7 +1284,7 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_edibles']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_edibles']);
                 budNames += `${buds}`;
              
                 state.users[from].browniemix--;
@@ -1404,7 +1301,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} crafted edibles with ${budNames}`
     });
 
-    // search for etherchest_joint from user on blockchain since genesis
+    // search for craft_joint from user on blockchain since genesis
     processor.on('craft_joint', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1413,7 +1310,7 @@ function startApp() {
         
             try{
                 for (var i = 0;i < state.users[from].buds.length; i++){
-                    if(state.users[from].buds[i].strain == json.buds && state.users[from].xps > 99){bud=state.users[from].buds.splice(i, 1)[0];break;}
+                    if(state.users[from].buds[i].strain == json.buds && state.users[from].papers > 0 && state.users[from].xps > 99){bud=state.users[from].buds.splice(i, 1)[0];break;}
                 }
             } catch (e) {}
             if (!bud){
@@ -1423,7 +1320,7 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_joint']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_joint']);
                 budNames += `${buds}`;
              
                 state.users[from].papers--;
@@ -1439,10 +1336,10 @@ function startApp() {
                 }
         }
         state.users[from].xps += 25;
-        state.cs[`${json.block_num}:${from}`] = `${from} crafted edibles with ${budNames}`
+        state.cs[`${json.block_num}:${from}`] = `${from} crafted joint with ${budNames}`
     });
 
-   // search for etherchest_joint from user on blockchain since genesis
+   // search for qwoyn_joint from user on blockchain since genesis
     processor.on('craft_blunt', function(json, from) {
         let buds = json.buds,
             budNames = ''
@@ -1451,7 +1348,7 @@ function startApp() {
         
             try{
                 for (var i = 0;i < state.users[from].buds.length; i++){
-                    if(state.users[from].buds[i].strain == json.buds && state.users[from].xps > 4999){bud=state.users[from].buds.splice(i, 1)[0];break;}
+                    if(state.users[from].buds[i].strain == json.buds && state.users[from].bluntwraps > 0 && state.users[from].xps > 4999){bud=state.users[from].buds.splice(i, 1)[0];break;}
                 }
             } catch (e) {}
             if (!bud){
@@ -1461,7 +1358,7 @@ function startApp() {
             }
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_blunt']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_blunt']);
                 budNames += `${buds}`;
              
                 state.users[from].bluntwraps--;
@@ -1480,7 +1377,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} crafted a blunt with ${budNames}`
     });
 
-    // search for etherchest_pollinate from user on blockchain since genesis
+    // search for qwoyn_pollinate from user on blockchain since genesis
     processor.on('craft_moonrocks', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1489,7 +1386,7 @@ function startApp() {
             kief = json.kief,
             kiefNames = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_moonrocks']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_moonrocks']);
                 budNames += `${buds}`;
                 oilNames += `${oil}`;
                 kiefNames += `${kief}`;
@@ -1546,7 +1443,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} created a moonrock from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-    // search for etherchest_craft_moonrocks from user on blockchain since genesis
+    // search for qwoyn_craft_moonrocks from user on blockchain since genesis
     processor.on('craft_dipped_joint', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1555,7 +1452,7 @@ function startApp() {
             kief = json.kief,
             kiefNames = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_dipped_joint']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_dipped_joint']);
                 budNames += `${buds}`;
                 oilNames += `${oil}`;
                 kiefNames += `${kief}`;
@@ -1615,7 +1512,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} created a dipped joint from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-     // search for etherchest_craft_cannagar from user on blockchain since genesis
+     // search for qwoyn_craft_cannagar from user on blockchain since genesis
      processor.on('craft_cannagar', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1625,7 +1522,7 @@ function startApp() {
             kiefNames = ''
 
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_cannagar']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'crafted_cannagar']);
                 budNames += `${buds}`;
                 oilNames += `${oil}`;;
                 kiefNames += `${kief}`;
@@ -1685,7 +1582,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} created a cannagar from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-    // search for etherchest_smoke_moonrock from user on blockchain since genesis
+    // search for qwoyn_smoke_moonrock from user on blockchain since genesis
     processor.on('smoke_moonrock', function(json, from) {
         let moonrock = json.moonrock,
             moonrockName = '',
@@ -1696,7 +1593,7 @@ function startApp() {
             friend3 = json.friend3,
             friend3Name = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_moonrock']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_moonrock']);
                 moonrockName += `${moonrock}`;
                 friend1Name += `${friend1}`;
                 friend2Name += `${friend2}`;
@@ -1724,7 +1621,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${moonrockName} moonrock with ${friend1Name}, ${friend2Name} and ${friend3Name}`
     });
 
-    // search for etherchest_smoke_joint from user on blockchain since genesis
+    // search for qwoyn_smoke_joint from user on blockchain since genesis
     processor.on('smoke_joint', function(json, from) {
         let joint = json.joint,
             jointName = '',
@@ -1739,7 +1636,7 @@ function startApp() {
             friend5 = json.friend5,
             friend5Name = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_joint']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_joint']);
                 jointName += `${joint}`;
                 friend1Name += `${friend1}`;
                 friend2Name += `${friend2}`;
@@ -1771,7 +1668,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${jointName} joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
 
-    // search for etherchest_smoke_blunt from user on blockchain since genesis
+    // search for qwoyn_smoke_blunt from user on blockchain since genesis
     processor.on('smoke_blunt', function(json, from) {
         let blunt = json.blunt,
             bluntName = '',
@@ -1786,7 +1683,7 @@ function startApp() {
             friend5 = json.friend5,
             friend5Name = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_blunt']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_blunt']);
                 bluntName += `${blunt}`;
                 friend1Name += `${friend1}`;
                 friend2Name += `${friend2}`;
@@ -1818,7 +1715,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${bluntName} joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
 
-    // search for etherchest_smoke_joint from user on blockchain since genesis
+    // search for qwoyn_smoke_joint from user on blockchain since genesis
     processor.on('eat_edibles', function(json, from) {
         let edibles = json.edibles,
             ediblesName = '',
@@ -1826,7 +1723,7 @@ function startApp() {
             friend1Name = '',
             friend2 = json.friend2
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_blunt']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'ate edibles']);
                 ediblesName += `${edibles}`;
                 friend1Name += `${friend1}`;
                 friend2Name += `${friend2}`;
@@ -1851,7 +1748,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} ate a ${ediblesName} brownie with ${friend1Name} and ${friend2Name}`
     });
 
-    // search for etherchest_smoke_blunt from user on blockchain since genesis
+    // search for qwoyn_smoke_blunt from user on blockchain since genesis
     processor.on('smoked_dipped_joint', function(json, from) {
         let dippedJoint = json.dippedJoint,
             dippedJointName = '',
@@ -1866,7 +1763,7 @@ function startApp() {
             friend5 = json.friend5,
             friend5Name = ''
         for (var i = 0; i < 1; i++) {
-                state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_dipped_joint']);
+                //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_dipped_joint']);
                 dippedJointName += `${dippedJoint}`;
                 friend1Name += `${friend1}`;
                 friend2Name += `${friend2}`;
@@ -1898,7 +1795,7 @@ function startApp() {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${dippedJointName} dipped joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
     
-        // search for etherchest_smoke_blunt from user on blockchain since genesis
+        // search for qwoyn_smoke_blunt from user on blockchain since genesis
         processor.on('smoked_cannagar', function(json, from) {
             let cannagar = json.cannagar,
                 cannagarName = '',
@@ -1913,7 +1810,7 @@ function startApp() {
                 friend5 = json.friend5,
                 friend5Name = ''
             for (var i = 0; i < 1; i++) {
-                    state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_cannagar']);
+                   // state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'smoked_cannagar']);
                     cannagarName += `${cannagar}`;
                     friend1Name += `${friend1}`;
                     friend2Name += `${friend2}`;
@@ -2100,23 +1997,19 @@ function startApp() {
          }
     });
 
-    //checks for etherchest_give_seed and allows users to send each other seeds
+    //checks for qwoyn_give_seed and allows users to send each other seeds
     processor.on('give_seed', function(json, from) {
         var seed=''
         if(json.to && json.to.length > 2){
           try{
               for (var i = 0;i < state.users[from].seeds.length; i++){
-                  if (json.qual){
-                    if(state.users[from].seeds[i].strain === json.seed && state.users[from].seeds[i].xp == json.qual){
+                  if (json.seed){
+                    if(state.users[from].seeds[i].strain === json.seed){
                       state.users[from].seeds[i].owner = json.to;
                       seed=state.users[from].seeds.splice(i, 1)[0]
                       break
                     }
-                  } else if(state.users[from].seeds[i].strain === json.seed){
-                    state.users[from].seeds[i].owner = json.to;
-                    seed=state.users[from].seeds.splice(i, 1)[0]
-                    break
-                  }
+                  } 
               }
           } catch (e) {}
           if (seed) {
@@ -2126,7 +2019,7 @@ function startApp() {
                   seeds: [seed],
                   buds: [],
                   pollen: [],
-                  breeder: breeder,
+                  breeder: "",
                   farmer: farmer,
                   alliance: "",
                   friends: [],
@@ -2162,7 +2055,7 @@ function startApp() {
         }
     });
 
-    //checks for json etherchest_give_pollen and allows users to send each other pollen
+    //checks for json qwoyn_give_pollen and allows users to send each other pollen
     processor.on('give_pollen', function(json, from) {
         var pollen = ''
         if(json.to && json.to.length > 2){
@@ -2216,6 +2109,7 @@ function startApp() {
                 }
               } else {
                   state.users[json.to].pollen.push(pollen)
+                  
               }
               state.cs[`${json.block_num}:${from}`] = `${from} sent ${pollen.strain} pollen to ${json.to}`
           } else {
@@ -2225,32 +2119,26 @@ function startApp() {
     });
 
     
-   //checks for json etherchest_give_buds and allows users to send each other buds
+   //checks for json qwoyn_give_buds and allows users to send each other buds
     processor.on('give_buds', function(json, from) {
-        var buds = ''
+        var bud = ''
         if(json.to && json.to.length > 2){
           try{
               for (var i = 0;i < state.users[from].buds.length; i++){
-                  if (json.qual){
-                    if(state.users[from].buds[i].strain == json.buds && state.users[from].buds[i].xp == json.qual){
-                        state.users[from].buds[i].owner = json.to;
-                        buds = state.users[from].buds.splice(i, 1)[0]
-                      break
-                    }
-                  } else if(state.users[from].buds[i].strain == json.buds){
+                  if(state.users[from].buds[i].strain == json.buds){
                     state.users[from].buds[i].owner = json.to;
-                    buds = state.users[from].buds.splice(i, 1)[0]
+                    bud = state.users[from].buds.splice(i, 1)[0]
                     break
                   }
               }
           } catch (e) {}
-          if (buds) {
+          if (bud) {
               if (!state.users[json.to]) {
                 state.users[json.to] = {
                   addrs: [],
                   seeds: [],
                   pollen: [],
-                  buds: [buds],
+                  buds: [bud],
                   breeder: breeder,
                   farmer: farmer,
                   alliance: "",
@@ -2278,16 +2166,18 @@ function startApp() {
                   v: 0
                 }
               } else {
-                  state.users[json.to].buds.push(buds)
+                  try {
+                  state.users[json.to].buds.push(bud)
+                } catch {'trying to send buds that dont belong to them'}
               }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent ${buds.strain} buds to ${json.to}`
+              state.cs[`${json.block_num}:${from}`] = `${from} sent ${bud.strain} buds to ${json.to}`
           } else {
               state.cs[`${json.block_num}:${from}`] = `${from} doesn't own those buds`
           }
         }
     });
-
-    // checks for etherchest_plant and plants the seed
+    // https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22jonyoudyer%22%5D&id=qwoyn_plant&json=%7B%22addr%22%3A%22a2%22%2C%22seed%22%3A0%7D
+    // checks for qwoyn_plant and plants the seed
     processor.on('plant', function(json, from) {
         var index, seed=''
         try{
@@ -2336,13 +2226,13 @@ function startApp() {
                 state.land[json.addr].father = seed.father
             } else {
                 state.users[from].seeds.unshift(seed);
-                state.cs[`${json.block_num}:${from}`] = `${from} can't plant that.`
+                state.cs[`${json.block_num}:${from}`] = `${from} can't plant ${seed} on ${index}.`
             }
         } else if (seed) {
             state.users[from].seeds.unshift(seed);
-            state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that plot`
+            state.cs[`${json.block_num}:${from}`] = `${from} doesn't own ${seed}`
         } else {
-            state.cs[`${json.block_num}:${from}`] = `${from} did something unexpected with a plant!`
+            state.cs[`${json.block_num}:${from}`] = `${from} did something unexpected with a ${seed} at ${index}!`
         }
     });
 
@@ -2462,16 +2352,17 @@ function startApp() {
     });
 
     processor.onOperation('transfer', function(json, from) {
-        var wrongTransaction = 'etherchest'
-        if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
+        var wrongTransaction = 'qwoyn'
+        if (json.to == username && json.amount.split(' ')[1] == 'STEEM') {
             const amount = parseInt(parseFloat(json.amount) * 1000)
-            fetch(`http://blacklist.usesteem.com/user/${json.from}`)
+
+            /*fetch(`http://blacklist.usesteem.com/user/${json.from}`)
             .then(function(response) {
                 return response.json();
             })
             .then(function(myJson) {
-                if(myJson.blacklisted.length == 0 || json.from == 'news-today'){
-                    if (!state.users[json.from]) state.users[json.from] = {
+                //if(myJson.blacklisted.length == 0){*/
+                /*    if (!state.users[json.from]) state.users[json.from] = {
                 addrs: [], 
                 seeds: [],
                 xps: 0,
@@ -2503,10 +2394,29 @@ function startApp() {
                 v: 0,
                 a: 0,
                 u: 0
-            }
-            var want = json.memo.split(" ")[0].toLowerCase() || json.memo.toLowerCase(),
-                type = json.memo.split(" ")[1] || ''
-            if (state.stats.prices.listed[want] == amount || amount == 500 && type == 'manage' && state.stats.prices.listed[want] || want == 'rseed' && amount == state.stats.prices.listed.seeds.reg || want == 'mseed' && amount == state.stats.prices.listed.seeds.mid || want == 'tseed' && amount == state.stats.prices.listed.seeds.top || want == 'spseed' && amount == state.stats.prices.listed.seeds.special) {
+            }*/
+            var want = json.memo.split(" ")[0].toLowerCase(),
+                type = json.memo.split(" ")[1] || '',
+                seller = json.memo.split(" ")[2] || ''
+            if (
+                state.stats.prices.listed[want] == amount ||
+                // leasing fee 
+                amount == 500 && type == 'manage' && state.stats.prices.listed[want] ||
+                // seeds 
+                want == 'rseed' && amount == state.stats.prices.listed.seeds.reg || 
+                want == 'mseed' && amount == state.stats.prices.listed.seeds.mid || 
+                want == 'tseed' && amount == state.stats.prices.listed.seeds.top || 
+                want == 'spseed' && amount == state.stats.prices.listed.seeds.special ||
+                //tools 
+                want == 'papers' && amount == state.stats.prices.listed.seeds.special || 
+                want == 'kiefbox' && amount == state.stats.prices.listed.seeds.special || 
+                want == 'vacoven' && amount == state.stats.prices.listed.seeds.special || 
+                want == 'bluntwraps' && amount == state.stats.prices.listed.seeds.special ||
+                want == 'browniemix' && amount == state.stats.prices.listed.seeds.special ||
+                want == 'hempwraps' && amount == state.stats.prices.listed.seeds.special ||
+                // market seeds
+                want == 'marketseed' && amount == state.users[seller].seeds[0][type].price
+                ) {
                 if (state.stats.supply.land[want]) {
                     var allowed = false
                     if (amount == 500 && type == 'manage') {
@@ -2537,7 +2447,12 @@ function startApp() {
                         state.refund.push(['xfer', json.from, amount, 
                         '<h3>Automated Hashkings Response</h3>\nThanks for trying to lease a plot on Hashkings but it looks like you have used up your plot credits and may need to delegate more STEEM POWER. Please return to the [Hashkings Market](https://www.hashkings.app/markets) to delegate more SP\nIf you feel this is an error please contact our DEV TEAM in our [Discord Server](https://discord.gg/xabv5az)\n<h5>Thank you so much for you support!</h5>\n<a href="https://www.hashkings.app"><img src="https://i.imgur.com/MQYSNVK.png"></a>'])
                     }
-                } else if (want == 'rseed' && amount == state.stats.prices.listed.seeds.reg || want == 'mseed' && amount == state.stats.prices.listed.seeds.mid || want == 'tseed' && amount == state.stats.prices.listed.seeds.top || want == 'spseed' && amount == state.stats.prices.listed.seeds.special) {
+                    // purchasing seeds
+                } else if (want == 'rseed' && amount == state.stats.prices.listed.seeds.reg || 
+                           want == 'mseed' && amount == state.stats.prices.listed.seeds.mid || 
+                           want == 'tseed' && amount == state.stats.prices.listed.seeds.top || 
+                           want == 'spseed' && amount == state.stats.prices.listed.seeds.special
+                           ) {
                     if (state.stats.supply.strains.indexOf(type) < 0){ type = state.stats.supply.strains[state.users.length % (state.stats.supply.strains.length -1)]}
                     var seed = {
                         strain: type,
@@ -2548,8 +2463,44 @@ function startApp() {
                         cbd: 'coming soon',
                         breeder: 'Landrace Strain',
                         familyTree: 'Landrace Strain',
-                        pollinated: false
+                        pollinated: false,
+                        price: 0,
+                        forSale: false,
+                        pastValue: []
                     }
+                    if (!state.users[json.to]) {
+                        state.users[json.to] = {
+                          addrs: [],
+                          seeds: [seed],
+                          buds: [],
+                          pollen: [],
+                          breeder: "",
+                          farmer: 1,
+                          alliance: "",
+                          friends: [],
+                          inv: [],
+                          seeds: [],
+                          pollen: [],
+                          buds: [],
+                          kief: [],
+                          bubblehash: [],
+                          oil: [],
+                          edibles: [],
+                          joints: [],
+                          blunts: [],
+                          moonrocks: [],
+                          dippedjoints: [],
+                          cannagars: [],
+                          kiefbox: 0,
+                          vacoven: 0,
+                          bubblebags: 0,
+                          browniemix: 0,
+                          stats: [],
+                          traits:[],
+                          terps:[],
+                          v: 0
+                        }
+                      }
                     state.users[json.from].xps += 1;
                     state.users[json.from].seeds.push(seed)
 
@@ -2557,45 +2508,139 @@ function startApp() {
                     state.bal.c += c
                     state.bal.b += amount - c
                     state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${seed.strain}`
-                } else if (want == 'papers' && amount == state.stats.prices.listed.supplies.papers && state.users[from].xps > 100|| want == 'keifbox' && amount == state.stats.prices.listed.supplies.keifbox && state.users[from].xps > 100 || want == 'vacoven' && amount == state.stats.prices.listed.supplies.vacoven && state.users[from].xps > 1000 || want == 'bluntwraps' && amount == state.stats.prices.listed.supplies.bluntwraps && state.users[from].xps > 5000 || want == 'browniemix' && amount == state.stats.prices.listed.supplies.browniemix && state.users[from].xps > 10000 || want == 'hempwraps' && amount == state.stats.prices.listed.supplies.hempwraps && state.users[from].xps > 25000) {
+
+                } else if (want == 'papers' && amount == state.stats.prices.listed.supplies.papers && state.users[from].xps > 100 || 
+                           want == 'keifbox' && amount == state.stats.prices.listed.supplies.keifbox && state.users[from].xps > 100 || 
+                           want == 'vacovens' && amount == state.stats.prices.listed.supplies.vacoven && state.users[from].xps > 1000 || 
+                           want == 'bluntwraps' && amount == state.stats.prices.listed.supplies.bluntwraps && state.users[from].xps > 5000 || 
+                           want == 'browniemix' && amount == state.stats.prices.listed.supplies.browniemix && state.users[from].xps > 10000 || 
+                           want == 'hempwraps' && amount == state.stats.prices.listed.supplies.hempwraps && state.users[from].xps > 25000
+                           ) {
                     if (want == 'papers') {
-                        state.users[json.from].papers++;
-                        state.users[json.from].xps += 1;
+                        state.users[from].papers+=10;
+                        state.users[from].xps += 10;
                     }
                     if (want == 'kiefbox') {
-                        state.users[json.from].kiefbox++; 
-                        state.users[json.from].xps += 1; 
+                        state.users[from].kiefbox+=10; 
+                        state.users[from].xps += 10; 
                     }
-                    if (want == 'vacoven') {
-                        state.users[json.from].vacoven++; 
-                        state.users[json.from].xps += 10; 
+                    if (want == 'vacovens') {
+                        state.users[from].vacoven+=10; 
+                        state.users[from].xps += 10; 
                     }
                     if (want == 'bluntwraps') {
-                        state.users[json.from].bluntwraps++; 
-                        state.users[json.from].xps += 50; 
+                        state.users[from].bluntwraps+=5; 
+                        state.users[from].xps += 50; 
                     }
                     if (want == 'browniemix') {
-                        state.users[json.from].browniemix++; 
-                        state.users[json.from].xps += 100; 
+                        state.users[from].browniemix+=5; 
+                        state.users[from].xps += 100; 
                     }
                     if (want == 'hempwraps') { 
-                        state.users[json.from].hempwraps++; 
-                        state.users[json.from].xps += 250; 
+                        state.users[from].hempwraps++; 
+                        state.users[from].xps += 250; 
                     }
                     const c = parseInt(amount * 0.75)
                     state.bal.c += c
                     state.bal.b += amount - c
                     state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${want}`
-                } else {
-                    state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-                    state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to buy tools...please check wallet`
-                }
-            } else if (amount > 10000) {
+
+                    } else {
+                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy tools but didn't have the requirements`
+                    }
+                    if ( 
+                    want === 'marketseed' &&  amount === state.users[seller].seeds[0][type].price && state.users[seller].seeds[0][type].forSale === true
+                    ) {
+                    if (want === 'marketseed') {
+
+                        state.users[from].seeds = {
+                            type: {
+                                owner: from,
+                                traits: [
+                                   "beta seed"
+                                ],
+                                terps: [],
+                                thc: state.users[seller].seeds[0][type].thc,
+                                cbd: state.users[seller].seeds[0][type].cbd,
+                                familyTree: state.users[seller].seeds[0][type].familyTree,
+                                pollinated: false,
+                                father: state.users[seller].seeds[0][type].father,
+                                forSale: false,
+                                price: 0,
+                                pastValue: [
+                                    state.users[seller].seeds[0][type].price,
+                                ],
+                                datePosted: 0
+                             }
+                        }
+
+                        state.users[from].seeds.push(state.users[from].seeds)
+
+                        //state.users[from].seeds.push(seedPosted)
+                        
+                      /*   if (seed) {
+                             if (!state.users[from]) {
+                               state.users[from] = {
+                                 addrs: [],
+                                 seeds: [seed],
+                                 buds: [],
+                                 pollen: [],
+                                 breeder: from,
+                                 farmer: 1,
+                                 alliance: "",
+                                 friends: [],
+                                 inv: [],
+                                 seeds: [],
+                                 pollen: [],
+                                 buds: [],
+                                 kief: [],
+                                 bubblehash: [],
+                                 oil: [],
+                                 edibles: [],
+                                 joints: [],
+                                 blunts: [],
+                                 moonrocks: [],
+                                 dippedjoints: [],
+                                 cannagars: [],
+                                 kiefbox: 0,
+                                 vacoven: 0,
+                                 bubblebags: 0,
+                                 browniemix: 0,
+                                 stats: [],
+                                 traits:[],
+                                 terps:[],
+                                 v: 0
+                               }
+                             } else {
+                                 state.users[from].seeds.push(seed)
+                             }
+
+                             state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} seed from ${seller}`
+                         } else {
+                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a seed`
+                         }*/
+
+                        delete state.users[seller].seeds[0][type];
+                        
+                        //pay hashkings
+                        const c = parseInt(amount * 0.01)
+                        state.bal.c += c
+                        state.bal.b += amount - c
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${want} from ${seller}`
+                        //pay seller
+                        state.refund.push(['xfer', seller, amount * 0.99, 'You succesfully completed a purchase from' + seller + "|" + want])
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} succesfully completed a purchase with ${seller} | ${type}`
+                    }
+                 } 
+                else {
+                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
+            }
+            } else if (amount > 10000000) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase seeds/tools or managing land...please check wallet`
             }
-                } else {
+                /*} else {
                     if (state.blacklist[json.from]){
                         var users = parseInt(amount/2),
                             ops = parseInt(amount - users)
@@ -2608,7 +2653,7 @@ function startApp() {
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} blacklisted`
                     }
                 }
-            })
+            })*/
 
         } else if (json.from == username) {
             const amount = parseInt(parseFloat(json.amount) * 1000)
@@ -2627,7 +2672,6 @@ function startApp() {
     });
 
     processor.start();
-
 
     //var transactor = steemTransact(client, steem, prefix);
     processor.on('return', function(json, from) {
@@ -2679,7 +2723,7 @@ var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
-            amount: `${float} HIVE`,
+            amount: `${float} STEEM`,
             from: username,
             to: toa,
             memo: memo
@@ -2740,7 +2784,7 @@ var bot = {
             {
                 from: username,
                 to: toa,
-                amount: `${parseFloat(amount/1000).toFixed(3)} HIVE`,
+                amount: `${parseFloat(amount/1000).toFixed(3)} STEEM`,
             },
         ];
         client.broadcast.sendOperations([op], key).then(
@@ -2910,7 +2954,7 @@ function popWeather (loc){
     })
 }
 
-function autoPoster (loc, num) {
+/*function autoPoster (loc, num) {
     var body = `\nhttps://source.unsplash.com/user/kimzy/1600x900# \n${state.stats.env[loc].name} Growers Daily News\n`, bens = ''
     var footer = `\n<center><h1>Hashkings Official Links</h1>
     \n[Hashkings Web App](https://www.hashkings.app)
@@ -2955,7 +2999,7 @@ function autoPoster (loc, num) {
         state.payday.shift()
     }
     state.refund.push(['ssign',ops])
-}
+}*/
 
 function cloudy(per){
     const range = parseInt(per/20)
@@ -3021,9 +3065,9 @@ function listBens (bens){
 function sexing (){
     var sexAtBirth = 'Not Sexed';
 
-    sex = state.land.length % 1;
+    sex = Math.floor(Math.random() * 10) % 1.90;
 
-    if(sex > 0){
+    if(sex >= 1){
         sexAtBirth = "male";
     } else{
         sexAtBirth = "female";
@@ -3052,7 +3096,6 @@ function daily(addr) {
                     state.land[addr].substage = 0;
                     state.land[addr].stage++
                 }
-
                 //added sexing
                 if (state.land[addr].stage == 2 && state.land[addr].substage == 0) state.land[addr].sex = sexing()//state.land.length % 1
                 
@@ -3064,7 +3107,7 @@ function daily(addr) {
                 for (var j = 0; j < state.land[addr].aff.length; j++) {
                     try {
                     if (state.land[addr].aff[j][0] > processor.getCurrentBlockNumber() - 86400 && state.land[addr].aff[j][1] == 'over') {
-                        state.land[addr].stage = -1;
+                        state.land[addr].substage--;
                         break;
                     }
                 } catch(e) {
@@ -3072,97 +3115,6 @@ function daily(addr) {
                    }
                 }
             }
-            
-            /*//if json is pollinated and plant is stage 3 or greater then give kudos, pollinate plant and set father
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'pollinated' && state.land[addr].stage > 2) {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with giving kudos for pollination', e.message)
-            }
-
-            //if json is crafted_kief give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.users[from].stats[i][1] == 'crafted_kief') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting kief', e.message)
-            }
-
-            //if json is crafted_bubblehash give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_bubblehash') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting bubble hash', e.message)
-            }
-
-            //if json is crafted_oil give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_oil') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting oil', e.message)
-            }
-
-            //if json is crafted_joint give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_joint') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting joints', e.message)
-            }
-
-            //if json is crafted_edibles give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_edibles') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting edibles', e.message)
-            }
-
-            //if json is crafted_blunt give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_blunt') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting blunt', e.message)
-            }
-
-            //if json is crafted_moonrock give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_moonrock') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting moonrock', e.message)
-            }
-
-            //if json is crafted_dipped_joint give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_dipped_joint') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting dipped joint', e.message)
-            }
-
-            //if json is crafted_cannagar give kudos
-            try {
-            if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'crafted_cannagar') {
-                kudo(state.land[addr].owner);
-            }
-            } catch(e) {
-                console.log('something strange with crafting cannagar', e.message)
-            }*/
-        
-            }
-                }
-            }
+        }
+    }
+}        
