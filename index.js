@@ -59,7 +59,7 @@ app.use(cors());
 
 /*plot info from state.js by plot number
             {
-            "owner": "qwoyn",
+            "owner": "etherchest",
             "strain": "",
             "xp": 0,
             "care": [
@@ -100,7 +100,7 @@ app.get('/logs', (req, res, next) => {
 /*detailed list of seeds a user owns from state.js by username\
         [
         {
-            "owner": "qwoyn",
+            "owner": "etherchest",
             "strain": "",
             "xp": 0,
             "care": [
@@ -126,7 +126,7 @@ app.get('/logs', (req, res, next) => {
             "id": "a10"
         },
         {
-            "owner": "qwoyn",
+            "owner": "etherchest",
             "strain": "hk",
             "xp": 2250,
             "care": [
@@ -153,7 +153,7 @@ app.get('/logs', (req, res, next) => {
             "sex": null
         },
         {
-            "owner": "qwoyn",
+            "owner": "etherchest",
             "strain": "mis",
             "xp": 1,
             "care": [
@@ -305,7 +305,7 @@ app.get('/u/:user', (req, res, next) => {
 
 /*delegation information by user
 {
-   "delegator": "qwoyn",
+   "delegator": "etherchest",
    "vests": 4900485891391,
    "available": 123,
    "used": 2
@@ -331,7 +331,7 @@ const username = ENV.ACCOUNT || 'hashkings'; //account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
 const ago = ENV.ago || 42138170;
-const prefix = ENV.PREFIX || 'qwoyn_'; // part of custom json visible on the blockchain during watering etc..
+const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
 var processor;
@@ -346,7 +346,7 @@ steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
     console.log(err)
     startWith(sh)
   } else {
-    let ebus = result.filter( tx => tx[1].op[1].id === 'qwoyn_report' )
+    let ebus = result.filter( tx => tx[1].op[1].id === 'etherchest_report' )
     for(i=ebus.length -1; i>=0; i--){
       if(JSON.parse(ebus[i][1].op[1].json).stateHash !== null)recents.push(JSON.parse(ebus[i][1].op[1].json).stateHash)
     }
@@ -567,12 +567,12 @@ function startApp() {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d) {
-                state.refund.push(['xfer', 'qwoyn-dev', d, 'Dev Cut'])
-                state.refund.push(['xfer', 'qwoyn-fund', parseInt(2 * d), 'Funds'])
-                state.refund.push(['xfer', 'qwoyn', d, 'Producer Cut'])
+                state.refund.push(['xfer', 'etherchest-dev', d, 'Dev Cut'])
+                state.refund.push(['xfer', 'etherchest-fund', parseInt(2 * d), 'Funds'])
+                state.refund.push(['xfer', 'etherchest', d, 'Producer Cut'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
-                //state.refund.push(['xfer', 'qwoyn-chest', state.bal.c, 'Warchest'])
+                //state.refund.push(['xfer', 'etherchest-chest', state.bal.c, 'Warchest'])
                 state.bal.c = 0
                 state.refund.push(['power', username, state.bal.b, 'Power to the people!'])
             }
@@ -589,7 +589,7 @@ function startApp() {
 
 
 //---------posting sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_market_post_seed&json=%7B%22price%22%3A5000,%22seedPosted%22%3A%5B%22mis%22%5D%7D
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_seed&json=%7B%22price%22%3A5000,%22seedPosted%22%3A%5B%22mis%22%5D%7D
 processor.on('market_post_seed', function(json, from) {
     let postedSeed = json.seedPosted,
         seednames = ''
@@ -692,7 +692,7 @@ processor.on('market_post_buds', function(json, from) {
 });
 
 //---------cancel sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_market_cancel_seed&json=%7B%22seedToCancel%22%3A%5B%22mis%22%5D%7D
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_seed&json=%7B%22seedToCancel%22%3A%5B%22mis%22%5D%7D
 processor.on('market_cancel_seed', function(json, from) {
     let cancelSeed = json.seedToCancel,
         seednames = ''
@@ -764,7 +764,7 @@ processor.on('market_cancel_buds', function(json, from) {
 
 //---------------------End Market---------------------------------------------------------
     
-// search for qwoyn_harvest from user on blockchain since genesis
+// search for etherchest_harvest from user on blockchain since genesis
     processor.on('harvest', function(json, from) {
         let plants = json.plants,
             plantnames = ''
@@ -931,9 +931,9 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} harvested ${plantnames}`
     });
     
-    //search for qwoyn_water from user on blockchain since genesis
+    //search for etherchest_water from user on blockchain since genesis
     //steemconnect link
-    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
+    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
     processor.on('water', function(json, from) {
         let plants = json.plants,
             plantnames = ''
@@ -954,9 +954,9 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} succesfully watered ${plantnames}`
     });
     
-    //search for qwoyn_breeder_name from user on blockchain since genesis
+    //search for etherchest_breeder_name from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
     processor.on('breeder_name', function(json, from) {
         let breeder = json.breeder,
             breederName = ''
@@ -973,9 +973,9 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${breederName}`
     });
 
-    //search for qwoyn_farmer_type from user on blockchain since genesis
+    //search for etherchest_farmer_type from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
     processor.on('farmer_type', function(json, from) {
         let farmer = json.farmer,
             farmerType = 1
@@ -993,9 +993,9 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${farmerType}`
     });
 
-    //search for qwoyn_add_friend from user on blockchain since genesis
+    //search for etherchest_add_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22qwoyn%22%5D&id=qwoyn_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
     processor.on('add_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -1021,9 +1021,9 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} added ${friendName} as a friend`
     });
 
-    //search for qwoyn_remove_friend from user on blockchain since genesis
+    //search for etherchest_remove_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('remove_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -1051,9 +1051,9 @@ processor.on('market_cancel_buds', function(json, from) {
     });
 
     //****ISSUE****//
-    //search for qwoyn_join_alliance from user on blockchain since genesis
+    //search for etherchest_join_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
    processor.on('join_alliance', function(json, from) {
         let alliance = json.alliance,
             allianceName = ''
@@ -1087,9 +1087,9 @@ processor.on('market_cancel_buds', function(json, from) {
     state.cs[`${json.block_num}:${from}`] = `${from} changed their alliance to ${allianceName}`
     });
 
-    //search for qwoyn_alliance from user on blockchain since genesis
+    //search for etherchest_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('create_alliance', function(json, from) {
         let newAlliance = json.newAlliance,
             newAllianceName = ''
@@ -1109,7 +1109,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created alliance named ${newAllianceName}`
     });
 
-    // search for qwoyn_pollinate from user on blockchain since genesis
+    // search for etherchest_pollinate from user on blockchain since genesis
     processor.on('pollinate', function(json, from) {
         let plants = json.plants,
             plantnames = '',
@@ -1150,7 +1150,7 @@ processor.on('market_cancel_buds', function(json, from) {
         return pollenName;
     });
 
-    // search for qwoyn_craft_oil from user on blockchain since genesis
+    // search for etherchest_craft_oil from user on blockchain since genesis
     processor.on('craft_bubblehash', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1189,7 +1189,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created bubblehash with ${budNames}`
     });
 
-    // search for qwoyn_craft_oil from user on blockchain since genesis
+    // search for etherchest_craft_oil from user on blockchain since genesis
     processor.on('craft_oil', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1226,7 +1226,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created oil with ${budNames}`
     });
 
-    // search for qwoyn_kief from user on blockchain since genesis
+    // search for etherchest_kief from user on blockchain since genesis
     processor.on('craft_kief', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1339,7 +1339,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} crafted joint with ${budNames}`
     });
 
-   // search for qwoyn_joint from user on blockchain since genesis
+   // search for etherchest_joint from user on blockchain since genesis
     processor.on('craft_blunt', function(json, from) {
         let buds = json.buds,
             budNames = ''
@@ -1377,7 +1377,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} crafted a blunt with ${budNames}`
     });
 
-    // search for qwoyn_pollinate from user on blockchain since genesis
+    // search for etherchest_pollinate from user on blockchain since genesis
     processor.on('craft_moonrocks', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1443,7 +1443,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created a moonrock from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-    // search for qwoyn_craft_moonrocks from user on blockchain since genesis
+    // search for etherchest_craft_moonrocks from user on blockchain since genesis
     processor.on('craft_dipped_joint', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1512,7 +1512,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created a dipped joint from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-     // search for qwoyn_craft_cannagar from user on blockchain since genesis
+     // search for etherchest_craft_cannagar from user on blockchain since genesis
      processor.on('craft_cannagar', function(json, from) {
         let buds = json.buds,
             budNames = '',
@@ -1582,7 +1582,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created a cannagar from ${budNames} bud, ${oilNames} oil and ${kiefNames} kief`
     });
 
-    // search for qwoyn_smoke_moonrock from user on blockchain since genesis
+    // search for etherchest_smoke_moonrock from user on blockchain since genesis
     processor.on('smoke_moonrock', function(json, from) {
         let moonrock = json.moonrock,
             moonrockName = '',
@@ -1621,7 +1621,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${moonrockName} moonrock with ${friend1Name}, ${friend2Name} and ${friend3Name}`
     });
 
-    // search for qwoyn_smoke_joint from user on blockchain since genesis
+    // search for etherchest_smoke_joint from user on blockchain since genesis
     processor.on('smoke_joint', function(json, from) {
         let joint = json.joint,
             jointName = '',
@@ -1668,7 +1668,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${jointName} joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
 
-    // search for qwoyn_smoke_blunt from user on blockchain since genesis
+    // search for etherchest_smoke_blunt from user on blockchain since genesis
     processor.on('smoke_blunt', function(json, from) {
         let blunt = json.blunt,
             bluntName = '',
@@ -1715,7 +1715,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${bluntName} joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
 
-    // search for qwoyn_smoke_joint from user on blockchain since genesis
+    // search for etherchest_smoke_joint from user on blockchain since genesis
     processor.on('eat_edibles', function(json, from) {
         let edibles = json.edibles,
             ediblesName = '',
@@ -1748,7 +1748,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} ate a ${ediblesName} brownie with ${friend1Name} and ${friend2Name}`
     });
 
-    // search for qwoyn_smoke_blunt from user on blockchain since genesis
+    // search for etherchest_smoke_blunt from user on blockchain since genesis
     processor.on('smoked_dipped_joint', function(json, from) {
         let dippedJoint = json.dippedJoint,
             dippedJointName = '',
@@ -1795,7 +1795,7 @@ processor.on('market_cancel_buds', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} smoked a ${dippedJointName} dipped joint with ${friend1Name}, ${friend2Name}, ${friend3Name}, ${friend4Name} and ${friend5Name}`
     });
     
-        // search for qwoyn_smoke_blunt from user on blockchain since genesis
+        // search for etherchest_smoke_blunt from user on blockchain since genesis
         processor.on('smoked_cannagar', function(json, from) {
             let cannagar = json.cannagar,
                 cannagarName = '',
@@ -1997,7 +1997,7 @@ processor.on('market_cancel_buds', function(json, from) {
          }
     });
 
-    //checks for qwoyn_give_seed and allows users to send each other seeds
+    //checks for etherchest_give_seed and allows users to send each other seeds
     processor.on('give_seed', function(json, from) {
         var seed=''
         if(json.to && json.to.length > 2){
@@ -2055,7 +2055,7 @@ processor.on('market_cancel_buds', function(json, from) {
         }
     });
 
-    //checks for json qwoyn_give_pollen and allows users to send each other pollen
+    //checks for json etherchest_give_pollen and allows users to send each other pollen
     processor.on('give_pollen', function(json, from) {
         var pollen = ''
         if(json.to && json.to.length > 2){
@@ -2119,7 +2119,7 @@ processor.on('market_cancel_buds', function(json, from) {
     });
 
     
-   //checks for json qwoyn_give_buds and allows users to send each other buds
+   //checks for json etherchest_give_buds and allows users to send each other buds
     processor.on('give_buds', function(json, from) {
         var bud = ''
         if(json.to && json.to.length > 2){
@@ -2176,8 +2176,8 @@ processor.on('market_cancel_buds', function(json, from) {
           }
         }
     });
-    // https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22jonyoudyer%22%5D&id=qwoyn_plant&json=%7B%22addr%22%3A%22a2%22%2C%22seed%22%3A0%7D
-    // checks for qwoyn_plant and plants the seed
+    // https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22jonyoudyer%22%5D&id=etherchest_plant&json=%7B%22addr%22%3A%22a2%22%2C%22seed%22%3A0%7D
+    // checks for etherchest_plant and plants the seed
     processor.on('plant', function(json, from) {
         var index, seed=''
         try{
@@ -2352,7 +2352,7 @@ processor.on('market_cancel_buds', function(json, from) {
     });
 
     processor.onOperation('transfer', function(json, from) {
-        var wrongTransaction = 'qwoyn'
+        var wrongTransaction = 'etherchest'
         if (json.to == username && json.amount.split(' ')[1] == 'STEEM') {
             const amount = parseInt(parseFloat(json.amount) * 1000)
 
