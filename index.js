@@ -389,7 +389,7 @@ function startWith(hash) {
             }
         });
     } else {
-        console.log('Didnt start with hash')
+        console.log('Didnt start with ipfs')
         state = init
         startApp()
     }
@@ -433,7 +433,7 @@ function startApp() {
             ipfsSaveState(num, JSON.stringify(state))
         }
 
-        if (num % 28800 === 20000 && state.payday.length) {
+        if (num % 28800 === 20000) {
             for (var item in state.cs){
               if(item.split(':')[0] < num - 28800 || item.split(':')[0] == 'state.cs undefined #438i'){
                 delete state.cs[item]
