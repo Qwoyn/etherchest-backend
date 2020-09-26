@@ -97,7 +97,7 @@ app.get('/logs', (req, res, next) => {
     res.send(JSON.stringify(state.cs, null, 3))
 });
 
-/*detailed list of seeds a user owns from state.js by username\
+/*detailed list of gems a user owns from state.js by username\
         [
         {
             "owner": "etherchest",
@@ -203,7 +203,7 @@ app.get('/a/:user', (req, res, next) => {
     res.send(JSON.stringify(arr, null, 3))
 });
 
-//overal game stats i.e. number of gardeners, number of plants available, seed prices, land price, weather info
+//overal game stats i.e. number of gardeners, number of plants available, gem prices, land price, weather info
 //at each location such as mexico or jamaica etc.
 app.get('/stats', (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
@@ -219,13 +219,13 @@ app.get('/', (req, res, next) => {
     res.send(JSON.stringify(state, null, 3))
 });
 
-//shows seeds by user
-app.get('/seeds/:user', (req, res, next) => {
+//shows gems by user
+app.get('/gems/:user', (req, res, next) => {
     let user = req.params.user, arr = []
     res.setHeader('Content-Type', 'application/json');
     if(state.users[user]){
-        for (var i = 0 ; i < state.users[user].seeds.length ; i++){
-            arr.push(state.users[user].seeds[i])
+        for (var i = 0 ; i < state.users[user].gems.length ; i++){
+            arr.push(state.users[user].gems[i])
         }
     }
     res.send(JSON.stringify(arr, null, 3))
@@ -264,7 +264,7 @@ app.get('/refunds', (req, res, next) => {
     }, null, 3))
 });
 
-/*plot and seed information by user
+/*plot and gem information by user
         {
         "addrs": [
             "a10",
@@ -272,7 +272,7 @@ app.get('/refunds', (req, res, next) => {
             "a77",
             "a100"
         ],
-        "seeds": [
+        "gems": [
             {
                 "strain": "kbr",
                 "xp": 2250,
@@ -435,25 +435,15 @@ function startApp() {
 
         if (num % 28800 === 20000 && state.payday.length) {
             for (var item in state.cs){
-              if(item.split(':')[0] < num - 28800 || item.split(':')[0] == 'undefined'){
+              if(item.split(':')[0] < num - 28800 || item.split(':')[0] == 'state.cs undefined #438i'){
                 delete state.cs[item]
               }
             }
-            state.payday[0] = sortExtentions(state.payday[0],'account')
-        var body = `\n`
-        var footer = `\n`  //edits
-            if (state.news.h.length > 0){
-                body = body + state.news.h[0] + footer ;state.news.h.shift();
-            } else {
-                body = body + footer
-            }
-            body = body + listBens(state.payday[0])
-            state.payday.shift()
-    }
+        }
         if (num % 28800 === 0) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
-            if (d) {
+            if (d > 0) {
                 state.refund.push(['xfer', 'etherchest', parseInt(4 * d), 'Funds'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
@@ -474,230 +464,66 @@ function startApp() {
 
 
 //---------posting sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_seed&json=%7B%22price%22%3A5000,%22seedPosted%22%3A%5B%22mis%22%5D%7D
-processor.on('market_post_diamond', function(json, from) {
-    let postedSeed = json.seedPosted,
-        seednames = ''
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_gem&json=%7B%22price%22%3A5000,%22gemPosted%22%3A%5B%22mis%22%5D%7D
+processor.on('market_post_gem', function(json, from) {
+    let postedgem = json.gemPosted,
+        gemnames = ''
 
-        seednames += `${postedSeed}`;
+        gemnames += `${postedgem}`;
 
         try {
-            if (state.users[from].seeds[0][seednames].owner === from && state.users[from].seeds[0][seednames].forSale === false) {
+            if (state.users[from].gems[0][gemnames].owner === from && state.users[from].gems[0][gemnames].forSale === false) {
 
-               /* // add seed to market
+               /* // add gem to market
                 const postedToMarket = {
                     price:  json.price,
                     posted: json.block_num
                 }
-                state.users[from].seeds[0][seednames].push(postedToMarket);*/
+                state.users[from].gems[0][gemnames].push(postedToMarket);*/
 
                 // set price and when it was posted
-                state.users[from].seeds[0][seednames].price = json.price;
-                state.users[from].seeds[0][seednames].datePosted = json.block_num;
+                state.users[from].gems[0][gemnames].price = json.price;
+                state.users[from].gems[0][gemnames].datePosted = json.block_num;
 
-                // set posted seed forSale to true in users inventory
-                state.users[from].seeds[0][seednames].forSale = true;
-
-            }
-        } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-        }
-
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.seedPosted} seed for sale for ${json.price / 1000} STEEM`
-});
-
-processor.on('market_post_sapphire', function(json, from) {
-    let postedPollen = json.pollenPosted,
-        pollennames = ''
-
-        pollennames += `${postedPollen}`;
-
-        try {
-            if (state.users[from].pollen[0][pollennames].owner === from && state.users[from].pollen[0][pollennames].forSale === false) {
-
-                // add pollen to market
-                const postedToMarket = {
-                    [from]: [
-                        {
-                        [postedPollen]: [
-                            {
-                                price:  json.price,
-                                posted: json.block_num
-                            }
-                        ]
-                        }
-                    ]
-                }
-                state.market.pollen.push(postedToMarket);
-
-                // set posted pollen forSale to true in users inventory
-                state.users[from].pollen[0][pollennames].forSale = true;
+                // set posted gem forSale to true in users inventory
+                state.users[from].gems[0][gemnames].forSale = true;
 
             }
         } catch (e){
             state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
         }
 
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted ${json.pollenPosted} pollen for sale for ${json.price / 1000} STEEM`
-}); 
-
-processor.on('market_post_emerald', function(json, from) {
-    let postedBud = json.budPosted,
-        budnames = ''
-
-        budnames += `${postedBud}`;
-
-        try {
-            if (state.users[from].buds[0][budnames].owner === from && state.users[from].buds[0][budnames].forSale === false) {
-
-                // add bud to market
-                const postedToMarket = {
-                    [from]: [
-                        {
-                        [postedBud]: [
-                            {
-                                price:  json.price,
-                                posted: json.block_num
-                            }
-                        ]
-                        }
-                    ]
-                }
-                state.market.buds.push(postedToMarket);
-
-                // set posted bud forSale to true in users inventory
-                state.users[from].buds[0][budnames].forSale = true;
-
-            }
-        } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-        }
-
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.budPosted} bud for sale for ${json.price / 1000} STEEM`
-});
-
-processor.on('market_post_ruby', function(json, from) {
-    let postedBud = json.budPosted,
-        budnames = ''
-
-        budnames += `${postedBud}`;
-
-        try {
-            if (state.users[from].buds[0][budnames].owner === from && state.users[from].buds[0][budnames].forSale === false) {
-
-                // add bud to market
-                const postedToMarket = {
-                    [from]: [
-                        {
-                        [postedBud]: [
-                            {
-                                price:  json.price,
-                                posted: json.block_num
-                            }
-                        ]
-                        }
-                    ]
-                }
-                state.market.buds.push(postedToMarket);
-
-                // set posted bud forSale to true in users inventory
-                state.users[from].buds[0][budnames].forSale = true;
-
-            }
-        } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-        }
-
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.budPosted} bud for sale for ${json.price / 1000} STEEM`
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.gemPosted} gem for sale for ${json.price / 1000} STEEM`
 });
 
 //---------cancel sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_seed&json=%7B%22seedToCancel%22%3A%5B%22mis%22%5D%7D
-processor.on('market_cancel_diamond', function(json, from) {
-    let cancelSeed = json.seedToCancel,
-        seednames = ''
+// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_gem&json=%7B%22gemToCancel%22%3A%5B%22mis%22%5D%7D
+processor.on('market_cancel_sale', function(json, from) {
+    let cancelgem = json.gemToCancel,
+        gemnames = ''
 
-        seednames += `${cancelSeed}`;
+        gemnames += `${cancelgem}`;
         
-        var seed=''
+        var gem=''
 
         try {
-            if (state.users[from].seeds[0][seednames].owner === from && state.users[from].seeds[0][seednames].forSale === true) {
+            if (state.users[from].gems[0][gemnames].owner === from && state.users[from].gems[0][gemnames].forSale === true) {
 
                 // reset price and posted time to 0
-                state.users[from].seeds[0][seednames].price = 0;
-                state.users[from].seeds[0][seednames].datePosted = 0;
+                state.users[from].gems[0][gemnames].price = 0;
+                state.users[from].gems[0][gemnames].datePosted = 0;
 
-                // set canceled seed forSale to false in users inventory
-                state.users[from].seeds[0][seednames].forSale = false;
+                // set canceled gem forSale to false in users inventory
+                state.users[from].gems[0][gemnames].forSale = false;
 
             }
         } catch (e){
             state.cs[`${json.block_num}:${from}`] = `${from} can't cancel what is not theirs`
         }
 
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully canceled a ${json.seedToCancel} seed sale.`
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully canceled a ${json.gemToCancel} gem sale.`
 });
 
-processor.on('market_cancel_sapphire', function(json, from) {
-    let pollen = json.pollen,
-        pollennames = ''
-        try {
-        for (var i = 0; i < pollen.length; i++) {
-            try {
-            if (state.users.from[pollen[i]].owner === from) {
-                state.users.from[pollen[i]].forSale = 0;
-                pollennames += `${pollen[i]} `
-            }
-            } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-            }
-        }
-        } catch {
-            (console.log(from + ' tried to post ' + pollennames +' pollen for sale but an error occured'))
-        }
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted ${pollennames} pollen for sale`
-});
-
-processor.on('market_cancel_emerald', function(json, from) {
-    let buds = json.buds,
-        budNames = ''
-        try {
-        for (var i = 0; i < buds.length; i++) {
-            try {
-            if (state.users.from[buds[i]].owner === from) {
-                state.users.from[buds[i]].forSale = 0;
-                budNames += `${buds[i]} `
-            }
-            } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-            }
-        }
-        } catch {
-            (console.log(from + ' tried to post a ' + budNames +' bud for sale but an error occured'))
-        }
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${budNames} bud for sale`
-});
-
-processor.on('market_cancel_ruby', function(json, from) {
-    let buds = json.buds,
-        budNames = ''
-        try {
-        for (var i = 0; i < buds.length; i++) {
-            try {
-            if (state.users.from[buds[i]].owner === from) {
-                state.users.from[buds[i]].forSale = 0;
-                budNames += `${buds[i]} `
-            }
-            } catch (e){
-            state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
-            }
-        }
-        } catch {
-            (console.log(from + ' tried to post a ' + budNames +' bud for sale but an error occured'))
-        }
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${budNames} bud for sale`
-});
 
 //--------purchasing----------//
 // found in transfer
@@ -860,32 +686,17 @@ processor.on('market_cancel_ruby', function(json, from) {
         state.cs[`${json.block_num}:${from}`] = `${from} created alliance named ${newAllianceName}`
     });
 
-/*
-    processor.on('return', function(json, from) {
-        let lands = json.lands,
-            landnames = ''
-        for (var i = 0; i < lands.length; i++) {
-            if (state.land[lands[i]].owner == from) {
-                delete state.land[lands[i]];
-                state.lands.forSale.push(lands[i]);
-                state.refund.push(['xfer', from, state.stats.prices.purchase.land, `Returned ${lands[i]}`]);
-                plantnames += `${plants[i]} `
-            }
-        }
-        console.log(`${from} returned ${landnames}`)
-    });
-*/
     processor.on('redeem', function(j, f) {
         state.cs[`${j.block_num}:${f}`] = `Redeem Op:${f} -> ${j}`
         if (state.users[f]){if (state.users[f].v && state.users[f].v > 0) {
             state.users[f].v--
             let type = j.type || ''
             if (state.stats.supply.strains.indexOf(type) < 0) type = state.stats.supply.strains[state.users.length % state.stats.supply.strains.length]
-            var seed = {
+            var gem = {
                 strain: type,
                 xp: 50
             }
-            state.users[f].seeds.push(seed)
+            state.users[f].gems.push(gem)
         }}
     });
 
@@ -906,240 +717,38 @@ processor.on('market_cancel_ruby', function(json, from) {
         if(from=='etherchest'){state.users[json.to].v = 1}
     });
 
-    //checks for etherchest_give_diamond and allows users to send each other seeds
-    processor.on('give_diamond', function(json, from) {
-        var seed=''
+    //checks for etherchest_give_diamond and allows users to send each other gems
+    processor.on('give_gem', function(json, from) {
+        var gem=''
         if(json.to && json.to.length > 2){
           try{
-              for (var i = 0;i < state.users[from].seeds.length; i++){
-                  if (json.seed){
-                    if(state.users[from].seeds[i].strain === json.seed){
-                      state.users[from].seeds[i].owner = json.to;
-                      seed=state.users[from].seeds.splice(i, 1)[0]
+              for (var i = 0;i < state.users[from].gems.length; i++){
+                  if (json.gem){
+                    if(state.users[from].gems[i].strain === json.gem){
+                      state.users[from].gems[i].owner = json.to;
+                      gem=state.users[from].gems.splice(i, 1)[0]
                       break
                     }
                   } 
               }
           } catch (e) {}
-          if (seed) {
+          if (gem) {
               if (!state.users[json.to]) {
                 state.users[json.to] = {
                   addrs: [],
-                  seeds: [seed],
-                  buds: [],
-                  pollen: [],
-                  breeder: "",
-                  farmer: farmer,
-                  alliance: "",
+                  gems: [gem],
+                  hero: 1,
+                  guild: "",
                   friends: [],
                   inv: [],
-                  seeds: [],
-                  pollen: [],
-                  buds: [],
-                  kief: [],
-                  bubblehash: [],
-                  oil: [],
-                  edibles: [],
-                  joints: [],
-                  blunts: [],
-                  moonrocks: [],
-                  dippedjoints: [],
-                  cannagars: [],
-                  kiefbox: 0,
-                  vacoven: 0,
-                  bubblebags: 0,
-                  browniemix: 0,
-                  stats: [],
-                  traits:[],
-                  terps:[],
                   v: 0
                 }
               } else {
-                  state.users[json.to].seeds.push(seed)
+                  state.users[json.to].gems.push(gem)
               }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent a ${seed.xp} xp ${seed.strain} to ${json.to}`
+              state.cs[`${json.block_num}:${from}`] = `${from} sent a ${gem.xp} xp ${gem.strain} to ${json.to}`
           } else {
-              state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that seed`
-          }
-        }
-    });
-
-    //checks for etherchest_give_diamond and allows users to send each other seeds
-    processor.on('give_emerald', function(json, from) {
-        var seed=''
-        if(json.to && json.to.length > 2){
-          try{
-              for (var i = 0;i < state.users[from].seeds.length; i++){
-                  if (json.seed){
-                    if(state.users[from].seeds[i].strain === json.seed){
-                      state.users[from].seeds[i].owner = json.to;
-                      seed=state.users[from].seeds.splice(i, 1)[0]
-                      break
-                    }
-                  } 
-              }
-          } catch (e) {}
-          if (seed) {
-              if (!state.users[json.to]) {
-                state.users[json.to] = {
-                  addrs: [],
-                  seeds: [seed],
-                  buds: [],
-                  pollen: [],
-                  breeder: "",
-                  farmer: farmer,
-                  alliance: "",
-                  friends: [],
-                  inv: [],
-                  seeds: [],
-                  pollen: [],
-                  buds: [],
-                  kief: [],
-                  bubblehash: [],
-                  oil: [],
-                  edibles: [],
-                  joints: [],
-                  blunts: [],
-                  moonrocks: [],
-                  dippedjoints: [],
-                  cannagars: [],
-                  kiefbox: 0,
-                  vacoven: 0,
-                  bubblebags: 0,
-                  browniemix: 0,
-                  stats: [],
-                  traits:[],
-                  terps:[],
-                  v: 0
-                }
-              } else {
-                  state.users[json.to].seeds.push(seed)
-              }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent a ${seed.xp} xp ${seed.strain} to ${json.to}`
-          } else {
-              state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that seed`
-          }
-        }
-    });
-
-    //checks for json etherchest_give_pollen and allows users to send each other pollen
-    processor.on('give_sapphire', function(json, from) {
-        var pollen = ''
-        if(json.to && json.to.length > 2){
-          try{
-              for (var i = 0;i < state.users[from].pollen.length; i++){
-                  if (json.qual){
-                    if(state.users[from].pollen[i].strain == json.pollen && state.users[from].pollen[i].xp == json.qual){
-                      state.users[from].pollen[i].owner = json.to;
-                      pollen = state.users[from].pollen.splice(i, 1)[0]
-                      break
-                    }
-                  } else if(state.users[from].pollen[i].strain === json.pollen){
-                    state.users[from].pollen[i].owner = json.to;
-                    pollen = state.users[from].pollen.splice(i, 1)[0]
-                    break
-                  }
-              }
-          } catch (e) {}
-          if (pollen) {
-              if (!state.users[json.to]) {
-                state.users[json.to] = {
-                  addrs: [],
-                  seeds: [],
-                  buds: [],
-                  pollen: [pollen],
-                  breeder: breeder,
-                  farmer: farmer,
-                  alliance: "",
-                  friends: [],
-                  inv: [],
-                  seeds: [],
-                  pollen: [],
-                  buds: [],
-                  kief: [],
-                  bubblehash: [],
-                  oil: [],
-                  edibles: [],
-                  joints: [],
-                  blunts: [],
-                  moonrocks: [],
-                  dippedjoints: [],
-                  cannagars: [],
-                  kiefbox: 0,
-                  vacoven: 0,
-                  bubblebags: 0,
-                  browniemix: 0,
-                  stats: [],
-                  traits:[],
-                  terps:[],
-                  v: 0
-                }
-              } else {
-                  state.users[json.to].pollen.push(pollen)
-                  
-              }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent ${pollen.strain} pollen to ${json.to}`
-          } else {
-              state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that pollen`
-          }
-        }
-    });
-
-    
-   //checks for json etherchest_give_buds and allows users to send each other buds
-    processor.on('give_ruby', function(json, from) {
-        var bud = ''
-        if(json.to && json.to.length > 2){
-          try{
-              for (var i = 0;i < state.users[from].buds.length; i++){
-                  if(state.users[from].buds[i].strain == json.buds){
-                    state.users[from].buds[i].owner = json.to;
-                    bud = state.users[from].buds.splice(i, 1)[0]
-                    break
-                  }
-              }
-          } catch (e) {}
-          if (bud) {
-              if (!state.users[json.to]) {
-                state.users[json.to] = {
-                  addrs: [],
-                  seeds: [],
-                  pollen: [],
-                  buds: [bud],
-                  breeder: breeder,
-                  farmer: farmer,
-                  alliance: "",
-                  friends: [],
-                  inv: [],
-                  seeds: [],
-                  pollen: [],
-                  buds: [],
-                  kief: [],
-                  bubblehash: [],
-                  oil: [],
-                  edibles: [],
-                  joints: [],
-                  blunts: [],
-                  moonrocks: [],
-                  dippedjoints: [],
-                  cannagars: [],
-                  kiefbox: 0,
-                  vacoven: 0,
-                  bubblebags: 0,
-                  browniemix: 0,
-                  stats: [],
-                  traits:[],
-                  terps:[],
-                  v: 0
-                }
-              } else {
-                  try {
-                  state.users[json.to].buds.push(bud)
-                } catch {'trying to send buds that dont belong to them'}
-              }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent ${bud.strain} buds to ${json.to}`
-          } else {
-              state.cs[`${json.block_num}:${from}`] = `${from} doesn't own those buds`
+              state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that gem`
           }
         }
     });
@@ -1198,7 +807,7 @@ processor.on('market_cancel_ruby', function(json, from) {
         state.cs[`${json.block_num}:${json.delegator}`] = `${vests} vested` 
         if (!state.users[json.delegator] && json.delegatee == username) state.users[json.delegator] = {
         addrs: [],
-        seeds: [],
+        gems: [],
         breeder: '',
         hero: 1,
         guild: "",
@@ -1246,22 +855,22 @@ processor.on('market_cancel_ruby', function(json, from) {
                 seller = json.memo.split(" ")[2] || ''
             if (
                 state.stats.prices.listed[want] == amount ||
-                // seeds 
-                want == 'diamond' && amount == state.stats.prices.listed.seeds.diamond || 
-                want == 'sapphire' && amount == state.stats.prices.listed.seeds.sapphire || 
-                want == 'emerald' && amount == state.stats.prices.listed.seeds.emerald || 
-                want == 'ruby' && amount == state.stats.prices.listed.seeds.ruby ||
-                // market seeds
-                want == 'marketseed' && amount == state.users[seller].seeds[0][type].price
+                // gems 
+                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
+                want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby ||
+                // market gems
+                want == 'marketgem' && amount == state.users[seller].gems[0][type].price
                 ) {
                     if (
-                         want == 'diamond' && amount == state.stats.prices.listed.seeds.diamond || 
-                         want == 'sapphire' && amount == state.stats.prices.listed.seeds.sapphire || 
-                         want == 'emerald' && amount == state.stats.prices.listed.seeds.emerald || 
-                         want == 'ruby' && amount == state.stats.prices.listed.seeds.ruby
+                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                         want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
+                         want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
+                         want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                         ) {
                         if (state.stats.supply.strains.indexOf(type) < 0){ type = state.stats.supply.strains[state.users.length % (state.stats.supply.strains.length -1)]}
-                        var seed = {
+                        var gem = {
                             stone: want,
                             owner: json.from,
                             originalStaker: username,
@@ -1272,7 +881,7 @@ processor.on('market_cancel_ruby', function(json, from) {
                         if (!state.users[json.to]) {
                           state.users[json.to] = {
                             addrs: [],
-                            gems: [seed],
+                            gems: [gem],
                             breeder: "",
                             hero: 1,
                             guild: "",
@@ -1280,42 +889,42 @@ processor.on('market_cancel_ruby', function(json, from) {
                             v: 0
                           }
                          }
-                         state.users[json.from].seeds.push(seed)
+                         state.users[json.from].gems.push(gem)
 
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${seed.strain}`
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${gem.strain}`
 
                 }  else {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but didn't meet the requirements code #1291`
                     }
                     if ( 
-                    want === 'marketseed' &&  amount === state.users[seller].seeds[0][type].price && state.users[seller].seeds[0][type].forSale === true
+                    want === 'marketgem' &&  amount === state.users[seller].gems[0][type].price && state.users[seller].gems[0][type].forSale === true
                     ) {
-                    if (want === 'marketseed') {
+                    if (want === 'marketgem') {
 
-                        state.users[from].seeds = {
+                        state.users[from].gems = {
                             type: {
                                 owner: from,
                                 forSale: false,
                                 price: 0,
                                 pastValue: [
-                                    state.users[seller].seeds[0][type].price,
+                                    state.users[seller].gems[0][type].price,
                                 ],
                                 datePosted: 0
                              }
                         }
 
-                        state.users[from].seeds.push(state.users[from].seeds)
+                        state.users[from].gems.push(state.users[from].gems)
 
-                        //state.users[from].seeds.push(seedPosted)
+                        //state.users[from].gems.push(gemPosted)
                         
-                      /*   if (seed) {
+                      /*   if (gem) {
                              if (!state.users[from]) {
                                state.users[from] = {
                                  addrs: [],
-                                 seeds: [seed],
+                                 gems: [gem],
                                  buds: [],
                                  pollen: [],
                                  breeder: from,
@@ -1323,7 +932,7 @@ processor.on('market_cancel_ruby', function(json, from) {
                                  alliance: "",
                                  friends: [],
                                  inv: [],
-                                 seeds: [],
+                                 gems: [],
                                  pollen: [],
                                  buds: [],
                                  kief: [],
@@ -1345,15 +954,15 @@ processor.on('market_cancel_ruby', function(json, from) {
                                  v: 0
                                }
                              } else {
-                                 state.users[from].seeds.push(seed)
+                                 state.users[from].gems.push(gem)
                              }
 
-                             state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} seed from ${seller}`
+                             state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} gem from ${seller}`
                          } else {
-                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a seed`
+                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a gem`
                          }*/
 
-                        delete state.users[seller].seeds[0][type];
+                        delete state.users[seller].gems[0][type];
                         
                         //pay etherchest
                         const c = parseInt(amount * 0.001)
@@ -1371,7 +980,7 @@ processor.on('market_cancel_ruby', function(json, from) {
             } else if (amount > 10000000) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase seeds/tools or managing land...please check wallet`
+                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems/tools or managing land...please check wallet`
             }
 
         } else if (json.from == username) {
@@ -1527,203 +1136,6 @@ var bot = {
     }
 }
 
-function whotopay() {
-    var a = {
-            a: [],
-            b: [],
-            c: [],
-            d: [],
-            e: [],
-            f: [],
-            g: [],
-            h: [],
-            i: [],
-            j: []
-        }, // 10 arrays for bennies
-        b = 0, // counter
-        c = 0, // counter
-        h = 1, // top value
-        r = {j:0,i:0,h:0,g:0,f:0,e:0,d:0,c:0,b:0,a:0}
-        o = [] // temp array
-    for (d in state.kudos) {
-        c = parseInt(c) + parseInt(state.kudos[d]) // total kudos
-        if (state.kudos[d] > h) { // top kudos(for sorting)
-            h = state.kudos[d]
-        };
-        if (state.kudos[d] == 1) { // for sorting , unshift 1 assuming most will be 1
-            o.unshift({
-                account: d,
-                weight: 1
-            })
-        } else {
-            if(!o.length){o.unshift({ //if nothing to sort, unshift into array
-                account: d,
-                weight: parseInt(state.kudos[d])
-            })}
-            for (var i = o.length - 1; i > 0; i--) { // insert sort
-                    if (state.kudos[d] <= o[i].weight) {
-                        o.splice(i, 0, {
-                            account: d,
-                            weight: parseInt(state.kudos[d])
-                        });
-                        break;
-                    } else if (state.kudos[d] > o[o.length-1].weight) {
-                        o.push({
-                            account: d,
-                            weight: parseInt(state.kudos[d])
-                        });
-                        break;
-                    }
-            }
-        }
-    }
-    if (o.length > (maxEx * 10)) {
-        b = (maxEx * 10)
-    } else {
-        b = o.length
-    }
-    while (b) { // assign bennies to posts, top kudos down
-        for (var fo in a) {
-            a[fo].push(o.pop());
-            b--
-            if(!b)break;
-        }
-        if(b){
-            for (var fr in r) {
-                a[fr].push(o.pop());
-                b--
-                if(!b)break;
-            }
-        }
-    }
-    state.kudos = {} //put back bennies over the max extentions limit
-        for (var i = 0; i < o.length; i++) {
-            state.kudos[o[i].account] = parseInt(o[i].weight)
-        }
-    for (var r in a) { //weight the 8 accounts in 10000
-        var u = 0,
-            q = 0
-        for (var i = 0; i < a[r].length; i++) {
-            u = parseInt(u) + parseInt(a[r][i].weight)
-        }
-        q = parseInt(10000/u)
-        for (var i = 0; i < a[r].length; i++) {
-            a[r][i].weight = parseInt(parseInt(a[r][i].weight) * q)
-        }
-    }
-    o = []
-    for (var i in a){
-        o.push(a[i])
-    }
-    console.log('payday:'+o)
-    return o
-}
-function sortExtentions(a, key) {
-    var b=[],c=[]
-    for(i=0;i<a.length;i++){
-        b.push(a[i][key])
-    }
-    b = b.sort()
-    while (c.length < a.length){
-      for(i=0;i<a.length;i++){
-        if(a[i][key] == b[0]){
-            c.push(a[i])
-            b.shift()
-        }
-      }
-    }
-    return c
-}
-
-function popWeather (loc){
-    return new Promise((resolve, reject) => {
-        fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${state.stats.env[loc].lat}&lon=${state.stats.env[loc].lon}&APPID=${wkey}`)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(r) {
-            var tmin=400,tmax=0,tave=0,precip=0,h=0,p=[],c=[],w={s:0,d:0},s=[],d=r.list[0].wind.deg
-            for(i=0;i<8;i++){
-                tave += parseInt(parseFloat(r.list[i].main.temp)*100)
-                if(r.list[i].main.temp > tmax){tmax = r.list[i].main.temp}
-                if(r.list[i].main.temp < tmin){tmin = r.list[i].main.temp}
-                h = r.list[i].main.humidity
-                c = parseInt(c + parseInt(r.list[i].clouds.all))
-                if(r.list[i].rain){
-                    precip = parseFloat(precip) + parseFloat(r.list[i].rain['3h'])
-                }
-                s = r.list[i].wind.speed
-            }
-            tave = parseFloat(tave/800).toFixed(1)
-            c = parseInt(c/8)
-            state.stats.env[loc].weather = {
-                high: tmax,
-                low: tmin,
-                avg: tave,
-                precip,
-                clouds: c,
-                humidity: h,
-                winds: s,
-                windd: d
-            }
-            resolve(loc)
-        }).catch(e=>{
-            reject(e)
-        })
-    })
-}
-
-
-function cloudy(per){
-    const range = parseInt(per/20)
-    switch(range){
-        case 4:
-            return 'cloudy skies'
-            break;
-        case 3:
-            return 'mostly cloudy skies'
-            break;
-        case 2:
-            return 'scattered clouds in the sky'
-            break;
-        case 1:
-            return 'mostly clear skies'
-            break;
-        default:
-            return 'clear skies'
-
-    }
-}
-function metWind(deg){
-    const range = parseInt((deg-22.5)/8)
-    switch(range){
-        case 7:
-            return 'North'
-            break;
-        case 6:
-            return 'Northwest'
-            break;
-        case 5:
-            return 'West'
-            break;
-        case 4:
-            return 'Southwest'
-            break;
-        case 3:
-            return 'South'
-            break;
-        case 2:
-            return 'Southeast'
-            break;
-        case 1:
-            return 'East'
-            break;
-        default:
-            return 'Northeast'
-
-    }
-}
-
 function listBens (bens){
     var text = `\n<h4>All etherchest Rewards go directly to our users!</h4>
                 \n
@@ -1733,61 +1145,4 @@ function listBens (bens){
         text = text + `* @${bens[i].account} with ${parseFloat(bens[i].weight/100).toFixed(2)}%\n`
     }
     return text
-}
-
-function sexing (){
-    var sexAtBirth = 'Not Sexed';
-
-    sex = Math.floor(Math.random() * 10) % 1.90;
-
-    if(sex >= 1){
-        sexAtBirth = "male";
-    } else{
-        sexAtBirth = "female";
-    }
-    return sexAtBirth
-}
-
-function daily(addr) {
-    var grown = false
-    if (state.land[addr]) {
-        for (var i = 0; i < state.land[addr].care.length; i++) {
-            if (state.land[addr].care[i][0] <= processor.getCurrentBlockNumber() - 28800) {
-                state.land[addr].care.splice(i,1)
-            } else if (state.land[addr].care[i][0] > processor.getCurrentBlockNumber() - 28800 && state.land[addr].care[i][1] == 'watered') {
-                if(!grown)state.land[addr].care[i].push('')
-                if (state.land[addr].substage < 7 && state.land[addr].stage > 0 && !grown) {
-                    if(!grown){
-                        state.land[addr].substage++;
-                        grown = true;
-                        kudo(state.land[addr].owner)
-                    } else {
-                        state.land[addr].aff.push([processor.getCurrentBlockNumber(), 'You watered too soon']);
-                    }
-                }
-                if (state.land[addr].substage == 7) {
-                    state.land[addr].substage = 0;
-                    state.land[addr].stage++
-                }
-                //added sexing
-                if (state.land[addr].stage == 2 && state.land[addr].substage == 0) state.land[addr].sex = sexing()//state.land.length % 1
-                
-                //afflictions
-                if (state.land[addr].stage == 100 && state.land[addr].substage == 0) {
-                    state.land[addr].aff.push([processor.getCurrentBlockNumber(), 'over']);
-                    state.land[addr].substage = 7
-                }
-                for (var j = 0; j < state.land[addr].aff.length; j++) {
-                    try {
-                    if (state.land[addr].aff[j][0] > processor.getCurrentBlockNumber() - 86400 && state.land[addr].aff[j][1] == 'over') {
-                        state.land[addr].substage--;
-                        break;
-                    }
-                } catch(e) {
-                    console.log('An affliction happened', e.message)
-                   }
-                }
-            }
-        }
-    }
 }
