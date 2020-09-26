@@ -109,6 +109,7 @@ module.exports = {
                "pastValue": "1 Ethereum"
             }
          ],
+         "ducats": 0,
          "hero": 1,
          "guild": "",
          "friends": []

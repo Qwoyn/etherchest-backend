@@ -842,59 +842,70 @@ processor.on('market_cancel_sale', function(json, from) {
     }
     });
 
-    processor.onOperation('transfer', function(json, from) {
-        var wrongTransaction = 'ec-refunds'
-        if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
-            const amount = parseInt(parseFloat(json.amount) * 1000)
-            var want = json.memo.split(" ")[0].toLowerCase(),
-                type = json.memo.split(" ")[1] || '',
-                seller = json.memo.split(" ")[2] || ''
-            if (
-                state.stats.prices.listed[want] == amount ||
-                // gems 
-                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
-                want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
-                want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby ||
-                // market gems
-                want == 'marketgem' && amount == state.users[seller].gems[0][type].price
-                ) {
-                    if (
-                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
-                         want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
-                         want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                         want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
-                        ) {
-                        if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
-                        var gem = {
+processor.onOperation('transfer', function(json, from) {
+    
+    var wrongTransaction = 'ec-refunds'
+    
+    if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
+        const amount = parseInt(parseFloat(json.amount) * 1000)
+        var want = json.memo.split(" ")[0].toLowerCase(),
+            type = json.memo.split(" ")[1] || ''//,
+            //seller = json.memo.split(" ")[2] || ''              <-----uncomment if needed for marketgems
+        if (
+            state.stats.prices.listed[want] == amount ||
+            // gems 
+            want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+            want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
+            want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
+            want == 'ruby' && amount == state.stats.prices.listed.gems.ruby //||
+            // market gems
+            //want == 'marketgem' && amount == state.users[seller].gems[0][type].price
+            ) {
+                if (
+                     want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                     want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
+                     want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
+                     want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
+                    ) 
+                    {
+                        //checks for the amount of gems available in the market and subtracts 1 from amount if gem exists
+                        if (state.stats.supply.gems.indexOf(type) < 0) { 
+                            type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]
+                        }
+
+                            //assign gem qualities
+                            var gem = {
                             stone: want,
                             owner: json.from,
-                            originalStaker: username,
                             price: 0,
                             forSale: false,
                             pastValue: amount
+                            }
+                            
+                            //if user does not exist in db create user and db entry
+                            if (!state.users[json.to]) {
+                            state.users[json.to] = {
+                                addrs: [],
+                                gems: [],
+                                ducats: 0,
+                                hero: 1,
+                                guild: "",
+                                friends: [],
+                                v: 0
+                            }
                         }
-                        if (!state.users[json.to]) {
-                          state.users[json.to] = {
-                            addrs: [],
-                            gems: [gem],
-                            breeder: "",
-                            hero: 1,
-                            guild: "",
-                            friends: [],
-                            v: 0
-                          }
-                         }
-                         state.users[json.from].gems.push(gem)
+                        
+                        //send gem to purchaser
+                        state.users[json.from].gems.push(gem)
 
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${gem.gems}`
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
 
-                }  else {
-                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but didn't meet the requirements code #1291`
-                    }
+                    } else {
+                    state.cs[`${json.block_num}:${from}`] = `${from} tried to buy a ${want} but didn't meet the requirements error code #901`
+                    }/*
                     if ( 
                     want === 'marketgem' &&  amount === state.users[seller].gems[0][type].price && state.users[seller].gems[0][type].forSale === true
                     ) {
@@ -956,7 +967,7 @@ processor.on('market_cancel_sale', function(json, from) {
                              state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} gem from ${seller}`
                          } else {
                              state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a gem`
-                         }*/
+                         }*//*
 
                         delete state.users[seller].gems[0][type];
                         
@@ -968,32 +979,33 @@ processor.on('market_cancel_sale', function(json, from) {
                         //pay seller
                         state.refund.push(['xfer', seller, amount * 0.999, 'You succesfully completed a purchase with' + seller + "|" + want])
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} succesfully completed a purchase with ${seller} | ${type}`
-                    }
-                 } 
-                else {
-                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-            }
-            } else if (from != 'ec-refunds' && amount > 10000000 || amount < 500000) {
-                state.bal.r += amount
-                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems/tools or managing land...please check wallet`
-            }
-
-        } else if (json.from == username) {
-            const amount = parseInt(parseFloat(json.amount) * 1000)
-            for (var i = 0; i < state.refund.length; i++) {
-                if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
-                    state.refund.splice(i, 1);
-                    state.bal.r -= amount;
-                    state.cs[`${json.block_num}:${json.to}`] = `${json.to} refunded successfully`
-                    break;
+                        }
+                    } 
+                    else {
+                    state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
+                    }*/
+                } else if (amount > 10000000 || amount < 4000) {
+                    state.bal.r += amount
+                    state.refund.push(['xfer', wrongTransaction, amount, json.from + ' tried to send a shitload or not enough...refund?'])
+                    state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems...please check wallet error code #984`
                 }
+
+    } else if (json.from == username) {
+        const amount = parseInt(parseFloat(json.amount) * 1000)
+        for (var i = 0; i < state.refund.length; i++) {
+            if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
+                state.refund.splice(i, 1);
+                state.bal.r -= amount;
+                state.cs[`${json.block_num}:${json.to}`] = `${json.to} refunded successfully`
+                break;
             }
         }
-    });
-    processor.onStreamingStart(function() {
-        console.log("At real time.")
-    });
+    }
+});
+
+processor.onStreamingStart(function() {
+    console.log("At real time.")
+});
 
     processor.start();
 
