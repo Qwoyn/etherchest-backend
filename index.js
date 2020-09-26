@@ -358,17 +358,6 @@ steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
   }
 });
 
-//assigns kudos to user. kudos determine who has properly cared for their plants and 
-//increments kudos accordingly
-function kudo(user) {
-    console.log('Kudos: ' + user)
-    if (!state.kudos[user]) {
-        state.kudos[user] = 1
-    } else {
-        state.kudos[user]++
-    }
-}
-
 /****ISSUE****/
 function startWith(hash) {
     if (hash) {
@@ -447,7 +436,6 @@ function startApp() {
                 state.refund.push(['xfer', 'etherchest', parseInt(4 * d), 'Funds'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
-                //state.refund.push(['xfer', 'etherchest-chest', state.bal.c, 'Warchest'])
                 state.bal.c = 0
                 state.refund.push(['power', username, state.bal.b, 'Power to the people!'])
             }
@@ -977,7 +965,7 @@ processor.on('market_cancel_sale', function(json, from) {
                 else {
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
             }
-            } else if (amount > 10000000) {
+            } else if (amount > 10000000 || amount < 500000) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems/tools or managing land...please check wallet`
