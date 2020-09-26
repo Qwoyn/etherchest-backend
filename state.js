@@ -51,7 +51,7 @@ module.exports = {
             "tc": 1,
             "counter": 0
          },
-         "stones": [
+         "gems": [
             "diamond",
             "sapphire",
             "emerald",
@@ -91,7 +91,7 @@ module.exports = {
          "traits": [
             "beta gem"
          ],
-         "planted": 41715396,
+         "staked": 41715396,
          "id": "a1"
       },
    },
@@ -100,7 +100,7 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "seeds": [
+         "gems": [
             {
                "stone": "diamond",
                "owner": "etherchest",
