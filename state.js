@@ -136,70 +136,41 @@ module.exports = {
       },
       "supply": {
          "land": {
-            "a": 293,
-            "ac": 127,
-            "b": 311,
-            "bc": 109,
-            "c": 307,
-            "cc": 113,
-            "d": 320,
-            "dc": 100,
-            "e": 314,
-            "ec": 106,
-            "f": 343,
-            "fc": 77,
-            "g": 0,
+            "a": 500,
+            "ac": 0,
+            "b": 500,
+            "bc": 0,
+            "c": 500,
+            "cc": 0,
+            "d": 500,
+            "dc": 0,
+            "e": 500,
+            "ec": 0,
+            "f": 500,
+            "fc": 0,
+            "g": 500,
             "gc": 0,
             "t": 420000,
             "tc": 1,
             "counter": 0
          },
-         "strains": [
-            "hk",
-            "afg",
-            "lkg",
-            "mis",
-            "lb",
-            "kbr",
-            "aca",
-            "swz",
-            "kmj",
-            "dp",
-            "mal",
-            "pam",
-            "cg",
-            "ach",
-            "tha",
-            "cht",
-            "sog"
-         ],
-         "terpines": [
-            "lemonene",
-            "Caryophyllene",
-            "Pinene",
-            "Myrcene",
-            "Ocimene",
-            "Terpinolene"
+         "stones": [
+            "diamond",
+            "sapphire",
+            "emerald",
+            "ruby"
          ]
       },
-      "gardeners": 144,
-      "alliances": [
+      "stakers": 1,
+      "guilds": [
          {
-            "name": "EtherCehst",
-            "founder": "qwoyn",
+            "name": "EtherChest",
+            "founder": "etherchest",
             "members": 1,
             "memberNames": [
-               "qwoyn"
+               "etherchest"
             ]
          },
-         {
-            "name": "Hashkings",
-            "founder": "qwoyn",
-            "members": 1,
-            "memberNames": [
-               "qwoyn"
-            ]
-         }
       ]
    },
    "bal": {
@@ -257,4 +228,5 @@ module.exports = {
       "steembeem": true
    },
    "cs": {},
+}
 }
