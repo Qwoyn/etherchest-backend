@@ -60,7 +60,7 @@ app.use(cors());
 /*plot info from state.js by plot number
             {
             "owner": "etherchest",
-            "strain": "",
+            "gems": "",
             "xp": 0,
             "care": [
                 [
@@ -101,7 +101,7 @@ app.get('/logs', (req, res, next) => {
         [
         {
             "owner": "etherchest",
-            "strain": "",
+            "gems": "",
             "xp": 0,
             "care": [
                 [
@@ -127,7 +127,7 @@ app.get('/logs', (req, res, next) => {
         },
         {
             "owner": "etherchest",
-            "strain": "hk",
+            "gems": "hk",
             "xp": 2250,
             "care": [
                 [
@@ -154,7 +154,7 @@ app.get('/logs', (req, res, next) => {
         },
         {
             "owner": "etherchest",
-            "strain": "mis",
+            "gems": "mis",
             "xp": 1,
             "care": [
                 [
@@ -274,14 +274,14 @@ app.get('/refunds', (req, res, next) => {
         ],
         "gems": [
             {
-                "strain": "kbr",
+                "gems": "kbr",
                 "xp": 2250,
                 "traits": [
                     "beta"
                 ]
             },
             {
-                "strain": "kbr",
+                "gems": "kbr",
                 "xp": 2250,
                 "traits": [
                     "beta"
@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47267500; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47268900; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47267500;
+const ago = ENV.ago || 47268900;
 const prefix = ENV.PREFIX || 'etherchest_beta_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -608,7 +608,7 @@ processor.on('market_cancel_sale', function(json, from) {
 
                         try{
                             for (var i = 0;i < state.users[from].friends.length; i++) {
-                                if(state.users[from].pollen[i].strain == json.friends) {
+                                if(state.users[from].pollen[i].gems == json.friends) {
                                     friends=state.users[from].friends.splice(i, 1)[0];
                                     break;
                                 }
@@ -687,9 +687,9 @@ processor.on('market_cancel_sale', function(json, from) {
         if (state.users[f]){if (state.users[f].v && state.users[f].v > 0) {
             state.users[f].v--
             let type = j.type || ''
-            if (state.stats.supply.strains.indexOf(type) < 0) type = state.stats.supply.strains[state.users.length % state.stats.supply.strains.length]
+            if (state.stats.supply.gemss.indexOf(type) < 0) type = state.stats.supply.gemss[state.users.length % state.stats.supply.gemss.length]
             var gem = {
-                strain: type,
+                gems: type,
                 xp: 50
             }
             state.users[f].gems.push(gem)
@@ -720,7 +720,7 @@ processor.on('market_cancel_sale', function(json, from) {
           try{
               for (var i = 0;i < state.users[from].gems.length; i++){
                   if (json.gem){
-                    if(state.users[from].gems[i].strain === json.gem){
+                    if(state.users[from].gems[i].gems === json.gem){
                       state.users[from].gems[i].owner = json.to;
                       gem=state.users[from].gems.splice(i, 1)[0]
                       break
@@ -742,7 +742,7 @@ processor.on('market_cancel_sale', function(json, from) {
               } else {
                   state.users[json.to].gems.push(gem)
               }
-              state.cs[`${json.block_num}:${from}`] = `${from} sent a ${gem.xp} xp ${gem.strain} to ${json.to}`
+              state.cs[`${json.block_num}:${from}`] = `${from} sent a ${gem.xp} xp ${gem.gems} to ${json.to}`
           } else {
               state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that gem`
           }
@@ -865,7 +865,7 @@ processor.on('market_cancel_sale', function(json, from) {
                          want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
                          want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                         ) {
-                        if (state.stats.supply.strains.indexOf(type) < 0){ type = state.stats.supply.strains[state.users.length % (state.stats.supply.strains.length -1)]}
+                        if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
                         var gem = {
                             stone: want,
                             owner: json.from,
@@ -890,7 +890,7 @@ processor.on('market_cancel_sale', function(json, from) {
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${gem.strain}`
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${gem.gems}`
 
                 }  else {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but didn't meet the requirements code #1291`
