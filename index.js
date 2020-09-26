@@ -446,7 +446,7 @@ function startApp() {
 //
 //===========================================
 //                                          |
-//         ****etherchest Market****         |
+//         ****etherchest Market****        |
 //                                          |
 //===========================================
 
@@ -518,6 +518,14 @@ processor.on('market_cancel_sale', function(json, from) {
 
 //---------------------End Market---------------------------------------------------------
 
+
+//----------------------------------------------------------------------------------------
+//
+//===========================================
+//                                          |
+//         ****etherchest profiles****      |
+//                                          |
+//===========================================
     
     //search for etherchest_breeder_name from user on blockchain since genesis
     //steemconnect link
@@ -965,7 +973,7 @@ processor.on('market_cancel_sale', function(json, from) {
                 else {
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
             }
-            } else if (from != ec-refunds && amount > 10000000 || amount < 500000) {
+            } else if (from != 'ec-refunds' && amount > 10000000 || amount < 500000) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems/tools or managing land...please check wallet`
