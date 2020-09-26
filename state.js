@@ -223,6 +223,7 @@ module.exports = {
          "guild": "",
          "friends": []
       },
+   },
       "news": {
          "a": [],
          "b": [],
@@ -241,5 +242,4 @@ module.exports = {
       "steembeem": true
       },
       "cs": {},
-   }
 }
