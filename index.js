@@ -749,7 +749,7 @@ processor.on('market_cancel_sale', function(json, from) {
         }
     });
 
-    //power up steem recieved from user minus cut
+    /*power up steem recieved from user minus cut
     processor.onOperation('transfer_to_vesting', function(json) {
         if (json.to == username && json.from == username) {
             const amount = parseInt(parseFloat(json.amount) * 1000)
@@ -763,7 +763,7 @@ processor.on('market_cancel_sale', function(json, from) {
                 }
             }
         }
-    });
+    });*/
 
     processor.onOperation('comment_options', function(json) {
         for(var i = 0;i<state.refund.length;i++){
