@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47323000; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47323800; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47323000;
+const ago = ENV.ago || 47323800;
 const prefix = ENV.PREFIX || 'etherchest_beta_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -903,7 +903,7 @@ processor.on('market_cancel_sale', function(json, from) {
 
             } else if (/*amount > 10000000 || amount < 500000*/amount > 5) {
                 state.bal.r += amount
-                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
+                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
             }
 
