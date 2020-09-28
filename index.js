@@ -765,7 +765,7 @@ processor.on('market_cancel_sale', function(json, from) {
         }
     });*/
 
-    processor.onOperation('comment_options', function(json) {
+    /*processor.onOperation('comment_options', function(json) {
         for(var i = 0;i<state.refund.length;i++){
             if(state.refund[i][0]=='ssign'){
                 if(state.refund[i][1][0][0]=='comment'){
@@ -775,9 +775,9 @@ processor.on('market_cancel_sale', function(json, from) {
                 }
             }
         }
-    });
+    });*/
 
-    processor.onOperation('vote', function(json) {
+    /*processor.onOperation('vote', function(json) {
         for(var i = 0;i<state.refund.length;i++){
             if(state.refund[i] && state.refund[i][0]=='sign'){
                 if(state.refund[i][1][0][0]=='vote'){
@@ -787,7 +787,7 @@ processor.on('market_cancel_sale', function(json, from) {
                 }
             }
         }
-    });
+    });*/
 
     //allows users to delegate for a mine
     processor.onOperation('delegate_vesting_shares', function(json, from) { 
