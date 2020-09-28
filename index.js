@@ -336,7 +336,7 @@ const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed
 var client = new hive.Client(clientURL);
 var processor;
 var recents = [];
-const transactor = steemtransact(client, hive, prefix);
+const transactor = steemtransact(client, steem, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
