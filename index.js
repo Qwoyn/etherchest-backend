@@ -1,5 +1,5 @@
 var steem = require('dsteem');
-var hivejs = require('@hiveio/hive-js');
+var steemjs = require('steem-js-patched');
 var steemState = require('./processor');
 var steemTransact = require('steem-transact');
 var fs = require('fs');
@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47321000 ; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47282000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47321000 ;
+const ago = ENV.ago || 47282000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -341,7 +341,7 @@ const transactor = steemTransact(client, steem, prefix);
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
 //to start the app.  this should prevent the app having to start from GENESIS BLOCK
-hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
+steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
   if (err){
     console.log(err)
     startWith(sh)
@@ -881,10 +881,6 @@ processor.onOperation('transfer', function(json, from) {
                             forSale: false,
                             pastValue: amount
                             }
-
-                            if(state.users[json.to]){
-                                state.users[json.from].gems.push(gem)
-                            } else
                             
                             //if user does not exist in db create user and db entry
                             if (!state.users[json.to]) {
@@ -898,6 +894,9 @@ processor.onOperation('transfer', function(json, from) {
                                 v: 0
                             }
                         }
+                        
+                        //send gem to purchaser
+                        state.users[json.from].gems.push(gem)
 
                         const c = parseInt(amount)
                         state.bal.c += c
@@ -1143,15 +1142,4 @@ var bot = {
             }
         );
     }
-}
-
-function listBens (bens){
-    var text = `\n<h4>All etherchest Rewards go directly to our users!</h4>
-                \n
-                \nThis post benefits:
-                \n`
-    for(i=0;i<bens.length;i++){
-        text = text + `* @${bens[i].account} with ${parseFloat(bens[i].weight/100).toFixed(2)}%\n`
-    }
-    return text
 }
