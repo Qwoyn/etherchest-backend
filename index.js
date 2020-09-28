@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47282000; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47319000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47282000;
+const ago = ENV.ago || 47319000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -881,6 +881,10 @@ processor.onOperation('transfer', function(json, from) {
                             forSale: false,
                             pastValue: amount
                             }
+
+                            if(state.users[json.to]){
+                                state.users[json.from].gems.push(gem)
+                            } else
                             
                             //if user does not exist in db create user and db entry
                             if (!state.users[json.to]) {
@@ -894,9 +898,6 @@ processor.onOperation('transfer', function(json, from) {
                                 v: 0
                             }
                         }
-                        
-                        //send gem to purchaser
-                        state.users[json.from].gems.push(gem)
 
                         const c = parseInt(amount)
                         state.bal.c += c
