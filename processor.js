@@ -1,4 +1,4 @@
-module.exports = function(client, hive, currentBlockNumber=1, blockComputeSpeed=100, prefix='etherchest_', mode='latest') {
+module.exports = function(client, hive, currentBlockNumber=1, blockComputeSpeed=1000, prefix='etherchest_', mode='latest') {
   var onCustomJsonOperation = {};  // Stores the function to be run for each operation id.
   var onOperation = {};
 
