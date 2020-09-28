@@ -1,7 +1,7 @@
 var hive = require('dhive');
 var hivejs = require('@hiveio/hive-js');
-var hiveState = require('./processor');
-var hiveTransact = require('hive-transact');
+var steemstate = require('./processor');
+var steemTransact = require('steem-transact');
 var fs = require('fs');
 const cors = require('cors');
 const express = require('express')
@@ -336,7 +336,7 @@ const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed
 var client = new hive.Client(clientURL);
 var processor;
 var recents = [];
-const transactor = hiveTransact(client, hive, prefix);
+const transactor = steemtransact(client, hive, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
@@ -388,7 +388,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = hiveState(client, hive, startingBlock, 10, prefix);
+    processor = steemstate(client, hive, startingBlock, 10, prefix);
 
 
     processor.onBlock(function(num, block) {
@@ -1010,7 +1010,7 @@ processor.onStreamingStart(function() {
 
     processor.start();
 
-    //var transactor = hiveTransact(client, hive, prefix);
+    //var transactor = steemtransact(client, hive, prefix);
     processor.on('return', function(json, from) {
         var index = state.users[from].addrs.indexOf(json.addr)
         if (index >= 0) {
