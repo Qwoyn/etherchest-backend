@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47319000; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47320000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47319000;
+const ago = ENV.ago || 47320000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
