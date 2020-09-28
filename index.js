@@ -1,5 +1,5 @@
 var steem = require('dsteem');
-var hivejs = require('hive-js');
+var hivejs = require('@hiveio/hive-js');
 var steemState = require('./processor');
 var steemTransact = require('steem-transact');
 var fs = require('fs');
