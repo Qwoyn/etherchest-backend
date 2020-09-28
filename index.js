@@ -866,35 +866,41 @@ processor.on('market_cancel_sale', function(json, from) {
                          want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
+                        
+                        //assign gem qualities
                         var gem = {
                             stone: want,
                             owner: json.from,
-                            originalStaker: username,
                             price: 0,
                             forSale: false,
                             pastValue: amount
+                            }
+
+                            if(state.users[json.from]){
+                                state.users[json.from].gems.push(gem)
+                            } else
+                            
+                            //if user does not exist in db create user and db entry
+                            if (!state.users[json.from]) {
+                            state.users[json.from] = {
+                                addrs: [],
+                                gems: [],
+                                ducats: 0,
+                                hero: 1,
+                                guild: "",
+                                friends: [],
+                                v: 0
+                            }
                         }
-                        if (!state.users[json.to]) {
-                          state.users[json.to] = {
-                            addrs: [],
-                            gems: [gem],
-                            breeder: "",
-                            hero: 1,
-                            guild: "",
-                            friends: [],
-                            v: 0
-                          }
-                         }
-                         state.users[json.from].gems.push(gem)
 
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${gem.gems}`
+                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
 
                 }  else {
-                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but didn't meet the requirements code #1291`
-                    }
+                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems user probably doesnt exist #902`
+                    }/*
                     if ( 
                     want === 'marketgem' &&  amount === state.users[seller].gems[0][type].price && state.users[seller].gems[0][type].forSale === true
                     ) {
@@ -956,7 +962,7 @@ processor.on('market_cancel_sale', function(json, from) {
                              state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} gem from ${seller}`
                          } else {
                              state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a gem`
-                         }*/
+                         }
 
                         delete state.users[seller].gems[0][type];
                         
@@ -972,7 +978,7 @@ processor.on('market_cancel_sale', function(json, from) {
                  } 
                 else {
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-            }
+            }*/
             } else if (/*amount > 10000000 || amount < 500000*/amount > 0) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
