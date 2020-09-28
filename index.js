@@ -331,8 +331,8 @@ const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
 const ago = ENV.ago || 47336250;
-const prefix = ENV.PREFIX || 'etherchest_beta_'; // part of custom json visible on the blockchain during watering etc..
-const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
+const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
+const clientURL = ENV.APIURL || 'https://api.hivekings.com' // can be changed to another node
 var client = new steem.Client(clientURL);
 var processor;
 var recents = [];
