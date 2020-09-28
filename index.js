@@ -1,4 +1,4 @@
-var hive = require('dhive');
+var hive = require('@hiveio/dhive');
 var hivejs = require('@hiveio/hive-js');
 var steemstate = require('./processor');
 var steemTransact = require('steem-transact');
@@ -388,7 +388,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = steemstate(client, hive, startingBlock, 10, prefix);
+    processor = steemstate(client, steem, startingBlock, 10, prefix);
 
 
     processor.onBlock(function(num, block) {
