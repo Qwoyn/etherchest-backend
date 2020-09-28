@@ -540,10 +540,10 @@ processor.on('market_cancel_sale', function(json, from) {
                     state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
                 } 
             } catch {
-                (console.log(from + ' tried to change their breeder name to ' + profileName + ' but an error occured'))
+                (console.log(from + ' tried to change their profile name to ' + profileName + ' but an error occured'))
             }
         
-        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${profileName}`
+        state.cs[`${json.block_num}:${from}`] = `${from} changed their profile name to ${profileName}`
     });
 
     //search for etherchest_farmer_type from user on blockchain since genesis
