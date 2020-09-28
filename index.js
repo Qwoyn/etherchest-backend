@@ -429,7 +429,7 @@ function startApp() {
               }
             }
         }
-        if (num % 2 === 0) {
+        if (num % 100 === 0) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
