@@ -1,7 +1,7 @@
 var hive = require('@hiveio/dhive');
 var hivejs = require('@hiveio/hive-js');
-var steemstate = require('./processor');
-var steemTransact = require('steem-transact');
+var hivestate = require('./processor');
+var hivetransact = require('./hive-transact');
 var fs = require('fs');
 const cors = require('cors');
 const express = require('express')
@@ -326,17 +326,17 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47320000; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47320200; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = hive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47320000;
+const ago = ENV.ago || 47320200;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new hive.Client(clientURL);
 var processor;
 var recents = [];
-const transactor = steemtransact(client, steem, prefix);
+const transactor = hivetransact(client, steem, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
@@ -388,7 +388,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = steemstate(client, steem, startingBlock, 10, prefix);
+    processor = hivestate(client, hive, startingBlock, 10, prefix);
 
 
     processor.onBlock(function(num, block) {
