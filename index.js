@@ -847,8 +847,7 @@ processor.on('market_cancel_sale', function(json, from) {
         if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
             const amount = parseInt(parseFloat(json.amount) * 1000)
             var want = json.memo.split(" ")[0].toLowerCase(),
-                type = json.memo.split(" ")[1] || '',
-                seller = json.memo.split(" ")[2] || ''
+                type = json.memo.split(" ")[1] || ''
             if (
                 state.stats.prices.listed[want] == amount ||
                 // gems 
