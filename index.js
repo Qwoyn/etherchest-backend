@@ -715,22 +715,23 @@ processor.on('market_cancel_sale', function(json, from) {
 
     //checks for etherchest_give_diamond and allows users to send each other gems
     processor.on('give_gem', function(json, from) {
-        var gem=''
-        if(json.to && json.to.length > 2){
+        var gem= json.gem
+        var newOwner= json.newOwner
+        if(json.from && json.from.length > 2){
           try{
               for (var i = 0;i < state.users[from].gems.length; i++){
                   if (json.gem){
                     if(state.users[from].gems[i].gems === json.gem){
-                      state.users[from].gems[i].owner = json.to;
+                      state.users[newOwner].gems[i].owner = json.newOwner;
                       gem=state.users[from].gems.splice(i, 1)[0]
                       break
                     }
                   } 
               }
           } catch (e) {}
-          if (gem) {
-              if (!state.users[json.to]) {
-                state.users[json.to] = {
+          if (json.gem) {
+              if (!state.users[json.newOwner]) {
+                state.users[json.newOwner] = {
                   addrs: [],
                   gems: [gem],
                   hero: 1,
@@ -740,7 +741,7 @@ processor.on('market_cancel_sale', function(json, from) {
                   v: 0
                 }
               } else {
-                  state.users[json.to].gems.push(gem)
+                  state.users[json.newOwner].gems.push(gem)
               }
               state.cs[`${json.block_num}:${from}`] = `${from} sent a ${gem.xp} xp ${gem.gems} to ${json.to}`
           } else {
