@@ -1,7 +1,7 @@
 {
   "name": "etherchest-api",
-  "version": "0.2.3",
-  "description": "EtherChest Ecosystem API",
+  "version": "0.3.6",
+  "description": "EtheChest Ecosystem API",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,17 +9,16 @@
   },
   "keywords": [
     "hive",
-    "etherchest"
+    "hashkings"
   ],
-  "author": "Daniel Pittman",
+  "author": "qwoyn",
   "license": "MIT",
   "dependencies": {
-    "@hiveio/dhive": "^0.14.1",
-    "@hiveio/hive-js": "^0.8.4",
     "cors": "^2.8.5",
+    "dsteem": "^0.11.2",
     "express": "^4.16.4",
     "ipfs-http-client": "^42.0.0-pre.2",
-    "steem-state": "1.3.2",
+    "@hiveio/hive-js": "^0.8.4",
     "steem-transact": "^1.0.2"
   }
 }
