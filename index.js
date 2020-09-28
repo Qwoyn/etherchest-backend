@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47323800; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47324400; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47323800;
+const ago = ENV.ago || 47324400;
 const prefix = ENV.PREFIX || 'etherchest_beta_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -957,7 +957,7 @@ var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
-            amount: `${float} HIVE`,
+            amount: `${float} STEEM`,
             from: username,
             to: toa,
             memo: memo
@@ -1018,7 +1018,7 @@ var bot = {
             {
                 from: username,
                 to: toa,
-                amount: `${parseFloat(amount/1000).toFixed(3)} HIVE`,
+                amount: `${parseFloat(amount/1000).toFixed(3)} STEEM`,
             },
         ];
         client.broadcast.sendOperations([op], key).then(
