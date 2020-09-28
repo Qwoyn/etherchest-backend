@@ -855,9 +855,9 @@ processor.on('market_cancel_sale', function(json, from) {
                 want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
                 want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby ||
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby //||
                 // market gems
-                want == 'marketgem' && amount == state.users[seller].gems[0][type].price
+                //want == 'marketgem' && amount == state.users[seller].gems[0][type].price <--- need for user market
                 ) {
                     if (
                          want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
@@ -899,90 +899,13 @@ processor.on('market_cancel_sale', function(json, from) {
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
 
                 }  else {
-                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems user probably doesnt exist #902`
-                    }/*
-                    if ( 
-                    want === 'marketgem' &&  amount === state.users[seller].gems[0][type].price && state.users[seller].gems[0][type].forSale === true
-                    ) {
-                    if (want === 'marketgem') {
-
-                        state.users[from].gems = {
-                            type: {
-                                owner: from,
-                                forSale: false,
-                                price: 0,
-                                pastValue: [
-                                    state.users[seller].gems[0][type].price,
-                                ],
-                                datePosted: 0
-                             }
-                        }
-
-                        state.users[from].gems.push(state.users[from].gems)
-
-                        //state.users[from].gems.push(gemPosted)
-                        
-                      /*   if (gem) {
-                             if (!state.users[from]) {
-                               state.users[from] = {
-                                 addrs: [],
-                                 gems: [gem],
-                                 buds: [],
-                                 pollen: [],
-                                 breeder: from,
-                                 farmer: 1,
-                                 alliance: "",
-                                 friends: [],
-                                 inv: [],
-                                 gems: [],
-                                 pollen: [],
-                                 buds: [],
-                                 kief: [],
-                                 bubblehash: [],
-                                 oil: [],
-                                 edibles: [],
-                                 joints: [],
-                                 blunts: [],
-                                 moonrocks: [],
-                                 dippedjoints: [],
-                                 cannagars: [],
-                                 kiefbox: 0,
-                                 vacoven: 0,
-                                 bubblebags: 0,
-                                 browniemix: 0,
-                                 stats: [],
-                                 traits:[],
-                                 terps:[],
-                                 v: 0
-                               }
-                             } else {
-                                 state.users[from].gems.push(gem)
-                             }
-
-                             state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} gem from ${seller}`
-                         } else {
-                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a gem`
-                         }
-
-                        delete state.users[seller].gems[0][type];
-                        
-                        //pay etherchest
-                        const c = parseInt(amount * 0.001)
-                        state.bal.c += c
-                        state.bal.b += 0
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased ${want} from ${seller}`
-                        //pay seller
-                        state.refund.push(['xfer', seller, amount * 0.999, 'You succesfully completed a purchase with' + seller + "|" + want])
-                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} succesfully completed a purchase with ${seller} | ${type}`
+                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but user probably doesnt exist #902`
                     }
-                 } 
-                else {
-                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-            }*/
-            } else if (/*amount > 10000000 || amount < 500000*/amount > 0) {
+
+            } else if (/*amount > 10000000 || amount < 500000*/amount > 5) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems...please check wallet`
+                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
             }
 
         } else if (json.from == username) {
