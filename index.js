@@ -973,10 +973,10 @@ processor.on('market_cancel_sale', function(json, from) {
                 else {
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
             }
-            } else if (from != 'ec-refunds' && amount > 10000000 || amount < 500000) {
+            } else if (/*amount > 10000000 || amount < 500000*/amount > 0) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent a weird transfer...refund?'])
-                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems/tools or managing land...please check wallet`
+                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent a weird transfer trying to purchase gems...please check wallet`
             }
 
         } else if (json.from == username) {
