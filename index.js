@@ -1,7 +1,7 @@
-var steem = require('dsteem');
+var hive = require('dhive');
 var hivejs = require('@hiveio/hive-js');
-var steemState = require('./processor');
-var steemTransact = require('steem-transact');
+var hiveState = require('./processor');
+var hiveTransact = require('hive-transact');
 var fs = require('fs');
 const cors = require('cors');
 const express = require('express')
@@ -52,7 +52,7 @@ const init = require('./state');
 const app = express();
 const port = ENV.PORT || 3000;
 const wkey = ENV.wkey;
-const skey = steem.PrivateKey.from(ENV.skey);
+const skey = hive.PrivateKey.from(ENV.skey);
 const streamname = ENV.streamname;
 
 app.use(cors());
@@ -328,15 +328,15 @@ app.listen(port, () => console.log(`etherchest token API listening on port ${por
 var state;
 var startingBlock = ENV.STARTINGBLOCK || 47320000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
-const key = steem.PrivateKey.from(ENV.KEY); //active key for account
+const key = hive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
 const ago = ENV.ago || 47320000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
-var client = new steem.Client(clientURL);
+var client = new hive.Client(clientURL);
 var processor;
 var recents = [];
-const transactor = steemTransact(client, steem, prefix);
+const transactor = hiveTransact(client, hive, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
@@ -388,7 +388,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = steemState(client, steem, startingBlock, 10, prefix);
+    processor = hiveState(client, hive, startingBlock, 10, prefix);
 
 
     processor.onBlock(function(num, block) {
@@ -452,7 +452,7 @@ function startApp() {
 
 
 //---------posting sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_gem&json=%7B%22price%22%3A5000,%22gemPosted%22%3A%5B%22mis%22%5D%7D
+// https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_gem&json=%7B%22price%22%3A5000,%22gemPosted%22%3A%5B%22mis%22%5D%7D
 processor.on('market_post_gem', function(json, from) {
     let postedgem = json.gemPosted,
         gemnames = ''
@@ -481,11 +481,11 @@ processor.on('market_post_gem', function(json, from) {
             state.cs[`${json.block_num}:${from}`] = `${from} can't post what is not theirs`
         }
 
-    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.gemPosted} gem for sale for ${json.price / 1000} STEEM`
+    state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.gemPosted} gem for sale for ${json.price / 1000} hive`
 });
 
 //---------cancel sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_gem&json=%7B%22gemToCancel%22%3A%5B%22mis%22%5D%7D
+// https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_gem&json=%7B%22gemToCancel%22%3A%5B%22mis%22%5D%7D
 processor.on('market_cancel_sale', function(json, from) {
     let cancelgem = json.gemToCancel,
         gemnames = ''
@@ -528,8 +528,8 @@ processor.on('market_cancel_sale', function(json, from) {
 //===========================================
     
     //search for etherchest_breeder_name from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
     processor.on('staker_name', function(json, from) {
         let breeder = json.breeder,
             breederName = ''
@@ -547,8 +547,8 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     //search for etherchest_farmer_type from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
     processor.on('hero_type', function(json, from) {
         let farmer = json.farmer,
             farmerType = 1
@@ -567,8 +567,8 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     //search for etherchest_add_friend from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
     processor.on('add_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -595,8 +595,8 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     //search for etherchest_remove_friend from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('remove_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -625,8 +625,8 @@ processor.on('market_cancel_sale', function(json, from) {
 
     //****ISSUE****//
     //search for etherchest_join_alliance from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
    processor.on('join_guild', function(json, from) {
         let alliance = json.alliance,
             allianceName = ''
@@ -661,8 +661,8 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     //search for etherchest_alliance from user on blockchain since genesis
-    //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //hiveconnect link
+    //https://beta.hiveconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('create_guild', function(json, from) {
         let newAlliance = json.newAlliance,
             newAllianceName = ''
@@ -749,7 +749,7 @@ processor.on('market_cancel_sale', function(json, from) {
         }
     });
 
-    //power up steem recieved from user minus cut
+    //power up hive recieved from user minus cut
     processor.onOperation('transfer_to_vesting', function(json) {
         if (json.to == username && json.from == username) {
             const amount = parseInt(parseFloat(json.amount) * 1000)
@@ -967,7 +967,7 @@ processor.onOperation('transfer', function(json, from) {
 
                              state.cs[`${json.block_num}:${from}`] = `${from} purchased a ${type} gem from ${seller}`
                          } else {
-                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough STEEM to purchase a gem`
+                             state.cs[`${json.block_num}:${from}`] = `${from} doesn't have enough hive to purchase a gem`
                          }*//*
 
                         delete state.users[seller].gems[0][type];
@@ -1010,7 +1010,7 @@ processor.onStreamingStart(function() {
 
     processor.start();
 
-    //var transactor = steemTransact(client, steem, prefix);
+    //var transactor = hiveTransact(client, hive, prefix);
     processor.on('return', function(json, from) {
         var index = state.users[from].addrs.indexOf(json.addr)
         if (index >= 0) {
@@ -1060,7 +1060,7 @@ var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
-            amount: `${float} STEEM`,
+            amount: `${float} hive`,
             from: username,
             to: toa,
             memo: memo
@@ -1121,7 +1121,7 @@ var bot = {
             {
                 from: username,
                 to: toa,
-                amount: `${parseFloat(amount/1000).toFixed(3)} STEEM`,
+                amount: `${parseFloat(amount/1000).toFixed(3)} hive`,
             },
         ];
         client.broadcast.sendOperations([op], key).then(
