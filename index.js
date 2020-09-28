@@ -452,8 +452,8 @@ function startApp() {
 
 
 //---------posting sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_gem&json=%7B%22price%22%3A5000,%22gemPosted%22%3A%5B%22mis%22%5D%7D
-processor.on('market_post_gem', function(json, from) {
+// https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_post_gem&json=%7B%22price%22%3A5000,%22gemPosted%22%3A%5B%22mis%22%5D%7D
+/*processor.on('market_post_gem', function(json, from) {
     let postedgem = json.gemPosted,
         gemnames = ''
 
@@ -467,7 +467,7 @@ processor.on('market_post_gem', function(json, from) {
                     price:  json.price,
                     posted: json.block_num
                 }
-                state.users[from].gems[0][gemnames].push(postedToMarket);*/
+                state.users[from].gems[0][gemnames].push(postedToMarket);*//*
 
                 // set price and when it was posted
                 state.users[from].gems[0][gemnames].price = json.price;
@@ -482,11 +482,11 @@ processor.on('market_post_gem', function(json, from) {
         }
 
     state.cs[`${json.block_num}:${from}`] = `${from} succesfully posted a ${json.gemPosted} gem for sale for ${json.price / 1000} STEEM`
-});
+});*/
 
 //---------cancel sales-----------//
-// https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_gem&json=%7B%22gemToCancel%22%3A%5B%22mis%22%5D%7D
-processor.on('market_cancel_sale', function(json, from) {
+// https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_market_cancel_gem&json=%7B%22gemToCancel%22%3A%5B%22mis%22%5D%7D
+/*processor.on('market_cancel_sale', function(json, from) {
     let cancelgem = json.gemToCancel,
         gemnames = ''
 
@@ -510,7 +510,7 @@ processor.on('market_cancel_sale', function(json, from) {
         }
 
     state.cs[`${json.block_num}:${from}`] = `${from} succesfully canceled a ${json.gemToCancel} gem sale.`
-});
+});*/
 
 
 //--------purchasing----------//
@@ -527,10 +527,10 @@ processor.on('market_cancel_sale', function(json, from) {
 //                                          |
 //===========================================
     
-    //search for etherchest_breeder_name from user on blockchain since genesis
+    //search for etherchest_profile_name from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_profile_name&json=%7B%22profile%22%3A%5B%22DevTeam%22%5D%7D
-    processor.on('profile_name', function(json, from) {
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_profile_name&json=%7B%22profile%22%3A%5B%22DevTeam%22%5D%7D
+   /* processor.on('profile_name', function(json, from) {
         let profile = json.profile,
             profileName = ''
             try {
@@ -548,27 +548,26 @@ processor.on('market_cancel_sale', function(json, from) {
 
     //search for etherchest_farmer_type from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_farmer_type&json=%7B%22breeder%22%3A%5B%22TYPE%22%5D%7D
     processor.on('hero_type', function(json, from) {
-        let farmer = json.farmer,
-            farmerType = 1
+        let hero = json.hero,
+            heroType = 1
             try {
                 for (var i = 0; i < 1; i++) {
-                        state.users[from].farmer = farmer[i];
-                        farmerType += farmer[i]
-                    state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
+                        state.users[from].hero = hero[i];
+                        heroType += hero[i]
+                    state.cs[`${json.block_num}:${from}`] = `${from} tried to change another users hero type.... blacklist?`
                 }
              } catch {
-            (console.log(from + ' tried to change their farmyer type to ' + farmerType + ' but an error occured'))
+            (console.log(from + ' changed their hero type to ' + heroType + ' but an error occured'))
         }
-        //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'changed_farmer_type']);
 
-        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${farmerType}`
-    });
+        state.cs[`${json.block_num}:${from}`] = `${from} changed their hero type to ${heroType}`
+    });*/
 
     //search for etherchest_add_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
+   /* //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_add_friend&json=%7B%22friend%22%3A%5B%22jonyoudyer%22%5D%7D
     processor.on('add_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -592,11 +591,11 @@ processor.on('market_cancel_sale', function(json, from) {
         }
 
         state.cs[`${json.block_num}:${from}`] = `${from} added ${friendName} as a friend`
-    });
+    });*/
 
     //search for etherchest_remove_friend from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    /*//https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('remove_friend', function(json, from) {
         let friend = json.friend,
             friendName = ''
@@ -621,13 +620,13 @@ processor.on('market_cancel_sale', function(json, from) {
                 (console.log(from + ' tried to remove ' + friendName + ' as a friend but an error occured'))    }
 
         state.cs[`${json.block_num}:${from}`] = `${from} removed ${friendName} as a friend`
-    });
+    });*/
 
     //****ISSUE****//
     //search for etherchest_join_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
-   processor.on('join_guild', function(json, from) {
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+   /*processor.on('join_guild', function(json, from) {
         let alliance = json.alliance,
             allianceName = ''
             try {
@@ -662,7 +661,7 @@ processor.on('market_cancel_sale', function(json, from) {
 
     //search for etherchest_alliance from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
     processor.on('create_guild', function(json, from) {
         let newAlliance = json.newAlliance,
             newAllianceName = ''
@@ -680,7 +679,7 @@ processor.on('market_cancel_sale', function(json, from) {
             state.cs[`${json.block_num}:${from}`] = `${from} can't create an alliance`
         }
         state.cs[`${json.block_num}:${from}`] = `${from} created alliance named ${newAllianceName}`
-    });
+    });*/
 
     processor.on('redeem', function(j, f) {
         state.cs[`${j.block_num}:${f}`] = `Redeem Op:${f} -> ${j}`
@@ -697,8 +696,8 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     processor.on('adjust', function(json, from) {
-        if (from == username && json.dust > 1) state.stats.dust = json.dust
-        if (from == username && json.time > 1) state.stats.time = json.time
+        if (from == 'etherchest' && json.dust > 1) state.stats.dust = json.dust
+        if (from == 'etherchest' && json.time > 1) state.stats.time = json.time
     });
 
     processor.on('report', function(json, from) {
@@ -714,7 +713,7 @@ processor.on('market_cancel_sale', function(json, from) {
     });
 
     //checks for etherchest_give_diamond and allows users to send each other gems
-    processor.on('give_gem', function(json, from) {
+    /*processor.on('give_gem', function(json, from) {
         var gem= json.gem
         var newOwner= json.newOwner
         if(json.from && json.from.length > 2){
@@ -748,7 +747,7 @@ processor.on('market_cancel_sale', function(json, from) {
               state.cs[`${json.block_num}:${from}`] = `${from} doesn't own that gem`
           }
         }
-    });
+    });*/
 
     /*power up steem recieved from user minus cut
     processor.onOperation('transfer_to_vesting', function(json) {
@@ -791,7 +790,7 @@ processor.on('market_cancel_sale', function(json, from) {
     });*/
 
     //allows users to delegate for a mine
-    processor.onOperation('delegate_vesting_shares', function(json, from) { 
+    /*processor.onOperation('delegate_vesting_shares', function(json, from) { 
     const vests = parseInt(parseFloat(json.vesting_shares) * 1000000)
     var record = ''
     if(json.delegatee == username){
@@ -840,7 +839,7 @@ processor.on('market_cancel_sale', function(json, from) {
             used
         })
     }
-    });
+    });*/
 
     processor.onOperation('transfer', function(json, from) {
         var wrongTransaction = 'ec-refunds'
@@ -955,7 +954,8 @@ function ipfsSaveState(blocknum, hashable) {
         }
     })
 };
-var bot = {
+
+/*var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
@@ -1042,4 +1042,4 @@ var bot = {
             }
         );
     }
-}
+}*/
