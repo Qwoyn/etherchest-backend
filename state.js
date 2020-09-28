@@ -24,7 +24,7 @@ module.exports = {
                "diamond": 5000,
                "sapphire": 5000,
                "emerald": 5000,
-               "ruby": 10000
+               "ruby": 5000
             },
          },
          "purchase": {

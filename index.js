@@ -883,7 +883,7 @@ processor.on('market_cancel_sale', function(json, from) {
                             if (!state.users[json.from]) {
                             state.users[json.from] = {
                                 addrs: [],
-                                gems: [],
+                                gems: [gem],
                                 ducats: 0,
                                 hero: 1,
                                 guild: "",
