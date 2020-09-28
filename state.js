@@ -3,7 +3,7 @@ module.exports = {
       {
          "delegator": "etherchest",
          "vests": 0,
-         "availible": 2,
+         "availible": 0,
          "used": 2
       },
    ],
@@ -12,7 +12,7 @@ module.exports = {
       "bu": "QmRGhkgH9XCUuUP8irFEpA9TSTvDVDbwKDqzEfkKc4CJjD",
       "bi": 34160000,
       "prices": {
-         "listed": {
+         "listed": { 
             "a": 20000,
             "b": 20000,
             "c": 20000,
@@ -26,6 +26,20 @@ module.exports = {
                "emerald": 5000,
                "ruby": 5000
             },
+            "weapons": {
+               "sword" : 1,
+               "dagger": 1,
+               "bow": 1,
+            },
+            "armor": {
+               "shield": 1,
+               "chestarmor": 1,
+               "leatherboots": 1,
+            },
+            "potions": {
+               "healing": 1,
+               "poison": 1,
+            }
          },
          "purchase": {
             "land": 19500
@@ -33,8 +47,8 @@ module.exports = {
       },
       "supply": {
          "land": {
-            "a": 500,
-            "ac": 0,
+            "a": 499,
+            "ac": 1,
             "b": 500,
             "bc": 0,
             "c": 500,
@@ -58,7 +72,7 @@ module.exports = {
             "ruby"
          ]
       },
-      "stakers": 1,
+      "miners": 1,
       "guilds": [
          {
             "name": "EtherChest",
@@ -83,15 +97,15 @@ module.exports = {
    "land": {
       "a1": {
          "owner": "etherchest",
-         "mineType": "diamond",
+         "mineType": "Iron Mine",
          "care": [],
          "aff": [],
          "stage": 1,
          "substage": 1,
          "traits": [
-            "beta gem"
+            "beta mine"
          ],
-         "staked": 41715396,
+         "value": 5000,
          "id": "a1"
       },
    },
@@ -106,11 +120,13 @@ module.exports = {
                "owner": "etherchest",
                "price": 0,
                "forSale": false,
-               "pastValue": "1 Ethereum"
+               "pastValue": 2048000,
             }
          ],
+         "ducats" : 0,
+         "profile": [],
          "hero": 1,
-         "guild": "",
+         "guild": "etherchest",
          "friends": []
       },
    },

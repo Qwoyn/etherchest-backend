@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47324400; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47336250; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47324400;
+const ago = ENV.ago || 47336250;
 const prefix = ENV.PREFIX || 'etherchest_beta_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.openhive.network' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -529,21 +529,21 @@ processor.on('market_cancel_sale', function(json, from) {
     
     //search for etherchest_breeder_name from user on blockchain since genesis
     //steemconnect link
-    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_breeder_name&json=%7B%22breeder%22%3A%5B%22Willie%22%5D%7D
-    processor.on('staker_name', function(json, from) {
-        let breeder = json.breeder,
-            breederName = ''
+    //https://beta.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22etherchest%22%5D&id=etherchest_profile_name&json=%7B%22profile%22%3A%5B%22DevTeam%22%5D%7D
+    processor.on('profile_name', function(json, from) {
+        let profile = json.profile,
+            profileName = ''
             try {
                 for (var i = 0; i < 1; i++) {
-                        state.users[from].breeder = breeder[i];
-                        breederName += `${breeder[i]}`
+                        state.users[from].profile = profile[i];
+                        profileName += `${profile[i]}`
                     state.cs[`${json.block_num}:${from}`] = `${from} can't change another users name`
                 } 
             } catch {
-                (console.log(from + ' tried to change their breeder name to ' + breederName + ' but an error occured'))
+                (console.log(from + ' tried to change their breeder name to ' + profileName + ' but an error occured'))
             }
         
-        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${breederName}`
+        state.cs[`${json.block_num}:${from}`] = `${from} changed their breeder name to ${profileName}`
     });
 
     //search for etherchest_farmer_type from user on blockchain since genesis
