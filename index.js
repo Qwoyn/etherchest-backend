@@ -324,7 +324,7 @@ app.get('/delegation/:user', (req, res, next) => {
     res.send(JSON.stringify(op, null, 3))
 });
 
-app.listen(port, () => console.log(`etherchest token API listening on port ${port}!`))
+app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
 var startingBlock = ENV.STARTINGBLOCK || 47324400; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
@@ -392,6 +392,7 @@ function startApp() {
 
 
     processor.onBlock(function(num, block) {
+        var ethVault = 'ec-vault'
         if (num % 125 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 60) {
             if (state.refund[0].length == 4) {
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
@@ -433,7 +434,7 @@ function startApp() {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
-                state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                state.refund.push(['xfer', ethVault, parseInt(4 * d), 'To Validator'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
                 state.bal.c = 0
@@ -899,7 +900,7 @@ processor.on('market_cancel_sale', function(json, from) {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but user probably doesnt exist #902`
                     }
 
-            } else if (/*amount > 10000000 || amount < 500000*/amount > 5) {
+            } else if (amount > 5) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
