@@ -429,15 +429,14 @@ function startApp() {
               }
             }
         }
-        if (num % 28800 === 0) {
+        if (num % 2 === 0) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
-                state.refund.push(['xfer', 'etherchest', parseInt(4 * d), 'Funds'])
+                state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
                 state.bal.c = 0
-                state.refund.push(['power', username, state.bal.b, 'Power to the people!'])
             }
     }
   })
@@ -804,7 +803,6 @@ processor.on('market_cancel_sale', function(json, from) {
         if (!state.users[json.delegator] && json.delegatee == username) state.users[json.delegator] = {
         addrs: [],
         gems: [],
-        breeder: '',
         hero: 1,
         guild: "",
         friends: [],
@@ -925,22 +923,6 @@ processor.on('market_cancel_sale', function(json, from) {
 
     processor.start();
 
-    //var transactor = steemTransact(client, steem, prefix);
-    processor.on('return', function(json, from) {
-        var index = state.users[from].addrs.indexOf(json.addr)
-        if (index >= 0) {
-            state.lands.forSale.push(state.users[from].addrs.splice(i, 1))
-            state.bal.r += state.stats.prices.purchase.land
-            if (state.bal.b - state.stats.prices.purchase.land > 0) {
-                state.bal.b -= state.stats.prices.purchase.land
-            } else {
-                state.bal.d += state.stats.prices.purchase.land
-            }
-            state.refund.push(['xfer', from, state.stats.prices.purchase.land, 'We\'re sorry to see you go!'])
-        }
-
-    });
-
     function exit() {
         console.log('Exiting...');
         processor.stop(function() {
@@ -975,7 +957,7 @@ var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
-            amount: `${float} STEEM`,
+            amount: `${float} HIVE`,
             from: username,
             to: toa,
             memo: memo
@@ -1036,7 +1018,7 @@ var bot = {
             {
                 from: username,
                 to: toa,
-                amount: `${parseFloat(amount/1000).toFixed(3)} STEEM`,
+                amount: `${parseFloat(amount/1000).toFixed(3)} HIVE`,
             },
         ];
         client.broadcast.sendOperations([op], key).then(
@@ -1058,15 +1040,4 @@ var bot = {
             }
         );
     }
-}
-
-function listBens (bens){
-    var text = `\n<h4>All etherchest Rewards go directly to our users!</h4>
-                \n
-                \nThis post benefits:
-                \n`
-    for(i=0;i<bens.length;i++){
-        text = text + `* @${bens[i].account} with ${parseFloat(bens[i].weight/100).toFixed(2)}%\n`
-    }
-    return text
 }
