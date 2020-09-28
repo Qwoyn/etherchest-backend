@@ -14,7 +14,7 @@
   "author": "Daniel Pittman",
   "license": "MIT",
   "dependencies": {
-    "hive-js": "^0.8.4",
+    "hivejs": "^0.8.4",
     "cors": "^2.8.5",
     "dsteem": "^0.11.2",
     "express": "^4.16.4",
