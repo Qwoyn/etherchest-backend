@@ -16,7 +16,6 @@
   "dependencies": {
     "axios": "^0.20.0",
     "cors": "^2.8.5",
-    "dsteem": "^0.11.2",
     "express": "^4.16.4",
     "ipfs-http-client": "^42.0.0-pre.2",
     "steem-js-patched": "^1.0.0",
