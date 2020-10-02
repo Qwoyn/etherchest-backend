@@ -428,11 +428,14 @@ function startApp() {
             }
         }
         if (num % 100 === 0 && !processor.isStreaming()) {
-            getEthToHive(1).then(price => console.log(price));
             if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
+        }
+
+        if (num % 2 === 0 && !processor.isStreaming()) {
+            getEthToHive(1).then(price => console.log(price));
         }
 
         if (num % 1000 === 0 && processor.isStreaming()) {
