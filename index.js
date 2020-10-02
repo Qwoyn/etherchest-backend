@@ -447,20 +447,16 @@ function startApp() {
             }
         }
 
+        // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
             getEthToHive(1).then(price => {
 
-            let gemPrice = price;
+            let gemPrice = price * 1;
             
-            state.stats.prices.listed.gems.diamond = gemPrice;
-            state.stats.prices.listed.gems.sapphire = gemPrice / 2;
-            state.stats.prices.listed.gems.emerald = gemPrice / 4;
-            state.stats.prices.listed.gems.ruby = gemPrice / 10;
-
-            console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);
-            console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire);
-            console.log('emerald price is ' + state.stats.prices.listed.gems.emerald);
-            console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice);
+            state.stats.prices.listed.gems.sapphire = Math.ceil(gemPrice / 2);
+            state.stats.prices.listed.gems.emerald = Math.ceil(gemPrice / 4);
+            state.stats.prices.listed.gems.ruby = Math.ceil(gemPrice / 10);
             })
         }
 
