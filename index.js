@@ -447,8 +447,8 @@ function startApp() {
             }
         }
 
-        if (num % 28800 === 20000) {
-            getEthToHive(1).then(price => console.log(price))
+        if (num % 100 === 0 && processor.isStreaming()) {
+            getEthToHive(1).then(price => console.log(price));
         }
 
         if (num % 100 === 0) {
