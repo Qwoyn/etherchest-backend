@@ -447,7 +447,7 @@ function startApp() {
             }
         }
 
-        if (num % 50 === 0 && processor.isStreaming()) {
+        if (num % 20 === 0 && processor.isStreaming()) {
             getEthToHive(1).then(price => console.log(price));
         }
 
