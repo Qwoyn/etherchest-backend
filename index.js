@@ -1,4 +1,4 @@
-var dhive = require('dhive');
+var dhive = require("@hiveio/dhive");
 var axios = require('axios');
 var steemjs = require('steem-js-patched');
 var steemState = require('./processor');
