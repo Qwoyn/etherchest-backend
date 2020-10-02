@@ -1,4 +1,4 @@
-var steem = require('dsteem');
+var dhive = require('dhive');
 var axios = require('axios');
 var steemjs = require('steem-js-patched');
 var steemState = require('./processor');
@@ -15,77 +15,17 @@ const ipfs = new IPFS({
     protocol: 'https'
 });
 
-/*  const init holds the initial state of a user in the form of a json 
-    as shown in the example.
 
-        const init: {
-            "delegations": {
-                "delegator": string;
-                "vests": number;
-                "available": number;
-                "used": number;
-            }[];
-            "kudos": {};
-            "stats": {
-                "vs": number;
-                "dust": number;
-                "time": number;
-                "offsets": {
-                    "a": number;
-                    "b": number;
-                    "c": number;
-                    "d": number;
-                    "e": number;
-                    "f": number;
-                };
-                ... 5 more ...;
-                "gardeners": number;
-            };
-            ... 8 more ...;
-            "cs": {
-                 ...;
-            };
-        }
-
-*/
 const init = require('./state');
 
 const app = express();
 const port = ENV.PORT || 3000;
 const wkey = ENV.wkey;
-const skey = steem.PrivateKey.from(ENV.skey);
+const skey = dhive.PrivateKey.from(ENV.skey);
 const streamname = ENV.streamname;
 
 app.use(cors());
 
-/*plot info from state.js by plot number
-            {
-            "owner": "etherchest",
-            "gems": "",
-            "xp": 0,
-            "care": [
-                [
-                    39562272,
-                    "watered"
-                ],
-                [
-                    39533519,
-                    "watered"
-                ],
-                [
-                    39504770,
-                    "watered",
-                    "c"
-                ]
-            ],
-            "aff": [],
-            "stage": -1,
-            "substage": 0,
-            "traits": [],
-            "terps": [],
-            "id": "a10"
-            }
-*/
 app.get('/p/:addr', (req, res, next) => {
     let addr = req.params.addr
     res.setHeader('Content-Type', 'application/json');
@@ -98,91 +38,6 @@ app.get('/logs', (req, res, next) => {
     res.send(JSON.stringify(state.cs, null, 3))
 });
 
-/*detailed list of gems a user owns from state.js by username\
-        [
-        {
-            "owner": "etherchest",
-            "gems": "",
-            "xp": 0,
-            "care": [
-                [
-                    39562272,
-                    "watered"
-                ],
-                [
-                    39533519,
-                    "watered"
-                ],
-                [
-                    39504770,
-                    "watered",
-                    "c"
-                ]
-            ],
-            "aff": [],
-            "stage": -1,
-            "substage": 0,
-            "traits": [],
-            "terps": [],
-            "id": "a10"
-        },
-        {
-            "owner": "etherchest",
-            "gems": "hk",
-            "xp": 2250,
-            "care": [
-                [
-                    39562272,
-                    "watered"
-                ],
-                [
-                    39533519,
-                    "watered",
-                    "c"
-                ],
-                [
-                    39504770,
-                    "watered",
-                    "c"
-                ]
-            ],
-            "aff": [],
-            "planted": 33012618,
-            "stage": 5,
-            "substage": 3,
-            "id": "c46",
-            "sex": null
-        },
-        {
-            "owner": "etherchest",
-            "gems": "mis",
-            "xp": 1,
-            "care": [
-                [
-                    39562272,
-                    "watered"
-                ],
-                [
-                    39533519,
-                    "watered",
-                    "c"
-                ],
-                [
-                    39445948,
-                    "watered",
-                    "c"
-                ]
-            ],
-            "aff": [],
-            "planted": 35387927,
-            "stage": 5,
-            "substage": 1,
-            "id": "a77",
-            "sex": null
-        },
-        "a100"
-        ]
-*/
 app.get('/a/:user', (req, res, next) => {
     let user = req.params.user, arr = []
     res.setHeader('Content-Type', 'application/json');
@@ -232,30 +87,6 @@ app.get('/gems/:user', (req, res, next) => {
     res.send(JSON.stringify(arr, null, 3))
 });
 
-//shows pollen by user
-app.get('/pollen/:user', (req, res, next) => {
-    let user = req.params.user, arr = []
-    res.setHeader('Content-Type', 'application/json');
-    if(state.users[user]){
-        for (var i = 0 ; i < state.users[user].pollen.length ; i++){
-            arr.push(state.users[user].pollen[i])
-        }
-    }
-    res.send(JSON.stringify(arr, null, 3))
-});
-
-//shows buds by user
-app.get('/buds/:user', (req, res, next) => {
-    let user = req.params.user, arr = []
-    res.setHeader('Content-Type', 'application/json');
-    if(state.users[user]){
-        for (var i = 0 ; i < state.users[user].buds.length ; i++){
-            arr.push(state.users[user].buds[i])
-        }
-    }
-    res.send(JSON.stringify(arr, null, 3))
-});
-
 //post payouts in que
 app.get('/refunds', (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
@@ -264,54 +95,13 @@ app.get('/refunds', (req, res, next) => {
         bal: state.bal
     }, null, 3))
 });
-
-/*plot and gem information by user
-        {
-        "addrs": [
-            "a10",
-            "c46",
-            "a77",
-            "a100"
-        ],
-        "gems": [
-            {
-                "gems": "kbr",
-                "xp": 2250,
-                "traits": [
-                    "beta"
-                ]
-            },
-            {
-                "gems": "kbr",
-                "xp": 2250,
-                "traits": [
-                    "beta"
-                ]
-            },
-            {
-                "xp": 50
-            }
-        ],
-        "inv": [],
-        "stats": [],
-        "v": 0
-        }
-
-*/
+           
 app.get('/u/:user', (req, res, next) => {
     let user = req.params.user
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(state.users[user], null, 3))
 });
 
-/*delegation information by user
-{
-   "delegator": "etherchest",
-   "vests": 4900485891391,
-   "available": 123,
-   "used": 2
-}
-*/
 app.get('/delegation/:user', (req, res, next) => {
     let user = req.params.user
     var op = {}
@@ -327,17 +117,16 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47438500; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47457900; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
-const key = steem.PrivateKey.from(ENV.KEY); //active key for account
+const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47438500;
+const ago = ENV.ago || 47457900;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-const clientURL = ENV.APIURL || 'https://api.hivekings.com' // can be changed to another node
-var client = new steem.Client(clientURL);
+var client = new dhive.Client(["https://api.hive.blog", "https://api.hivekings.com", "https://anyx.io", "https://api.openhive.network"]);
 var processor;
 var recents = [];
-const transactor = steemTransact(client, steem, prefix);
+const transactor = steemTransact(client, dhive, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
@@ -404,8 +193,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = steemState(client, steem, startingBlock, 10, prefix);
-
+    processor = steemState(client, dhive, startingBlock, 10, prefix);
 
     processor.onBlock(function(num, block) {
         var ethVault = 'ec-vault'
