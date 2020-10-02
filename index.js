@@ -327,11 +327,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47435000; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47436000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47435000;
+const ago = ENV.ago || 47436000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.hivekings.com' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -447,7 +447,7 @@ function startApp() {
             }
         }
 
-        if (num % 1 === 0 && processor.isStreaming()) {
+        if (num % 10 === 0 && processor.isStreaming()) {
             getEthToHive(1).then(price => console.log(price));
         }
 
