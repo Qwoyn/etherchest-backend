@@ -449,7 +449,7 @@ function startApp() {
 
         if (num % 5 === 0 && processor.isStreaming()) {
             getEthToHive(1).then(price => console.log(price));
-
+            let price = price
             state.stats.prices.listed.gems.diamond = price;
             state.stats.prices.listed.gems.sapphire = price / 2;
             state.stats.prices.listed.gems.emerald = price / 4;
