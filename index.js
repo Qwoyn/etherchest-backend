@@ -450,15 +450,15 @@ function startApp() {
         if (num % 5 === 0 && processor.isStreaming()) {
             getEthToHive(1).then(price => console.log(price));
 
-            state.stats.listed.gems.diamond = price;
-            state.stats.listed.gems.sapphire = price / 2;
-            state.stats.listed.gems.emerald = price / 4;
-            state.stats.listed.gems.ruby = price / 10;
+            state.stats.prices.listed.gems.diamond = price;
+            state.stats.prices.listed.gems.sapphire = price / 2;
+            state.stats.prices.listed.gems.emerald = price / 4;
+            state.stats.prices.listed.gems.ruby = price / 10;
 
-            console.log('diamond price is ' + state.stats.listed.gems.diamond)
-            console.log('sapphire price is ' + state.stats.listed.gems.sapphire)
-            console.log('emerald price is ' + state.stats.listed.gems.emerald)
-            console.log('ruby price is ' + state.stats.listed.gems.ruby)
+            console.log('diamond price is ' + state.stats.prices.listed.gems.diamond)
+            console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire)
+            console.log('emerald price is ' + state.stats.prices.listed.gems.emerald)
+            console.log('ruby price is ' + state.stats.prices.listed.gems.ruby)
         }
 
         if (num % 100 === 0) {
