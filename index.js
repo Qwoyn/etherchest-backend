@@ -427,7 +427,7 @@ function startApp() {
                 }
             }
         }
-        getEthToHive(1).then(price => console.log(price))
+       // getEthToHive(1).then(price => console.log(price))
         if (num % 100 === 0 && !processor.isStreaming()) {
             if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
