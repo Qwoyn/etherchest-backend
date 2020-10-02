@@ -1,6 +1,6 @@
 {
   "name": "etherchest-api",
-  "version": "0.10.5",
+  "version": "0.10.6",
   "description": "EtherChest API",
   "main": "index.js",
   "scripts": {
