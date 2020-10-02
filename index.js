@@ -326,11 +326,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47336250; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47435000; //GENESIS BLOCKs
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = steem.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47336250;
+const ago = ENV.ago || 47435000;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 const clientURL = ENV.APIURL || 'https://api.hivekings.com' // can be changed to another node
 var client = new steem.Client(clientURL);
@@ -384,6 +384,21 @@ function startWith(hash) {
     }
 }
 
+// converts Eth to Hive
+function getEthToHive(amount) {
+    return new Promise((resolve, reject) => {
+      axios.get('https://api.coingecko.com/api/v3/simple/price?ids=hive%2Cethereum&vs_currencies=usd').then((res) => {
+        const { data } = res
+        const ethCost = data.ethereum.usd * amount
+        const hiveAmount = ethCost / data.hive.usd
+  
+        resolve(hiveAmount.toFixed(3))
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  }
+
 function startApp() {
   if(state.cs == null) {
     state.cs = {}
@@ -404,13 +419,14 @@ function startApp() {
                     if (state.refund[1][1] == 'comment_options') op = false
                     if (state.refund[1][1].extentions[0][1].beneficiaries.length) bens = true
                 } catch (e) {
-                    console.log('not enough players', e.message)
+                    console.log('not enough stakers', e.message)
                 }
                 if(op || bens){bot[state.refund[0][0]].call(this, state.refund[0][1])} else {
                     state.refund.shift()
                 }
             }
         }
+        getEthToHive(1).then(price => console.log(price))
         if (num % 100 === 0 && !processor.isStreaming()) {
             if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
@@ -935,6 +951,7 @@ function startApp() {
     }
 }
 
+// Needs work, not saving state to ipfs ERROR
 function ipfsSaveState(blocknum, hashable) {
     ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
         if (!err) {
