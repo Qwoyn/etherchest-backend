@@ -1,4 +1,5 @@
 var steem = require('dsteem');
+var axios = require('axios');
 var steemjs = require('steem-js-patched');
 var steemState = require('./processor');
 var steemTransact = require('steem-transact');
