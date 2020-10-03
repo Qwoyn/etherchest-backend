@@ -208,7 +208,6 @@ function startApp() {
         }
  
         if (num % 100 === 0 && !processor.isStreaming()) {
-            if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
@@ -368,6 +367,7 @@ function startApp() {
                         state.bal.c += c
                         state.bal.b += 0
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
+                        console.log(`${json.from} purchased a ${want}`)
 
                 }  else {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but user probably doesnt exist #902`
@@ -428,6 +428,14 @@ function ipfsSaveState(blocknum, hashable) {
         }
     })
 };
+
+//restart app if exception
+process.on('uncaughtException', function(err) {
+    log('ERROR: depositMonitor.js Crashed with Following Error:');
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+    console.error(err.stack);
+    startApp();
+});
 
 var bot = {
     xfer: function(toa, amount, memo) {
