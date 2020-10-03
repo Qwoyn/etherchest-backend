@@ -328,7 +328,7 @@ function startApp() {
                         if (!state.users[json.from]) {
                             state.users[json.from] = {
                                 addrs: [],
-                                gems: [],
+                                gems: {},
                                 ducats: 0,
                                 hero: 1,
                                 guild: "",
@@ -354,8 +354,8 @@ function startApp() {
 
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemID)
-                               // state.users[json.from].gems[gemCountNumber].push(gem)
-                                state.users[from].gems[0][gemCountNumber].push(gem)
+                                state.users[json.from].gems[gemCountNumber].push(gem)
+                               
                             } else
                             
                             //if user does not exist in db create user and db entry
@@ -410,7 +410,7 @@ function startApp() {
         processor.stop(function() {
             saveState(function() {
                 process.exit();
-                //console.log('Process exited.');
+                console.log('Process exited.');
             });
         });
     }
