@@ -197,24 +197,7 @@ function startApp() {
 
     processor.onBlock(function(num, block) {
         var ethVault = 'ec-vault'
-        if (num % 125 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 60) {
-            if (state.refund[0].length == 4) {
-                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
-            } else if (state.refund[0].length == 3){
-                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
-            } else if (state.refund[0].length == 2) {
-                var op = true, bens = false
-                try {
-                    if (state.refund[1][1] == 'comment_options') op = false
-                    if (state.refund[1][1].extentions[0][1].beneficiaries.length) bens = true
-                } catch (e) {
-                    console.log('not enough stakers', e.message)
-                }
-                if(op || bens){bot[state.refund[0][0]].call(this, state.refund[0][1])} else {
-                    state.refund.shift()
-                }
-            }
-        }
+        
         if (num % 100 === 0 && !processor.isStreaming()) {
             if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
@@ -709,6 +692,7 @@ function startApp() {
                             
                             //if user does not exist in db create user and db entry
                             if (!state.users[json.from]) {
+                            state.users[json.from] 
                             state.users[json.from] = {
                                 addrs: [],
                                 gems: [gem],
