@@ -329,7 +329,7 @@ function startApp() {
                         }
                 
                         var gemID = {
-                            [gemCountNumber]: {},
+                            [gemCountNumber]: [],
                         }
 
                         //assign gem qualities
