@@ -70,6 +70,7 @@ module.exports = {
             "ruby"
          ]
       },
+      "gemCount": 1,
       "stakers": 1,
       "guilds": [
          {
