@@ -329,7 +329,7 @@ function startApp() {
                             }
                         }
 
-                        state.users[json.from].gems.push(gemCountNumber)
+                        
 
                         //assign gem qualities
                         var gem = {
@@ -343,6 +343,7 @@ function startApp() {
                             }
 
                             if(state.users[json.from]){
+                                state.users[json.from].gems.push(gemCountNumber)
                                 state.users[json.from].gems[gemCountNumber].push(gem)
                             } else
                             
