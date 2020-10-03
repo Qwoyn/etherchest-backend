@@ -319,6 +319,18 @@ function startApp() {
                         
                         state.users[json.from].gems.push(gemCountNumber)
 
+                        //if user does not exist in db create user and db entry
+                        if (!state.users[json.from]) {
+                            state.users[json.from] = {
+                                addrs: [],
+                                gems: [],
+                                ducats: 0,
+                                hero: 1,
+                                guild: "",
+                                friends: [],
+                                v: 0
+                            }
+
                         //assign gem qualities
                         var gem = {
                             stone: want,
@@ -334,17 +346,7 @@ function startApp() {
                                 state.users[json.from].gems[gemCountNumber].push(gem)
                             } else
                             
-                            //if user does not exist in db create user and db entry
-                            if (!state.users[json.from]) {
-                            state.users[json.from] = {
-                                addrs: [],
-                                gems: [gem],
-                                ducats: 0,
-                                hero: 1,
-                                guild: "",
-                                friends: [],
-                                v: 0
-                            }
+                            
                         }
 
                         const c = parseInt(amount)
