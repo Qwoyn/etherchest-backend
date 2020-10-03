@@ -190,6 +190,15 @@ function getEthToHive(amount) {
   }
 
 function startApp() {
+
+    //restart app if exception
+    process.on('uncaughtException', function(err) {
+        log('ERROR: depositMonitor.js Crashed with Following Error:');
+        console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+        console.error(err.stack);
+        startApp();
+    });
+
   if(state.cs == null) {
     state.cs = {}
   }
