@@ -204,17 +204,6 @@ function startApp() {
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
             } else if (state.refund[0].length == 3){
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
-            } else if (state.refund[0].length == 2) {
-                var op = true, bens = false
-                try {
-                    if (state.refund[1][1] == 'comment_options') op = false
-                    if (state.refund[1][1].extentions[0][1].beneficiaries.length) bens = true
-                } catch (e) {
-                    console.log('not enough stakers', e.message)
-                }
-                if(op || bens){bot[state.refund[0][0]].call(this, state.refund[0][1])} else {
-                    state.refund.shift()
-                }
             }
         }
  
