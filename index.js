@@ -117,11 +117,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47467800; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47467900; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47467800;
+const ago = ENV.ago || 47467900;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hivekings.com", "https://api.hive.blog", "https://anyx.io", "https://api.openhive.network"]);
 var processor;
@@ -337,7 +337,6 @@ function startApp() {
                             }
                         }
                 
-
                         //assign gem qualities
                         var gem = {
                             stone: want,
@@ -347,6 +346,7 @@ function startApp() {
                             pastValue: amount,
                             guilded: false,
                             guildTreasury: 0,
+                            gemID: gemCountNumber,
                             }
 
                             if(state.users[json.from]){
