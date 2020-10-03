@@ -117,11 +117,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47459700; //GENESIS BLOCKs
+var startingBlock = ENV.STARTINGBLOCK || 47460700; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47459700;
+const ago = ENV.ago || 47460700;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hive.blog", "https://api.hivekings.com", "https://anyx.io", "https://api.openhive.network"]);
 var processor;
@@ -197,7 +197,24 @@ function startApp() {
 
     processor.onBlock(function(num, block) {
         var ethVault = 'ec-vault'
-        
+        if (num % 125 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 60) {
+            if (state.refund[0].length == 4) {
+                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
+            } else if (state.refund[0].length == 3){
+                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
+            } else if (state.refund[0].length == 2) {
+                var op = true, bens = false
+                try {
+                    if (state.refund[1][1] == 'comment_options') op = false
+                    if (state.refund[1][1].extentions[0][1].beneficiaries.length) bens = true
+                } catch (e) {
+                    console.log('not enough stakers', e.message)
+                }
+                if(op || bens){bot[state.refund[0][0]].call(this, state.refund[0][1])} else {
+                    state.refund.shift()
+                }
+            }
+        }
         if (num % 100 === 0 && !processor.isStreaming()) {
             if(!state.news.e)state.news.e=[]
             client.database.getDynamicGlobalProperties().then(function(result) {
@@ -672,8 +689,10 @@ function startApp() {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
                         state.stats.gemCount += 1
-
+                        
                         var gemCountNumber = "gd" + state.stats.gemCount
+                        
+                        state.users[json.from].gems.push(gemCountNumber)
 
                         //assign gem qualities
                         var gem = {
@@ -692,7 +711,6 @@ function startApp() {
                             
                             //if user does not exist in db create user and db entry
                             if (!state.users[json.from]) {
-                            state.users[json.from] 
                             state.users[json.from] = {
                                 addrs: [],
                                 gems: [gem],
