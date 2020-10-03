@@ -212,7 +212,7 @@ function startApp() {
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
-            
+
             //restart app if exception
             process.on('uncaughtException', function(err) {
             log('ERROR: depositMonitor.js Crashed with Following Error:');
@@ -379,7 +379,7 @@ function startApp() {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but gem price probably doesnt match #379`
                     }
 
-            } else if (amount > state.stats.prices.listed.gems.diamond /*|| amount < state.stats.prices.listed.gems.ruby*/) {
+            } else {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
