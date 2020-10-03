@@ -190,6 +190,9 @@ function getEthToHive(amount) {
   }
 
 function startApp() {
+    try {
+        
+    
 
   if(state.cs == null) {
     state.cs = {}
@@ -405,13 +408,17 @@ function startApp() {
         });
     }
 
-    //restart app if exception
+    
+} catch (error) {
+        //restart app if exception
     process.on('uncaughtException', function(err) {
         log('ERROR: depositMonitor.js Crashed with Following Error:');
         console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
         console.error(err.stack);
         startApp();
 });
+}
+
 }
 
 // Needs work, not saving state to ipfs ERROR
