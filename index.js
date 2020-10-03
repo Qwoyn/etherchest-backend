@@ -212,14 +212,6 @@ function startApp() {
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
-
-            //restart app if exception
-            process.on('uncaughtException', function(err) {
-            log('ERROR: depositMonitor.js Crashed with Following Error:');
-            console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-            console.error(err.stack);
-            startApp();
-    });
         }
 
         if (num % 1000 === 0 && processor.isStreaming()) {
@@ -412,6 +404,14 @@ function startApp() {
             });
         });
     }
+
+    //restart app if exception
+    process.on('uncaughtException', function(err) {
+        log('ERROR: depositMonitor.js Crashed with Following Error:');
+        console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+        console.error(err.stack);
+        startApp();
+});
 }
 
 // Needs work, not saving state to ipfs ERROR
