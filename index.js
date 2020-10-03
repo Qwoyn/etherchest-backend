@@ -317,7 +317,7 @@ function startApp() {
                         
                         var gemCountNumber = "gd" + state.stats.gemCount
                         
-                        state.users[json.from].gems.push(gemCountNumber)
+                        
 
                         //if user does not exist in db create user and db entry
                         if (!state.users[json.from]) {
@@ -343,6 +343,8 @@ function startApp() {
                             guildTreasury: 0,
                             }
 
+                            state.users[json.from].gems.push(gemCountNumber)
+                            
                             if(state.users[json.from]){
                                 state.users[json.from].gems[gemCountNumber].push(gem)
                             } else
