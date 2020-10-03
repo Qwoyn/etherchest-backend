@@ -61,4 +61,4 @@ typings/
 .next
 
 # dumb shit
-.market
+*.market
