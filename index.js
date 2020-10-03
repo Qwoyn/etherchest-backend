@@ -290,6 +290,7 @@ function startApp() {
         if(from=='etherchest'){state.users[json.to].v = 1}
     });
 
+    // buying gems
     processor.onOperation('transfer', function(json, from) {
         var wrongTransaction = 'ec-refunds'
         if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
@@ -299,12 +300,10 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                want == 'diamond' && amount == 5 || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
                 want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby //||
-                // market gems
-                //want == 'marketgem' && amount == state.users[seller].gems[0][type].price <--- need for user market
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
                          want == 'diamond' && amount == 5 || 
