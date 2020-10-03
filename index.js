@@ -330,6 +330,7 @@ function startApp() {
                                 friends: [],
                                 v: 0
                             }
+                        }
 
                         //assign gem qualities
                         var gem = {
@@ -347,7 +348,7 @@ function startApp() {
                             } else
                             
                             
-                        }
+                      
 
                         const c = parseInt(amount)
                         state.bal.c += c
