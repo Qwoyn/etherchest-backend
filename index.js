@@ -117,11 +117,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47460700; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47462900; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || '';
-const ago = ENV.ago || 47460700;
+const ago = ENV.ago || 47462900;
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hive.blog", "https://api.hivekings.com", "https://anyx.io", "https://api.openhive.network"]);
 var processor;
@@ -197,6 +197,26 @@ function startApp() {
 
     processor.onBlock(function(num, block) {
         var ethVault = 'ec-vault'
+
+        //envoke bot
+        if (num % 125 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 60) {
+            if (state.refund[0].length == 4) {
+                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
+            } else if (state.refund[0].length == 3){
+                bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
+            } else if (state.refund[0].length == 2) {
+                var op = true, bens = false
+                try {
+                    if (state.refund[1][1] == 'comment_options') op = false
+                    if (state.refund[1][1].extentions[0][1].beneficiaries.length) bens = true
+                } catch (e) {
+                    console.log('not enough stakers', e.message)
+                }
+                if(op || bens){bot[state.refund[0][0]].call(this, state.refund[0][1])} else {
+                    state.refund.shift()
+                }
+            }
+        }
  
         if (num % 100 === 0 && !processor.isStreaming()) {
             if(!state.news.e)state.news.e=[]
@@ -235,6 +255,8 @@ function startApp() {
             console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
             })
         }
+
+        //add function to send json to chain with updated price of gems
 
         if (num % 100 === 0) {
             var d = parseInt(state.bal.c / 4)
@@ -770,7 +792,7 @@ function ipfsSaveState(blocknum, hashable) {
     })
 };
 
-/*var bot = {
+var bot = {
     xfer: function(toa, amount, memo) {
         const float = parseFloat(amount / 1000).toFixed(3)
         const data = {
@@ -857,4 +879,4 @@ function ipfsSaveState(blocknum, hashable) {
             }
         );
     }
-}*/
+}
