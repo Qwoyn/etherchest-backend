@@ -347,7 +347,7 @@ function startApp() {
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemID)
                                 for (var i = 0; i < gemCountNumber.length; i++) {
-                                    gemCountNumber[i] = gem
+                                    gemCountNumber[i] = [gem]
                                   }
                             } else
                             
