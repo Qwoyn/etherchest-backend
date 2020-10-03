@@ -337,9 +337,9 @@ function startApp() {
                             }
                         }
                 
-                        var gemID = {
-                            [gemCountNumber]: [],
-                        }
+                        var gemID = [
+                            [gemCountNumber]
+                        ]
 
                         //assign gem qualities
                         var gem = {
@@ -355,7 +355,8 @@ function startApp() {
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemID)
                                // state.users[json.from].gems[gemCountNumber].push(gem)
-                                state.users[json.from].gems[gemCountNumber].push(gem)
+                                //state.users[json.from].gems[gemCountNumber].push(gem)
+                                state.gemList.push(gem)
                             } else
                             
                             //if user does not exist in db create user and db entry

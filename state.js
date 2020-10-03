@@ -163,7 +163,7 @@ module.exports = {
          "friends": []
       },
    },
-      "payday": [],
+      "gemList": [],
       "blacklist": {
       "zonguin": true,
       "steembeem": true
