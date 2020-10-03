@@ -1,4 +1,4 @@
-module.exports = function(client, steem, currentBlockNumber=1, blockComputeSpeed=1000, prefix='etherchest_', mode='latest') {
+module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed=1000, prefix='etherchest_', mode='latest') {
   var onCustomJsonOperation = {};  // Stores the function to be run for each operation id.
   var onOperation = {};
 
@@ -68,7 +68,7 @@ module.exports = function(client, steem, currentBlockNumber=1, blockComputeSpeed
     isStreaming = true;
     onStreamingStart();
     if(mode === 'latest') {
-      stream = client.blockchain.getBlockStream({mode: steem.BlockchainMode.Latest});
+      stream = client.blockchain.getBlockStream({mode: dhive.BlockchainMode.Latest});
     } else {
       stream = client.blockchain.getBlockStream();
     }
