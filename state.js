@@ -3,8 +3,6 @@ module.exports = {
       {
          "delegator": "etherchest",
          "vests": 0,
-         "availible": 0,
-         "used": 2
       },
    ],
    "kudos": {},
@@ -72,11 +70,19 @@ module.exports = {
             "ruby"
          ]
       },
-      "miners": 1,
+      "stakers": 1,
       "guilds": [
          {
             "name": "EtherChest",
             "founder": "etherchest",
+            "gems": [
+               {
+                  "stone": "diamond",
+                  "owner": "etherchest",
+                  "id": "gd1",
+                  "stakedBlock": 0,
+               }
+            ],
             "members": 1,
             "memberNames": [
                "etherchest"
@@ -91,6 +97,21 @@ module.exports = {
       "p": 5000
    },
    "refund": [],
+   "gems": {
+      "gd1": {
+         "owner": "etherchest",
+         "mineType": "Iron Mine",
+         "care": [],
+         "aff": [],
+         "stage": 1,
+         "substage": 1,
+         "traits": [
+            "beta mine"
+         ],
+         "value": 5000,
+         "id": "a1"
+      },
+   },
    "lands": {
       "forSale": []
    },
@@ -114,15 +135,18 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "gems": [
-            {
+         "gems": {
+            "gd1": {
                "stone": "diamond",
                "owner": "etherchest",
                "price": 0,
                "forSale": false,
                "pastValue": 2048000,
-            }
-         ],
+               "guilded": true,
+               "guildTreasury": "etherchest",
+               "id": "gd1",
+            },
+         },
          "ducats" : 0,
          "profile": [],
          "hero": 1,

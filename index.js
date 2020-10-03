@@ -669,9 +669,9 @@ function startApp() {
         if (json.to == username && json.amount.split(' ')[1] == 'HIVE') {
             const amount = parseInt(parseFloat(json.amount) * 1000)
             var want = json.memo.split(" ")[0].toLowerCase(),
-                type = json.memo.split(" ")[1] || ''
+                type = json.memo.split(" ")[1] || '',
+                owner = json.from
             if (
-                state.stats.prices.listed[want] == amount ||
                 // gems 
                 want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
@@ -687,14 +687,16 @@ function startApp() {
                          want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
-                        
+
                         //assign gem qualities
                         var gem = {
                             stone: want,
-                            owner: json.from,
+                            owner: owner,
                             price: 0,
                             forSale: false,
-                            pastValue: amount
+                            pastValue: amount,
+                            guilded: false,
+                            guildTreasury: 0,
                             }
 
                             if(state.users[json.from]){
