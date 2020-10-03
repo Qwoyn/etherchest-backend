@@ -32,7 +32,7 @@ app.get('/p/:addr', (req, res, next) => {
     res.send(JSON.stringify(state.land[addr], null, 3))
 });
 
-//shows a log 
+//shows the cs logs
 app.get('/logs', (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(state.cs, null, 3))
@@ -191,14 +191,6 @@ function getEthToHive(amount) {
 
 function startApp() {
 
-    //restart app if exception
-    process.on('uncaughtException', function(err) {
-        log('ERROR: depositMonitor.js Crashed with Following Error:');
-        console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-        console.error(err.stack);
-        startApp();
-    });
-
   if(state.cs == null) {
     state.cs = {}
   }
@@ -220,6 +212,14 @@ function startApp() {
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
+            
+            //restart app if exception
+            process.on('uncaughtException', function(err) {
+            log('ERROR: depositMonitor.js Crashed with Following Error:');
+            console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+            console.error(err.stack);
+            startApp();
+    });
         }
 
         if (num % 1000 === 0 && processor.isStreaming()) {
@@ -379,7 +379,7 @@ function startApp() {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but gem price probably doesnt match #379`
                     }
 
-            } else if (amount > state.stats.prices.listed.gems.diamond || amount < state.stats.prices.listed.gems.ruby) {
+            } else if (amount > state.stats.prices.listed.gems.diamond /*|| amount < state.stats.prices.listed.gems.ruby*/) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
