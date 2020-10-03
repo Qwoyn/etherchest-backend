@@ -345,9 +345,7 @@ function startApp() {
 
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemID)
-                                for (var i = 0; i < gemCountNumber.length; i++) {
-                                    gemCountNumber[i] = [gem]
-                                  }
+                                state.users[json.from].gems[gemCountNumber].push(gem)
                             } else
                             
                             //if user does not exist in db create user and db entry
