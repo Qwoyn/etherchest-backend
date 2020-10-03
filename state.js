@@ -77,12 +77,18 @@ module.exports = {
             "name": "EtherChest",
             "founder": "etherchest",
             "gems": [
-               {
-                  "stone": "diamond",
-                  "owner": "etherchest",
-                  "id": "gd1",
-                  "stakedBlock": 0,
-               }
+                  {
+                     "stone": "diamond",
+                     "owner": "etherchest",
+                     "id": "gd1",
+                     "stakedBlock": 0,
+                  },
+            ],
+            "ducats": [],
+            "weapons": [],
+            "badges": [],
+            "mines": [
+            "a1"
             ],
             "members": 1,
             "memberNames": [
@@ -98,9 +104,10 @@ module.exports = {
       "p": 5000
    },
    "refund": [],
-   "gems": {
-      "gd1": {
+   "mines": {
+      "a1": {
          "owner": "etherchest",
+         "guildOwned": true,
          "mineType": "Iron Mine",
          "care": [],
          "aff": [],
@@ -110,7 +117,6 @@ module.exports = {
             "beta mine"
          ],
          "value": 5000,
-         "id": "a1"
       },
    },
    "lands": {
@@ -127,8 +133,8 @@ module.exports = {
          "traits": [
             "beta mine"
          ],
-         "value": 5000,
-         "id": "a1"
+         "guilded": true,
+         "guildTreasury": "etherchest",
       },
    },
    "users": {
@@ -146,6 +152,8 @@ module.exports = {
                "guilded": true,
                "guildTreasury": "etherchest",
                "id": "gd1",
+               "mature": false,
+               "maturityBlock": 57690034,
             },
          },
          "ducats" : 0,
