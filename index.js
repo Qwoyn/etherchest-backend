@@ -376,10 +376,10 @@ function startApp() {
                         console.log(`${json.from} purchased a ${want}`)
 
                 }  else {
-                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but user probably doesnt exist #902`
+                        state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but gem price probably doesnt match #379`
                     }
 
-            } else if (amount > 6) {
+            } else if (amount > state.stats.prices.listed.gems.diamond || amount < state.stats.prices.listed.gems.ruby) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
