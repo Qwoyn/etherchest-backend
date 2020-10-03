@@ -729,7 +729,7 @@ function startApp() {
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but user probably doesnt exist #902`
                     }
 
-            } else if (amount > 5) {
+            } else if (amount > 6) {
                 state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
