@@ -315,7 +315,7 @@ function startApp() {
 
                         state.stats.gemCount += 1
                         
-                        var gemCountNumber = "gd" + state.stats.gemCount
+                        let gemCountNumber = "gd" + state.stats.gemCount
 
                         if (!state.users[json.from]) {
                             state.users[json.from] = {
@@ -328,9 +328,9 @@ function startApp() {
                                 v: 0
                             }
                         }
-
+                
                         var gemID = {
-                            gemCountNumber: [],
+                            [gemCountNumber]: [],
                         }
 
                         //assign gem qualities
