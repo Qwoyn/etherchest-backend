@@ -1,2 +1,2 @@
-# hashkings
+# Etherchest-API
 Gamified Staking

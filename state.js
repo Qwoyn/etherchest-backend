@@ -142,20 +142,9 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "gems": {
-            "gd1": {
-               "stone": "diamond",
-               "owner": "etherchest",
-               "price": 0,
-               "forSale": false,
-               "pastValue": 2048000,
-               "guilded": true,
-               "guildTreasury": "etherchest",
-               "id": "gd1",
-               "mature": false,
-               "maturityBlock": 57690034,
-            },
-         },
+         "gems": [
+            "gd1"
+         ],
          "ducats" : 0,
          "profile": [],
          "hero": 1,
@@ -163,7 +152,20 @@ module.exports = {
          "friends": []
       },
    },
-      "gemList": [],
+      "gemList": [
+         {
+            "stone": "diamond",
+            "owner": "etherchest",
+            "price": 0,
+            "forSale": false,
+            "pastValue": 2048000,
+            "guilded": true,
+            "guildTreasury": "etherchest",
+            "id": "gd1",
+            "mature": false,
+            "maturityBlock": 57690034,
+         },
+      ],
       "blacklist": {
       "zonguin": true,
       "steembeem": true
