@@ -174,20 +174,6 @@ function startWith(hash) {
     }
 }
 
-/**
- * @dev used to restart application triggered by uncaughException but 
- * @error does not trigger
- */
-function catchError() {
-    //restart app if exception
-    process.on('uncaughtException', function(err) {
-        log('ERROR: depositMonitor.js Crashed with Following Error:');
-        console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-        console.error(err.stack);
-        startApp();
-});
-}
-
 // converts Eth to Hive
 function getEthToHive(amount) {
     return new Promise((resolve, reject) => {
@@ -430,11 +416,10 @@ function startApp() {
 
     
 } catch (error) {
-    catchError();
+   console.log("shit crashed")
 }
 }
 
-catchError();
 
 
 // Needs work, not saving state to ipfs ERROR
@@ -554,3 +539,11 @@ var bot = {
         );
     }
 }
+
+    //restart app if exception
+    process.on('uncaughtException', function(err) {
+        log('ERROR: depositMonitor.js Crashed with Following Error:');
+        console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+        console.error(err.stack);
+        startApp();
+});
