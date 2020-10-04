@@ -1,4 +1,4 @@
-var dhive = require("@hiveio/dhive");
+var dhive = require("@esteemapp/dhive");
 var axios = require('axios');
 var steemjs = require('steem-js-patched');
 var steemState = require('./processor');
@@ -393,10 +393,13 @@ function startApp() {
                             status:test
                         }])
 
+                        state.cs
+
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
+                        state.cs[`${json.block_num}:gem prices posted`]
                         console.log(`${json.from} purchased a ${want}`)
 
                 }  else {
