@@ -383,8 +383,6 @@ function startApp() {
                             status:"test"
                         }])
 
-                        state.cs
-
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
