@@ -375,6 +375,15 @@ function startApp() {
                             }
                         }
 
+                        state.refund.push(['customJson', 'report', {
+                            diamondPrice: state.stats.listed.gems.diamond,
+                            sapphirePrice: state.stats.listed.gems.sapphire,
+                            emeraldPrice: state.stats.listed.gems.emerald,
+                            rubyPrice: state.stats.listed.gems.ruby,
+                            block: blocknum,
+                            status:test
+                        }])
+
                         const c = parseInt(amount)
                         state.bal.c += c
                         state.bal.b += 0
