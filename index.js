@@ -120,8 +120,8 @@ var state;
 var startingBlock = ENV.STARTINGBLOCK || 47467900; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
-const sh = ENV.sh || '';
-const ago = ENV.ago || 47467900;
+const sh = ENV.sh || ''; //state hash
+const ago = ENV.ago || 47467900; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hive.blog", "https://anyx.io", "https://api.hivekings.com", "https://api.openhive.network"]);
 var processor;
@@ -174,6 +174,10 @@ function startWith(hash) {
     }
 }
 
+/**
+ * @dev used to restart application triggered by uncaughException but 
+ * @error does not trigger
+ */
 function catchError() {
     //restart app if exception
     process.on('uncaughtException', function(err) {
@@ -201,9 +205,6 @@ function getEthToHive(amount) {
 
 function startApp() {
     try {
-        
-    
-
   if(state.cs == null) {
     state.cs = {}
   }
@@ -422,8 +423,9 @@ function startApp() {
 } catch (error) {
     catchError();
 }
-
 }
+
+catchError();
 
 
 // Needs work, not saving state to ipfs ERROR
