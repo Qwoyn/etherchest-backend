@@ -270,6 +270,15 @@ function startApp() {
                 d = parseInt(state.bal.c / 5) * 2
                 state.bal.c = 0
             }
+
+            state.refund.push(['customJson', 'report', {
+                diamondPrice: state.stats.listed.gems.diamond,
+                sapphirePrice: state.stats.listed.gems.sapphire,
+                emeraldPrice: state.stats.listed.gems.emerald,
+                rubyPrice: state.stats.listed.gems.ruby,
+                block: blocknum,
+                status:test
+            }])
     }
   })
 
@@ -376,10 +385,10 @@ function startApp() {
                         }
 
                         state.refund.push(['customJson', 'report', {
-                            diamondPrice: state.stats.listed.gems.diamond,
-                            sapphirePrice: state.stats.listed.gems.sapphire,
-                            emeraldPrice: state.stats.listed.gems.emerald,
-                            rubyPrice: state.stats.listed.gems.ruby,
+                            diamondPrice: state.stats.prices.listed.gems.diamond,
+                            sapphirePrice: state.stats.prices.listed.gems.sapphire,
+                            emeraldPrice: state.stats.prices.listed.gems.emerald,
+                            rubyPrice: state.stats.prices.listed.gems.ruby,
                             block: blocknum,
                             status:test
                         }])
