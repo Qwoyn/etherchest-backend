@@ -380,8 +380,7 @@ function startApp() {
                             sapphirePrice: state.stats.prices.listed.gems.sapphire,
                             emeraldPrice: state.stats.prices.listed.gems.emerald,
                             rubyPrice: state.stats.prices.listed.gems.ruby,
-                            block: blocknum,
-                            status:test
+                            status:"test"
                         }])
 
                         state.cs
