@@ -394,6 +394,8 @@ function startApp() {
                             state.bal.c -= d * 4
                             d = parseInt(state.bal.c / 5) * 2
                             state.bal.c = 0
+                        } else {
+                            state.bal.c = 0
                         }
 
                         const c = parseInt(amount)
