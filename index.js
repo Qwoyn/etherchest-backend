@@ -117,11 +117,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47517045; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47517184; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47517045; //supposed to be genesis block 
+const ago = ENV.ago || 47517184; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hive.blog", "https://anyx.io", "https://api.hivekings.com", "https://api.openhive.network"]);
 var processor;
@@ -189,6 +189,16 @@ function getEthToHive(amount) {
     })
   }
 
+function sendRefund() {
+    if (state.refund[0].length == 4) {
+        bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
+        console.log("sent refund")
+    } else if (state.refund[0].length == 3){
+        bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
+        console.log("sent refund")
+    }
+}
+
 function startApp() {
     try {
   if(state.cs == null) {
@@ -200,7 +210,7 @@ function startApp() {
         var ethVault = 'ec-vault'
 
         //process state.refund
-        if (num % 5 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 1) {
+        if (num % 2 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 1) {
             if (state.refund[0].length == 4) {
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
                 console.log("sent refund")
@@ -384,6 +394,8 @@ function startApp() {
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                         state.cs[`${json.block_num}:gem prices posted`]
                         console.log(`${json.from} purchased a ${want}`)
+
+                        sendRefund()
 
                 }  else if (
                     want == 'diamond' && amount < 5000 || 
