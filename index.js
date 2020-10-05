@@ -117,11 +117,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47516570; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47516800; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47516570; //supposed to be genesis block 
+const ago = ENV.ago || 47516800; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.hive.blog", "https://anyx.io", "https://api.hivekings.com", "https://api.openhive.network"]);
 var processor;
@@ -247,9 +247,7 @@ function startApp() {
             })
         }
 
-        //add function to send json to chain with updated price of gems
-
-        if (num % 5 === 0 && processor.isStreaming()) {
+       /* if (num % 5 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
@@ -258,7 +256,7 @@ function startApp() {
                 d = parseInt(state.bal.c / 5) * 2
                 state.bal.c = 0
             }
-    }
+        }*/
   })
 
     processor.on('redeem', function(j, f) {
@@ -370,6 +368,15 @@ function startApp() {
                             rubyPrice: state.stats.prices.listed.gems.ruby,
                             status:"test"
                         }])
+
+                        var d = parseInt(state.bal.c / 4)
+                        state.bal.r += state.bal.c
+                        if (d > 0) {
+                            state.refund.push(['xfer', ethVault, parseInt(4 * d), 'To Validator'])
+                            state.bal.c -= d * 4
+                            d = parseInt(state.bal.c / 5) * 2
+                            state.bal.c = 0
+                        }
 
                         const c = parseInt(amount)
                         state.bal.c += c
