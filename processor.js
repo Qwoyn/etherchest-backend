@@ -16,25 +16,34 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
   // Returns the block number of the last block on the chain or the last irreversible block depending on mode.
   function getHeadOrIrreversibleBlockNumber(callback) {
     client.database.getDynamicGlobalProperties().then(function(result) {
+      try {
       if(mode === 'latest') {
         callback(result.head_block_number);
       } else {
         callback(result.last_irreversible_block_num);
       }
+    } catch (error) {
+        console.log('found you #28')
+    }
     })
   }
 
   function isAtRealTime(callback) {
     getHeadOrIrreversibleBlockNumber(function(result) {
+      try {
       if(currentBlockNumber >= result) {
         callback(true);
       } else {
         callback(false);
       }
+    } catch (error) {
+        console.log('found you #40')
+    }
     })
   }
 
   function beginBlockComputing() {
+    try {
     function computeBlock() {
 
       var blockNum = currentBlockNumber;// Helper variable to prevent race condition
@@ -60,12 +69,18 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         setTimeout(stopCallback,1000);
       }
     }
+  } catch (error) {
+      console.log('found you #73')
+  }
 
     computeBlock();
   }
 
   function beginBlockStreaming() {
     isStreaming = true;
+    try {
+      
+    
     onStreamingStart();
     if(mode === 'latest') {
       stream = client.blockchain.getBlockStream({mode: dhive.BlockchainMode.Latest});
@@ -86,9 +101,13 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
     stream.on('error', function(err) {
       throw err;
     })
+  } catch (error) {
+      console.log('found you #105')
+  }
   }
 
   function processBlock(block, num) {
+    try {
     onNewBlock(num, block);
     var transactions = block.transactions;
 
@@ -113,6 +132,9 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         }
       }
     }
+  } catch (error) {
+      console.log('found you #136')
+  }
   }
 
   return {
