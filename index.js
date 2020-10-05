@@ -355,13 +355,13 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                want == 'diamond' && amount == 5000 || //state.stats.prices.listed.gems.diamond || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
                 want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
                 want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond
+                         want == 'diamond' && amount == 5000 //state.stats.prices.listed.gems.diamond
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
