@@ -1,6 +1,6 @@
 var dhive = require("@esteemapp/dhive");
 var axios = require('axios');
-var steemjs = require('steem-js-patched');
+var hivejs = require('@hiveio/hive-js');
 var steemState = require('./processor');
 var steemTransact = require('steem-transact');
 var fs = require('fs');
@@ -167,7 +167,7 @@ const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47521200; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client(["https://api.hive.blog", "https://anyx.io", "https://api.hivekings.com", "https://api.openhive.network"]);
+var client = new hivejs.Client(["https://api.openhive.network"]);
 var processor;
 var recents = [];
 const transactor = steemTransact(client, dhive, prefix);
@@ -175,7 +175,7 @@ const transactor = steemTransact(client, dhive, prefix);
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
 //to start the app.  this should prevent the app having to start from GENESIS BLOCK
-steemjs.api.getAccountHistory(username, -1, 100, function(err, result) {
+hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
   if (err){
     console.log(err)
     startWith(sh)
