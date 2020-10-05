@@ -363,7 +363,7 @@ function startApp() {
                             }
 
                             if(state.users[json.from]){
-                                state.users[json.from].gems.push(gemCountNumber)
+                                state.users[json.from].diamond.push(gemCountNumber)
                                 state.gemList.push(diamond)
                             } else
                             
@@ -445,7 +445,7 @@ function startApp() {
                            }
 
                            if(state.users[json.from]){
-                               state.users[json.from].gems.push(gemCountNumber)
+                               state.users[json.from].sapphire.push(gemCountNumber)
                                state.gemList.push(sapphire)
                            } else
                            
@@ -530,7 +530,7 @@ function startApp() {
                        }
 
                        if(state.users[json.from]){
-                           state.users[json.from].gems.push(gemCountNumber)
+                           state.users[json.from].emerald.push(gemCountNumber)
                            state.gemList.push(emerald)
                        } else
                        
@@ -613,7 +613,7 @@ function startApp() {
                    }
 
                    if(state.users[json.from]){
-                       state.users[json.from].gems.push(gemCountNumber)
+                       state.users[json.from].ruby.push(gemCountNumber)
                        state.gemList.push(ruby)
                    } else
                    
