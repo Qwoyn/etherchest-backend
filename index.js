@@ -257,11 +257,14 @@ function startApp() {
             state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007) / 2) + 1;
             state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007) / 4) + 1;
             state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 1;
+            state.bal.c = 0
 
+            console.log('bal.c is ' + state.c);
             console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);
             console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire);
             console.log('emerald price is ' + state.stats.prices.listed.gems.emerald);
             console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
+            
             })
         }
 
@@ -324,16 +327,14 @@ function startApp() {
                 want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == 5000 || 
-                         want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
-                         want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                         want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
+                         want == 'diamond' && amount == 5000
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
                         state.stats.gemCount += 1
+                        state.stats.diamondCount += 1
                         
-                        let gemCountNumber = "gd" + state.stats.gemCount
+                        let gemCountNumber = "gd" + state.stats.diamondCount
 
                         if (!state.users[json.from]) {
                             state.users[json.from] = {
@@ -348,7 +349,7 @@ function startApp() {
                         }
                 
                         //assign gem qualities
-                        var gem = {
+                        var diamond = {
                             stone: want,
                             owner: owner,
                             price: 0,
@@ -363,14 +364,14 @@ function startApp() {
 
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemCountNumber)
-                                state.gemList.push(gem)
+                                state.gemList.push(diamond)
                             } else
                             
                             //if user does not exist in db create user and db entry
                             if (!state.users[json.from]) {
                             state.users[json.from] = {
                                 addrs: [],
-                                gems: [gem],
+                                gems: [diamond],
                                 ducats: 0,
                                 hero: 1,
                                 guild: "",
@@ -407,7 +408,258 @@ function startApp() {
 
                         sendRefund()
 
-                }  else if (
+                    } else if (
+                        want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire
+                       ) {
+                       if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
+
+                       state.stats.gemCount += 1
+                       state.stats.sapphireCount += 1
+                       
+                       let gemCountNumber = "gs" + state.stats.sapphireCount
+
+                       if (!state.users[json.from]) {
+                           state.users[json.from] = {
+                               addrs: [],
+                               gems: [],
+                               ducats: 0,
+                               hero: 1,
+                               guild: "",
+                               friends: [],
+                               v: 0
+                           }
+                       }
+               
+                       //assign gem qualities
+                       var sapphire = {
+                           stone: want,
+                           owner: owner,
+                           price: 0,
+                           forSale: false,
+                           pastValue: amount,
+                           guilded: false,
+                           guildTreasury: 0,
+                           gemID: gemCountNumber,
+                           mature: false,
+                           maturityBlock: processor.getCurrentBlockNumber() + 10220000
+                           }
+
+                           if(state.users[json.from]){
+                               state.users[json.from].gems.push(gemCountNumber)
+                               state.gemList.push(sapphire)
+                           } else
+                           
+                           //if user does not exist in db create user and db entry
+                           if (!state.users[json.from]) {
+                           state.users[json.from] = {
+                               addrs: [],
+                               gems: [sapphire],
+                               ducats: 0,
+                               hero: 1,
+                               guild: "",
+                               friends: [],
+                               v: 0
+                           }
+                       }
+
+                       state.refund.push(['customJson', 'report', {
+                           diamondPrice: state.stats.prices.listed.gems.diamond,
+                           sapphirePrice: state.stats.prices.listed.gems.sapphire,
+                           emeraldPrice: state.stats.prices.listed.gems.emerald,
+                           rubyPrice: state.stats.prices.listed.gems.ruby,
+                           status:"test"
+                       }])
+
+                       var d = parseInt(state.bal.c / 4)
+                       state.bal.r += state.bal.c
+                       if (d > 0) {
+                           state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                           state.bal.c -= d * 4
+                           d = parseInt(state.bal.c / 5) * 2
+                           state.bal.c = 0
+                       } else {
+                           state.bal.c = 0
+                       }
+
+                       const c = parseInt(amount)
+                       state.bal.c += c
+                       state.bal.b += 0
+                       state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
+                       state.cs[`${json.block_num}:gem prices posted`]
+                       console.log(`${json.from} purchased a ${want}`)
+
+                       sendRefund()
+
+                
+                }  
+             
+                if (
+                    want == 'emerald' && amount == state.stats.prices.listed.gems.emerald
+                   ) {
+                   if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
+
+                   state.stats.gemCount += 1
+                   state.stats.emeraldCount += 1
+                   
+                   let gemCountNumber = "ge" + state.stats.emeraldCount
+
+                   if (!state.users[json.from]) {
+                       state.users[json.from] = {
+                           addrs: [],
+                           gems: [],
+                           ducats: 0,
+                           hero: 1,
+                           guild: "",
+                           friends: [],
+                           v: 0
+                       }
+                   }
+           
+                   //assign gem qualities
+                   var emerald = {
+                       stone: want,
+                       owner: owner,
+                       price: 0,
+                       forSale: false,
+                       pastValue: amount,
+                       guilded: false,
+                       guildTreasury: 0,
+                       gemID: gemCountNumber,
+                       mature: false,
+                       maturityBlock: processor.getCurrentBlockNumber() + 10220000
+                       }
+
+                       if(state.users[json.from]){
+                           state.users[json.from].gems.push(gemCountNumber)
+                           state.gemList.push(emerald)
+                       } else
+                       
+                       //if user does not exist in db create user and db entry
+                       if (!state.users[json.from]) {
+                       state.users[json.from] = {
+                           addrs: [],
+                           gems: [emerald],
+                           ducats: 0,
+                           hero: 1,
+                           guild: "",
+                           friends: [],
+                           v: 0
+                       }
+                   }
+
+                   state.refund.push(['customJson', 'report', {
+                       diamondPrice: state.stats.prices.listed.gems.diamond,
+                       sapphirePrice: state.stats.prices.listed.gems.sapphire,
+                       emeraldPrice: state.stats.prices.listed.gems.emerald,
+                       rubyPrice: state.stats.prices.listed.gems.ruby,
+                       status:"test"
+                   }])
+
+                   var d = parseInt(state.bal.c / 4)
+                   state.bal.r += state.bal.c
+                   if (d > 0) {
+                       state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                       state.bal.c -= d * 4
+                       d = parseInt(state.bal.c / 5) * 2
+                       state.bal.c = 0
+                   } else {
+                       state.bal.c = 0
+                   }
+
+                   const c = parseInt(amount)
+                   state.bal.c += c
+                   state.bal.b += 0
+                   state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
+                   state.cs[`${json.block_num}:gem prices posted`]
+                   console.log(`${json.from} purchased a ${want}`)
+
+                   sendRefund()
+
+            } 
+            if (
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
+               ) {
+               if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
+
+               state.stats.gemCount += 1
+               state.stats.rubyCount += 1
+               
+               let gemCountNumber = "gd" + state.stats.rubyCount
+
+               if (!state.users[json.from]) {
+                   state.users[json.from] = {
+                       addrs: [],
+                       gems: [],
+                       ducats: 0,
+                       hero: 1,
+                       guild: "",
+                       friends: [],
+                       v: 0
+                   }
+               }
+       
+               //assign gem qualities
+               var ruby = {
+                   stone: want,
+                   owner: owner,
+                   price: 0,
+                   forSale: false,
+                   pastValue: amount,
+                   guilded: false,
+                   guildTreasury: 0,
+                   gemID: gemCountNumber,
+                   mature: false,
+                   maturityBlock: processor.getCurrentBlockNumber() + 10220000
+                   }
+
+                   if(state.users[json.from]){
+                       state.users[json.from].gems.push(gemCountNumber)
+                       state.gemList.push(ruby)
+                   } else
+                   
+                   //if user does not exist in db create user and db entry
+                   if (!state.users[json.from]) {
+                   state.users[json.from] = {
+                       addrs: [],
+                       gems: [ruby],
+                       ducats: 0,
+                       hero: 1,
+                       guild: "",
+                       friends: [],
+                       v: 0
+                   }
+               }
+
+               state.refund.push(['customJson', 'report', {
+                   diamondPrice: state.stats.prices.listed.gems.diamond,
+                   sapphirePrice: state.stats.prices.listed.gems.sapphire,
+                   emeraldPrice: state.stats.prices.listed.gems.emerald,
+                   rubyPrice: state.stats.prices.listed.gems.ruby,
+                   status:"test"
+               }])
+
+               var d = parseInt(state.bal.c / 4)
+               state.bal.r += state.bal.c
+               if (d > 0) {
+                   state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                   state.bal.c -= d * 4
+                   d = parseInt(state.bal.c / 5) * 2
+                   state.bal.c = 0
+               } else {
+                   state.bal.c = 0
+               }
+
+               const c = parseInt(amount)
+               state.bal.c += c
+               state.bal.b += 0
+               state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
+               state.cs[`${json.block_num}:gem prices posted`]
+               console.log(`${json.from} purchased a ${want}`)
+
+               sendRefund()
+
+         
+        } else if (
                     want == 'diamond' && amount < 5000 || 
                     want == 'sapphire' && amount < state.stats.prices.listed.gems.sapphire || 
                     want == 'emerald' && amount < state.stats.prices.listed.gems.emerald || 

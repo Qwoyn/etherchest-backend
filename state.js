@@ -71,6 +71,10 @@ module.exports = {
          ]
       },
       "gemCount": 1,
+      "diamondCount":0,
+      "sapphireCount": 0,
+      "emeraldCount": 0,
+      "rubyCount": 0,
       "stakers": 1,
       "guilds": [
          {
@@ -142,7 +146,7 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "gems": [
+         "diamond": [
             "gd1"
          ],
          "ducats" : 0,
