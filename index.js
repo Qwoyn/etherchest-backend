@@ -378,14 +378,21 @@ function startApp() {
                         state.cs[`${json.block_num}:gem prices posted`]
                         console.log(`${json.from} purchased a ${want}`)
 
-                }  else {
+                }  else if (
+                    want == 'diamond' && amount < 5000 || 
+                    want == 'sapphire' && amount < state.stats.prices.listed.gems.sapphire || 
+                    want == 'emerald' && amount < state.stats.prices.listed.gems.emerald || 
+                    want == 'ruby' && amount < state.stats.prices.listed.gems.ruby
+                    ){
                         state.cs[`${json.block_num}:${from}`] = `${from} tried to buy gems but gem price probably doesnt match #379`
+                        state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent less than the price of a gem ...refund?'])
+
                     }
 
             } else {
                 state.bal.r += amount
-                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than 5 Hive trying to purchase gems...refund?'])
-                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than 5 Hive trying to purchase gems...please check wallet`
+                state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than the price of gems...refund?'])
+                state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than the price of gems...please check wallet`
             }
 
         } else if (json.from == username) {
