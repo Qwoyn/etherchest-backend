@@ -251,9 +251,7 @@ function startApp() {
     processor = steemState(client, dhive, startingBlock, 10, prefix);
 
     processor.onBlock(function(num, block) {
-        var ethVault = 'ec-vault'
-
-        //process state.refund
+        //process state.refunds
         if (num % 2 === 0 && state.refund.length && processor.isStreaming() || processor.isStreaming() && state.refund.length > 1) {
             if (state.refund[0].length == 4) {
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
@@ -316,7 +314,7 @@ function startApp() {
         }*/
   })
 
-    processor.on('redeem', function(j, f) {
+   /* processor.on('redeem', function(j, f) {
         state.cs[`${j.block_num}:${f}`] = `Redeem Op:${f} -> ${j}`
         if (state.users[f]){if (state.users[f].v && state.users[f].v > 0) {
             state.users[f].v--
@@ -328,7 +326,7 @@ function startApp() {
             }
             state.users[f].gems.push(gem)
         }}
-    });
+    });*/
 
     processor.on('adjust', function(json, from) {
         if (from == 'etherchest' && json.dust > 1) state.stats.dust = json.dust
@@ -419,14 +417,6 @@ function startApp() {
                             }
                         }
 
-                        state.refund.push(['customJson', 'report', {
-                            diamondPrice: state.stats.prices.listed.gems.diamond,
-                            sapphirePrice: state.stats.prices.listed.gems.sapphire,
-                            emeraldPrice: state.stats.prices.listed.gems.emerald,
-                            rubyPrice: state.stats.prices.listed.gems.ruby,
-                            status:"test"
-                        }])
-
                         var d = parseInt(state.bal.c / 4)
                         state.bal.r += state.bal.c
                         if (d > 0) {
@@ -503,14 +493,6 @@ function startApp() {
                                v: 0
                            }
                        }
-
-                       state.refund.push(['customJson', 'report', {
-                           diamondPrice: state.stats.prices.listed.gems.diamond,
-                           sapphirePrice: state.stats.prices.listed.gems.sapphire,
-                           emeraldPrice: state.stats.prices.listed.gems.emerald,
-                           rubyPrice: state.stats.prices.listed.gems.ruby,
-                           status:"test"
-                       }])
 
                        var d = parseInt(state.bal.c / 4)
                        state.bal.r += state.bal.c
@@ -592,14 +574,6 @@ function startApp() {
                        }
                    }
 
-                   state.refund.push(['customJson', 'report', {
-                       diamondPrice: state.stats.prices.listed.gems.diamond,
-                       sapphirePrice: state.stats.prices.listed.gems.sapphire,
-                       emeraldPrice: state.stats.prices.listed.gems.emerald,
-                       rubyPrice: state.stats.prices.listed.gems.ruby,
-                       status:"test"
-                   }])
-
                    var d = parseInt(state.bal.c / 4)
                    state.bal.r += state.bal.c
                    if (d > 0) {
@@ -677,15 +651,7 @@ function startApp() {
                        v: 0
                    }
                }
-
-               state.refund.push(['customJson', 'report', {
-                   diamondPrice: state.stats.prices.listed.gems.diamond,
-                   sapphirePrice: state.stats.prices.listed.gems.sapphire,
-                   emeraldPrice: state.stats.prices.listed.gems.emerald,
-                   rubyPrice: state.stats.prices.listed.gems.ruby,
-                   status:"test"
-               }])
-
+               
                var d = parseInt(state.bal.c / 4)
                state.bal.r += state.bal.c
                if (d > 0) {
