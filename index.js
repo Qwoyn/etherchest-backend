@@ -349,12 +349,12 @@ function startApp() {
                             guilded: false,
                             guildTreasury: 0,
                             gemID: gemCountNumber,
+                            mature: false,
+                            maturityBlock: processor.getCurrentBlockNumber() + 10220000
                             }
 
                             if(state.users[json.from]){
                                 state.users[json.from].gems.push(gemCountNumber)
-                               // state.users[json.from].gems[gemCountNumber].push(gem)
-                                //state.users[json.from].gems[gemCountNumber].push(gem)
                                 state.gemList.push(gem)
                             } else
                             
