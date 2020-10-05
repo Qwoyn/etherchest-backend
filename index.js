@@ -95,6 +95,14 @@ app.get('/refunds', (req, res, next) => {
         bal: state.bal
     }, null, 3))
 });
+
+//post payouts in que
+app.get('/refunds', (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({
+        prices: state.stats.prices.listed.gems
+    }, null, 3))
+});
            
 app.get('/u/:user', (req, res, next) => {
     let user = req.params.user
