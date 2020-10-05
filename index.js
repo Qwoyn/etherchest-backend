@@ -76,12 +76,12 @@ app.get('/', (req, res, next) => {
 });
 
 //shows gems by user
-app.get('/gems/:user', (req, res, next) => {
+app.get('/diamonds/:user', (req, res, next) => {
     let user = req.params.user, arr = []
     res.setHeader('Content-Type', 'application/json');
     if(state.users[user]){
-        for (var i = 0 ; i < state.users[user].gems.length ; i++){
-            arr.push(state.users[user].gems[i])
+        for (var i = 0 ; i < state.users[user].diamond.length ; i++){
+            arr.push(state.users[user].diamond[i])
         }
     }
     res.send(JSON.stringify(arr, null, 3))
