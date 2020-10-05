@@ -249,7 +249,7 @@ function startApp() {
 
         //add function to send json to chain with updated price of gems
 
-        if (num % 1 === 0) {
+        if (num % 5 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
