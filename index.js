@@ -339,7 +339,10 @@ function startApp() {
                         if (!state.users[json.from]) {
                             state.users[json.from] = {
                                 addrs: [],
-                                gems: [],
+                                diamond: [],
+                                emerald: [],
+                                sapphire: [],
+                                ruby: [],
                                 ducats: 0,
                                 hero: 1,
                                 guild: "",
@@ -421,7 +424,10 @@ function startApp() {
                        if (!state.users[json.from]) {
                            state.users[json.from] = {
                                addrs: [],
-                               gems: [],
+                               diamond: [],
+                               emerald: [],
+                               sapphire: [],
+                               ruby: [],
                                ducats: 0,
                                hero: 1,
                                guild: "",
@@ -506,7 +512,10 @@ function startApp() {
                    if (!state.users[json.from]) {
                        state.users[json.from] = {
                            addrs: [],
-                           gems: [],
+                           diamond: [],
+                           emerald: [],
+                           sapphire: [],
+                           ruby: [],
                            ducats: 0,
                            hero: 1,
                            guild: "",
@@ -589,7 +598,10 @@ function startApp() {
                if (!state.users[json.from]) {
                    state.users[json.from] = {
                        addrs: [],
-                       gems: [],
+                       diamond: [],
+                       emerald: [],
+                       sapphire: [],
+                       ruby: [],
                        ducats: 0,
                        hero: 1,
                        guild: "",
