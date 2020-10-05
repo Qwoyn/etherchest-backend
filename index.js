@@ -295,7 +295,7 @@ function startApp() {
             state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 1;
             state.bal.c = 0
 
-            console.log('bal.c is ' + state.c);
+            console.log('bal.c is ' + state.bal.c);
             console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);
             console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire);
             console.log('emerald price is ' + state.stats.prices.listed.gems.emerald);
