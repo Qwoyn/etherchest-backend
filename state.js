@@ -149,6 +149,9 @@ module.exports = {
          "diamond": [
             "gd1"
          ],
+         "sapphire": [],
+         "emerald": [],
+         "ruby": [],
          "ducats" : 0,
          "profile": [],
          "hero": 1,
