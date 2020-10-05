@@ -75,13 +75,49 @@ app.get('/', (req, res, next) => {
     res.send(JSON.stringify(state, null, 3))
 });
 
-//shows gems by user
+//shows diamond by user
 app.get('/diamonds/:user', (req, res, next) => {
     let user = req.params.user, arr = []
     res.setHeader('Content-Type', 'application/json');
     if(state.users[user]){
         for (var i = 0 ; i < state.users[user].diamond.length ; i++){
             arr.push(state.users[user].diamond[i])
+        }
+    }
+    res.send(JSON.stringify(arr, null, 3))
+});
+
+//shows sapphires by user
+app.get('/sapphires/:user', (req, res, next) => {
+    let user = req.params.user, arr = []
+    res.setHeader('Content-Type', 'application/json');
+    if(state.users[user]){
+        for (var i = 0 ; i < state.users[user].sapphire.length ; i++){
+            arr.push(state.users[user].sapphire[i])
+        }
+    }
+    res.send(JSON.stringify(arr, null, 3))
+});
+
+//shows emeralds by user
+app.get('/emeralds/:user', (req, res, next) => {
+    let user = req.params.user, arr = []
+    res.setHeader('Content-Type', 'application/json');
+    if(state.users[user]){
+        for (var i = 0 ; i < state.users[user].emerald.length ; i++){
+            arr.push(state.users[user].emerald[i])
+        }
+    }
+    res.send(JSON.stringify(arr, null, 3))
+});
+
+//shows ruby by user
+app.get('/rubys/:user', (req, res, next) => {
+    let user = req.params.user, arr = []
+    res.setHeader('Content-Type', 'application/json');
+    if(state.users[user]){
+        for (var i = 0 ; i < state.users[user].ruby.length ; i++){
+            arr.push(state.users[user].ruby[i])
         }
     }
     res.send(JSON.stringify(arr, null, 3))
@@ -722,8 +758,6 @@ function startApp() {
 }
 }
 
-
-
 // Needs work, not saving state to ipfs ERROR
 function ipfsSaveState(blocknum, hashable) {
     ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
@@ -744,14 +778,6 @@ function ipfsSaveState(blocknum, hashable) {
         }
     })
 };
-
-//restart app if exception
-process.on('uncaughtException', function(err) {
-    log('ERROR: index.js Crashed with Following Error:');
-    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-    console.error(err.stack);
-    startApp();
-});
 
 var bot = {
     xfer: function(toa, amount, memo) {

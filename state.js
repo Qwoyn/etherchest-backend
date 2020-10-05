@@ -71,7 +71,7 @@ module.exports = {
          ]
       },
       "gemCount": 1,
-      "diamondCount":0,
+      "diamondCount":1,
       "sapphireCount": 0,
       "emeraldCount": 0,
       "rubyCount": 0,
