@@ -376,7 +376,7 @@ function startApp() {
                             }
                         }
                         
-                        state.gemList = {
+                        var gemList = {
                             [gemCountNumber]: [],
                         }
 
@@ -396,6 +396,7 @@ function startApp() {
 
                             if(state.users[json.from]){
                                 state.users[json.from].diamond.push(gemCountNumber)
+                                state.gemList.push(gemList)
                                 state.gemList[gemCountNumber].push(diamond)
                             } else
                             
