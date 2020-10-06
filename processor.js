@@ -1,4 +1,19 @@
-module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed=1000, prefix='etherchest_', mode='latest') {
+/*
+  args:
+    client: A dsteem client to use to get blocks, etc. [REQUIRED]
+    steem: A dsteem instance. [REQIURED]
+    currentBlockNumber: The last block that has been processed by this client; should be
+      loaded from some sort of storage file. Default is block 1.
+    blockComputeSpeed: The amount of milliseconds to wait before processing
+      another block (not used when streaming)
+    prefix: The prefix to use for each transaction id, to identify the DApp which
+      is using these transactions (interfering transaction with other Dappsids could cause
+      errors)
+    mode: Whether to stream blocks as `latest` or `irreversible`.
+    unexpectedStopCallback: A function to call when steem-state stops unexpectedly
+      due to an error.
+*/
+module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed=100, prefix='etherchest_', mode='latest', unexpectedStopCallback=function(){}) {
   var onCustomJsonOperation = {};  // Stores the function to be run for each operation id.
   var onOperation = {};
 
@@ -16,34 +31,28 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
   // Returns the block number of the last block on the chain or the last irreversible block depending on mode.
   function getHeadOrIrreversibleBlockNumber(callback) {
     client.database.getDynamicGlobalProperties().then(function(result) {
-      try {
       if(mode === 'latest') {
         callback(result.head_block_number);
       } else {
         callback(result.last_irreversible_block_num);
       }
-    } catch (error) {
-        console.log('found you #28')
-    }
+    }).catch(function (err) {
+      console.log("Error, steem-state is unexpectedly stopping:", err)
+      unexpectedStopCallback(err)
     })
   }
 
   function isAtRealTime(callback) {
     getHeadOrIrreversibleBlockNumber(function(result) {
-      try {
       if(currentBlockNumber >= result) {
         callback(true);
       } else {
         callback(false);
       }
-    } catch (error) {
-        console.log('found you #40')
-    }
     })
   }
 
   function beginBlockComputing() {
-    try {
     function computeBlock() {
 
       var blockNum = currentBlockNumber;// Helper variable to prevent race condition
@@ -69,18 +78,12 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         setTimeout(stopCallback,1000);
       }
     }
-  } catch (error) {
-      console.log('found you #73')
-  }
 
     computeBlock();
   }
 
   function beginBlockStreaming() {
     isStreaming = true;
-    try {
-      
-    
     onStreamingStart();
     if(mode === 'latest') {
       stream = client.blockchain.getBlockStream({mode: dhive.BlockchainMode.Latest});
@@ -101,13 +104,9 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
     stream.on('error', function(err) {
       throw err;
     })
-  } catch (error) {
-      console.log('found you #105')
-  }
   }
 
   function processBlock(block, num) {
-    try {
     onNewBlock(num, block);
     var transactions = block.transactions;
 
@@ -117,9 +116,9 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         var op = transactions[i].operations[j];
         if(op[0] === 'custom_json') {
           if(typeof onCustomJsonOperation[op[1].id] === 'function') {
-            var ip = JSON.parse(op[1].json),
-                from = op[1].required_posting_auths[0],
-                active = false
+            var ip = JSON.parse(op[1].json);
+            var from = op[1].required_posting_auths[0];
+            var active = false;
             ip.transaction_id = transactions[i].transaction_id
             ip.block_num = transactions[i].block_num
             if(!from){from = op[1].required_auths[0];active=true}
@@ -132,9 +131,6 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         }
       }
     }
-  } catch (error) {
-      console.log('found you #136')
-  }
   }
 
   return {
