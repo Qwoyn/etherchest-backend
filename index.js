@@ -170,7 +170,7 @@ const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on th
 var client = new dhive.Client(["https://api.openhive.network"]);
 var processor;
 var recents = [];
-const transactor = steemTransact(client, dhive, prefix);
+//const transactor = steemTransact(client, dhive, prefix);
 
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
