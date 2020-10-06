@@ -293,16 +293,16 @@ function startApp() {
             })
         }
 
-       /* if (num % 5 === 0 && processor.isStreaming()) {
+       if (num % 5 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
-                state.refund.push(['xfer', ethVault, parseInt(4 * d), 'To Validator'])
+                state.refund.push(['xfer', 'ec-Vault', parseInt(4 * d), 'To Validator'])
                 state.bal.c -= d * 4
                 d = parseInt(state.bal.c / 5) * 2
                 state.bal.c = 0
             }
-        }*/
+        }
   })
 
    /* processor.on('redeem', function(j, f) {
