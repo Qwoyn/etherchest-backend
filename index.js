@@ -1,7 +1,7 @@
 var dhive = require("@esteemapp/dhive");
 var axios = require('axios');
 var hivejs = require('@hiveio/hive-js');
-var steemState = require('./processor');
+var hiveState = require('./processor');
 var steemTransact = require('steem-transact');
 var fs = require('fs');
 const cors = require('cors');
@@ -239,7 +239,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = steemState(client, dhive, startingBlock, 10, prefix);
+    processor = hiveState(client, dhive, startingBlock, 10, prefix);
 
     processor.onBlock(function(num, block) {
         //process state.refunds
