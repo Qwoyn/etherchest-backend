@@ -377,7 +377,7 @@ function startApp() {
                         }
                         
                         var gemList = {
-                            [gemCountNumber]: [],
+                            [gemCountNumber]: {},
                         }
 
                         //assign gem qualities
