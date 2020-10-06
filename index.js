@@ -256,6 +256,7 @@ function startApp() {
         if (num % 100 === 0 && !processor.isStreaming()) {
             client.database.getDynamicGlobalProperties().then(function(result) {
                 state.bal.c = 0
+                state.bal.r = 0
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
         }
@@ -689,6 +690,7 @@ function startApp() {
         }
     });
     processor.onStreamingStart(function() {
+        state.bal.c = 0
         console.log("At real time.")
     });
 
