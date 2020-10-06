@@ -251,6 +251,8 @@ function startApp() {
     processor = steemState(client, dhive, startingBlock, 10, prefix);
 
     processor.onBlock(function(num, block) { 
+        sendRefund()
+
         if (num % 100 === 0 && !processor.isStreaming()) {
             client.database.getDynamicGlobalProperties().then(function(result) {
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
@@ -424,7 +426,7 @@ function startApp() {
                         state.cs[`${json.block_num}:gem prices posted`]
                         console.log(`${json.from} purchased a ${want}`)
 
-                        sendRefund()
+                        
 
                     } else if (
                         want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire
