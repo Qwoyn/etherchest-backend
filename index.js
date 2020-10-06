@@ -161,11 +161,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47554765; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47555200; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47554765; //supposed to be genesis block 
+const ago = ENV.ago || 47555200; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network"]);
 var processor;
@@ -501,9 +501,6 @@ function startApp() {
                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                        state.cs[`${json.block_num}:gem prices posted`]
                        console.log(`${json.from} purchased a ${want}`)
-
-                       sendRefund()
-
                 
                 }  
              
@@ -551,7 +548,7 @@ function startApp() {
                            state.gemList.push(emerald)
                        } else
                        
-                       //if user does not exist in db create user and db entry
+                    //if user does not exist in db create user and db entry
                        if (!state.users[json.from]) {
                        state.users[json.from] = {
                            addrs: [],
@@ -582,7 +579,7 @@ function startApp() {
                    state.cs[`${json.block_num}:gem prices posted`]
                    console.log(`${json.from} purchased a ${want}`)
 
-                   sendRefund()
+               
 
             } 
             if (
@@ -659,8 +656,6 @@ function startApp() {
                state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                state.cs[`${json.block_num}:gem prices posted`]
                console.log(`${json.from} purchased a ${want}`)
-
-               sendRefund()
 
          
         } else if (
