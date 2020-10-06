@@ -303,6 +303,7 @@ function startApp() {
                 state.bal.r = 0
                 state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
                 d = 0
+                break;
             }
         }
   })
