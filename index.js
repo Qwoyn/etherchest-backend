@@ -297,10 +297,9 @@ function startApp() {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
-                state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                state.bal.c -= d * 4
-                d = 0
                 state.bal.c = 0
+                state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                d = 0
             }
         }
   })
