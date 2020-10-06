@@ -295,7 +295,7 @@ function startApp() {
             })
         }
 
-       if (num % 1 === 0 && processor.isStreaming()) {
+      /* if (num % 1 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
@@ -305,7 +305,7 @@ function startApp() {
                 d = 0
                 break;
             }
-        }
+        }*/
   })
 
    /* processor.on('redeem', function(j, f) {
