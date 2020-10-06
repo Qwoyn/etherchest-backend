@@ -412,6 +412,7 @@ function startApp() {
                             }
                         }
 
+                        var d = amount / 4;
                         state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
 
                         state.bal.b += 0
