@@ -247,9 +247,11 @@ function startApp() {
             if (state.refund[0].length == 4) {
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2], state.refund[0][3])
                 console.log("sent refund")
+                state.refund.splice(i, 1)
             } else if (state.refund[0].length == 3){
                 bot[state.refund[0][0]].call(this, state.refund[0][1], state.refund[0][2])
                 console.log("sent refund")
+                state.refund.splice(i, 1)
             }
         }
  
@@ -303,7 +305,6 @@ function startApp() {
                 state.bal.r = 0
                 state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
                 d = 0
-                state.refund.splice(i, 1)
             }
         }
   })
