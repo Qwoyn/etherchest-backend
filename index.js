@@ -167,7 +167,7 @@ const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47555920; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client(["https://api.openhive.network"]);
+var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
 var recents = [];
 //const transactor = steemTransact(client, dhive, prefix);
@@ -295,7 +295,7 @@ function startApp() {
             })
         }
 
-      /* if (num % 1 === 0 && processor.isStreaming()) {
+       if (num % 1 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c / 4)
             state.bal.r += state.bal.c
             if (d > 0) {
@@ -303,9 +303,9 @@ function startApp() {
                 state.bal.r = 0
                 state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
                 d = 0
-                break;
+                state.refund.splice(i, 1)
             }
-        }*/
+        }
   })
 
    /* processor.on('redeem', function(j, f) {
@@ -677,7 +677,7 @@ function startApp() {
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than the price of gems...please check wallet`
             }
 
-        } /*else if (json.from == username) {
+        } else if (json.from == username) {
             const amount = parseInt(parseFloat(json.amount) * 1000)
             for (var i = 0; i < state.refund.length; i++) {
                 if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
@@ -687,7 +687,7 @@ function startApp() {
                     break;
                 }
             }
-        }*/
+        }
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
