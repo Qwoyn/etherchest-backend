@@ -161,11 +161,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47556385; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47556518; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47556385; //supposed to be genesis block 
+const ago = ENV.ago || 47556518; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -645,9 +645,15 @@ function startApp() {
                var d = parseInt(state.bal.c / 4)
                state.bal.r += state.bal.c
                if (d > 0) {
-                  // state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                  // state.bal.c -= d * 4
-                   //d = parseInt(state.bal.c / 5) * 2
+                const amount = parseInt(parseFloat(json.amount) * 1000)
+                for (var i = 0; i < state.refund.length; i++) {
+                    if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
+                        state.refund.splice(i, 1);
+                        state.bal.r = 0;
+                        state.cs[`${json.block_num}:${json.to}`] = `${json.to} refunded successfully`
+                        break;
+                    }
+                }
                    state.bal.c = 0
                } else {
                    state.bal.c = 0
@@ -673,7 +679,6 @@ function startApp() {
                     }
 
             } else {
-                state.bal.r += amount
                 state.refund.push(['xfer', wrongTransaction, amount, json.from + ' sent more than the price of gems...refund?'])
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than the price of gems...please check wallet`
             }
