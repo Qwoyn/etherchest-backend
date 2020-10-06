@@ -251,7 +251,7 @@ function startApp() {
     processor = steemState(client, dhive, startingBlock, 10, prefix);
 
     processor.onBlock(function(num, block) { 
-        sendRefund()
+        sendRefund();
 
         if (num % 100 === 0 && !processor.isStreaming()) {
             client.database.getDynamicGlobalProperties().then(function(result) {
