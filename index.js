@@ -299,7 +299,7 @@ function startApp() {
             if (d > 0) {
                 state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
                 state.bal.c -= d * 4
-                d = parseInt(state.bal.c / 5) * 2
+                d = 0
                 state.bal.c = 0
             }
         }
@@ -487,9 +487,9 @@ function startApp() {
                        var d = parseInt(state.bal.c / 4)
                        state.bal.r += state.bal.c
                        if (d > 0) {
-                           state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                           state.bal.c -= d * 4
-                           d = parseInt(state.bal.c / 5) * 2
+                           //state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                           //state.bal.c -= d * 4
+                           //d = parseInt(state.bal.c / 5) * 2
                            state.bal.c = 0
                        } else {
                            state.bal.c = 0
@@ -567,9 +567,9 @@ function startApp() {
                    var d = parseInt(state.bal.c / 4)
                    state.bal.r += state.bal.c
                    if (d > 0) {
-                       state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                       state.bal.c -= d * 4
-                       d = parseInt(state.bal.c / 5) * 2
+                       //state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                       //state.bal.c -= d * 4
+                       //d = parseInt(state.bal.c / 5) * 2
                        state.bal.c = 0
                    } else {
                        state.bal.c = 0
@@ -645,9 +645,9 @@ function startApp() {
                var d = parseInt(state.bal.c / 4)
                state.bal.r += state.bal.c
                if (d > 0) {
-                   state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                   state.bal.c -= d * 4
-                   d = parseInt(state.bal.c / 5) * 2
+                  // state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                  // state.bal.c -= d * 4
+                   //d = parseInt(state.bal.c / 5) * 2
                    state.bal.c = 0
                } else {
                    state.bal.c = 0
