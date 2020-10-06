@@ -412,18 +412,8 @@ function startApp() {
                             }
                         }
 
-                        var d = parseInt(state.bal.c / 4)
-                        if (d > 0) {
-                          state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                          //  state.bal.c -= d * 4
-                          //  d = parseInt(state.bal.c / 5) * 2
-                            state.bal.c = 0
-                        } else {
-                            
-                        }
+                        state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
 
-                        const c = parseInt(amount)
-                        state.bal.c += c
                         state.bal.b += 0
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                         state.cs[`${json.block_num}:gem prices posted`]
