@@ -395,9 +395,10 @@ function startApp() {
                             }
 
                             if(state.users[json.from]){
-                                state.users[json.from].diamond.push(gemCountNumber)
-                                state.gemList.push(gemList)
-                                state.gemList.gemCountNumber.push(diamond)
+                                state.users[json.from].diamond.push(gemList)
+                                state.users[json.from].diamond[gemList].push(diamond)
+                               // state.gemList.push(gemList)
+                              //  state.gemList.gemCountNumber.push(diamond)
                             } else
                             
                             //if user does not exist in db create user and db entry
