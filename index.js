@@ -142,8 +142,13 @@ app.get('/refunds', (req, res, next) => {
            
 app.get('/u/:user', (req, res, next) => {
     let user = req.params.user
+    const userState = state.users[user]
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(state.users[user], null, 3))
+    if(userState) {
+      res.send(JSON.stringify(userState, null, 3))
+    } else {
+      res.send(JSON.stringify({}, null, 3))
+    }
 });
 
 app.get('/delegation/:user', (req, res, next) => {
