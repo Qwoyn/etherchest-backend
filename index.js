@@ -348,7 +348,7 @@ function startApp() {
     processor.on('register', function(json, from) {
 
                 if (!state.users[json.from]) {
-                    state.users[json.from] = {
+                    state.users[from] = {
                         addrs: [],
                         diamond: [],
                         emerald: [],
@@ -362,7 +362,7 @@ function startApp() {
                     }
                    state.userCount++;
                 }
-        state.cs[`${json.block_num}:${from}`] = `${from} succesfully watered ${usernames}`
+        state.cs[`${json.block_num}:${from}`] = `${from} succesfully registered`
     });
 
     // buying gems
