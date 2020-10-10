@@ -346,8 +346,8 @@ function startApp() {
     });
 
     processor.on('register', function(json, from) {
-        let usernames = json.from;
-                if (state.users[usernames] = undefined) {
+
+                if (!state.users[json.from]) {
                     state.users[json.from] = {
                         addrs: [],
                         diamond: [],
@@ -360,17 +360,9 @@ function startApp() {
                         friends: [],
                         v: 0
                     }
-
                    state.userCount++;
                 }
         state.cs[`${json.block_num}:${from}`] = `${from} succesfully watered ${usernames}`
-    });
-
-    //search for etherchest_register from user on blockchain since genesis
-    //steemconnect link
-    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
-    processor.on('register', function(json, from) {
-        
     });
 
     // buying gems
