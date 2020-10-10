@@ -23,8 +23,10 @@ const IpfsHttpClient = require('ipfs-http-client')
 const { globSource } = IpfsHttpClient
 const ipfs = IpfsHttpClient()
  
+const ipfsFile = async e => {
 const file = await ipfs.add(globSource('./state.js', { recursive: true }))
 console.log(file)
+}
  
 /*
 {
@@ -294,6 +296,7 @@ function startApp() {
  
         if (num % 100 === 0 && !processor.isStreaming()) {
             client.database.getDynamicGlobalProperties().then(function(result) {
+                ipfsFile()
                 state.bal.c = 0
                 state.bal.r = 0
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
