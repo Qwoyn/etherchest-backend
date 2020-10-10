@@ -198,7 +198,7 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
     const mostRecent = recents.shift()
     console.log('starting properly')
     console.log(sh)
-    console.log(mostRecent)
+    console.log(username)
     startWith(mostRecent)
   }
 });
@@ -206,22 +206,22 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
 /****ISSUE****/
 function startWith(hash) {
     console.log("heres the variable "+ hash + " from startWith(hash)")
-    console.log("this is sh" + sh)
-    if (hash) {
-        console.log(`Attempting to start from IPFS save state ${hash}`);
-        ipfs.cat(hash, (err, file) => {
+    console.log("this is sh " + sh)
+    if (sh) {
+        console.log(`Attempting to start from IPFS save state ${sh}`);
+        ipfs.cat(sh, (err, file) => {
             if (!err) {
                 var data = JSON.parse(file.toString())
                 startingBlock = data[0]
-                if (startingBlock == ago){startWith(hash)}
+                if (startingBlock == ago){startWith(sh)}
                 else {
                 state = JSON.parse(data[1]);
                 startApp();
                 }
             } else {
                 const mostRecent = recents.shift()
-                console.log('Attempting start from:'+mostRecent)
-                startWith(mostRecent)
+                console.log('Attempting start from: '+ sh)
+                startWith(sh)
             }
         });
     } else {
