@@ -28,15 +28,13 @@ async function main () {
 
   console.log('Version:', version.version)
 
-  const fileAdded = await node.add({
-    path: './state.js',
-    content: 'Hello World 101'
-  })
+  const file = await ipfs.add(globSource('./docs', { recursive: true }))
+  console.log(file)
 
-  console.log('Added file:', fileAdded.path, fileAdded.cid)
+  console.log('Added file:', file.path, file.cid)
 
   const chunks = []
-  for await (const chunk of node.cat(fileAdded.cid)) {
+  for await (const chunk of node.cat(file.cid)) {
       chunks.push(chunk)
   }
 
