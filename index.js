@@ -20,7 +20,7 @@ const ipfs = new IPFS({
  */
 
 
-const IpfsHttpClient = require('ipfs-http-client')
+const ipfs = require('ipfs-http-client')
 const { globSource } = IpfsHttpClient
 const IPFS = IpfsHttpClient()
 
