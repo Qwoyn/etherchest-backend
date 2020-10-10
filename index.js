@@ -40,7 +40,7 @@ async function main () {
       chunks.push(chunk)
   }
 
-  console.log('Added file contents:', uint8Array(chunks).toString())
+  console.log('Added file contents:', chunks.toString())
 }
  
 
