@@ -296,7 +296,6 @@ function startApp() {
  
         if (num % 100 === 0 && !processor.isStreaming()) {
             client.database.getDynamicGlobalProperties().then(function(result) {
-                ipfsFile()
                 state.bal.c = 0
                 state.bal.r = 0
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
@@ -318,6 +317,8 @@ function startApp() {
 
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
+            ipfsFile();
+
             getEthToHive(1).then(price => {
 
             let gemPrice = price * 1;
