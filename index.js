@@ -27,9 +27,10 @@ async function main () {
   const version = await node.version()
 
   console.log('Version:', version.version)
-  
-  const fileAdded = await IPFS.add(globSource('./state.js', { recursive: true }))
-  console.log(fileAdded)
+
+  const fileAdded = await node.add({
+    path: './state.js'
+  })
 
   console.log('Added file:', fileAdded.path, fileAdded.cid)
 
@@ -38,8 +39,10 @@ async function main () {
       chunks.push(chunk)
   }
 
-  console.log('Added file contents:', chunks.toString())
+  console.log('Added file contents:', uint8ArrayConcat(chunks).toString())
 }
+
+main()
  
 
  
