@@ -20,9 +20,7 @@ const ipfs = new IPFS({
  */
 
 
-const ipfs = require('ipfs-http-client')
-const { globSource } = IpfsHttpClient
-const IPFS = IpfsHttpClient()
+const IPFS = require('ipfs')
 
 async function main () {
   const node = await IPFS.create()
@@ -336,7 +334,7 @@ function startApp() {
 
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
-            ipfsFile();
+            main();
 
             getEthToHive(1).then(price => {
 
