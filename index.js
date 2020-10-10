@@ -20,30 +20,26 @@ const ipfs = new IPFS({
  */
 
 
-const IPFS = require('ipfs')
-
-async function main () {
-  const node = await IPFS.create()
-  const version = await node.version()
-
-  console.log('Version:', version.version)
-
-  const fileAdded = await node.add({
-    path: './state.js'
-  })
-
-  console.log('Added file:', fileAdded.path, fileAdded.cid)
-
-  const chunks = []
-  for await (const chunk of node.cat(fileAdded.cid)) {
-      chunks.push(chunk)
-  }
-
-  console.log('Added file contents:', uint8ArrayConcat(chunks).toString())
-}
-
-main()
+const IpfsHttpClient = require('ipfs-http-client')
+const { globSource } = IpfsHttpClient
+const ipfs = IpfsHttpClient()
  
+const file = await ipfs.add(globSource('./docs', { recursive: true }))
+console.log(file)
+ 
+/*
+{
+  path: 'docs/assets/anchor.js',
+  cid: CID('QmVHxRocoWgUChLEvfEyDuuD6qJ4PhdDL2dTLcpUy3dSC2'),
+  size: 15347
+}
+{
+  path: 'docs/assets/bass-addons.css',
+  cid: CID('QmPiLWKd6yseMWDTgHegb8T7wVS7zWGYgyvfj7dGNt2viQ'),
+  size: 232
+}
+...
+*/
 
  
 /*
