@@ -720,7 +720,6 @@ function startApp() {
         }*/
     });
     processor.onStreamingStart(function() {
-        main();
         state.bal.c = 0
         console.log("At real time.")
     });
