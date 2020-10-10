@@ -8,13 +8,37 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-const IPFS = require('ipfs-http-client');
+/*const IPFS = require('ipfs-http-client');
 const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     protocol: 'https'
-});
+});*/
 
+/**
+ * @dev upgrading ipfs integration
+ */
+
+const IpfsHttpClient = require('ipfs-http-client')
+const { globSource } = IpfsHttpClient
+const ipfs = IpfsHttpClient()
+ 
+const file = await ipfs.add(globSource('./state.js', { recursive: true }))
+console.log(file)
+ 
+/*
+{
+  path: 'docs/assets/anchor.js',
+  cid: CID('QmVHxRocoWgUChLEvfEyDuuD6qJ4PhdDL2dTLcpUy3dSC2'),
+  size: 15347
+}
+{
+  path: 'docs/assets/bass-addons.css',
+  cid: CID('QmPiLWKd6yseMWDTgHegb8T7wVS7zWGYgyvfj7dGNt2viQ'),
+  size: 232
+}
+...
+*/
 
 const init = require('./state');
 
@@ -198,7 +222,7 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
     const mostRecent = recents.shift()
     console.log('starting properly')
     console.log(sh)
-    console.log(username)
+    console.log(mostRecent)
     startWith(mostRecent)
   }
 });
@@ -206,22 +230,22 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
 /****ISSUE****/
 function startWith(hash) {
     console.log("heres the variable "+ hash + " from startWith(hash)")
-    console.log("this is sh " + sh)
-    if (sh) {
-        console.log(`Attempting to start from IPFS save state ${sh}`);
-        ipfs.cat(sh, (err, file) => {
+    console.log("this is sh" + sh)
+    if (hash) {
+        console.log(`Attempting to start from IPFS save state ${hash}`);
+        ipfs.cat(hash, (err, file) => {
             if (!err) {
                 var data = JSON.parse(file.toString())
                 startingBlock = data[0]
-                if (startingBlock == ago){startWith(sh)}
+                if (startingBlock == ago){startWith(hash)}
                 else {
                 state = JSON.parse(data[1]);
                 startApp();
                 }
             } else {
                 const mostRecent = recents.shift()
-                console.log('Attempting start from: '+ sh)
-                startWith(sh)
+                console.log('Attempting start from:'+mostRecent)
+                startWith(mostRecent)
             }
         });
     } else {
