@@ -28,13 +28,13 @@ async function main () {
 
   console.log('Version:', version.version)
   
-  const file = await node.add(globSource('./docs', { recursive: true }))
-  console.log(file)
+  const fileAdded = await IPFS.add(globSource('./state.js', { recursive: true }))
+  console.log(fileAdded)
 
-  console.log('Added file:', file.path, file.cid)
+  console.log('Added file:', fileAdded.path, fileAdded.cid)
 
   const chunks = []
-  for await (const chunk of node.cat(file.cid)) {
+  for await (const chunk of node.cat(fileAdded.cid)) {
       chunks.push(chunk)
   }
 
@@ -213,11 +213,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47669200; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47669000; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47669200; //supposed to be genesis block 
+const ago = ENV.ago || 47669000; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
