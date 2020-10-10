@@ -205,6 +205,7 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
 
 /****ISSUE****/
 function startWith(hash) {
+    console.log("heres the variable hash from startWith(hash)")
     if (hash) {
         console.log(`Attempting to start from IPFS save state ${hash}`);
         ipfs.cat(hash, (err, file) => {
