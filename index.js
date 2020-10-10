@@ -24,8 +24,10 @@ const IpfsHttpClient = require('ipfs-http-client')
 const { globSource } = IpfsHttpClient
 const ipfs = IpfsHttpClient()
  
+async function main () {
 const file = await ipfs.add(globSource('./state.js', { recursive: true }))
 console.log(file)
+}
  
 /*
 {
