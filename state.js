@@ -5,6 +5,7 @@ module.exports = {
          "vests": 0,
       },
    ],
+   "userCount": 1,
    "kudos": {},
    "stats": {
       "bu": "QmRGhkgH9XCUuUP8irFEpA9TSTvDVDbwKDqzEfkKc4CJjD",
@@ -68,6 +69,11 @@ module.exports = {
             "sapphire",
             "emerald",
             "ruby"
+         ],
+         "guildTypes": [
+            "miner",
+            "blacksmith",
+            "merchants",
          ]
       },
       "gemCount": 1,

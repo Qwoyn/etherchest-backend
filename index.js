@@ -166,11 +166,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47634310; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47659660; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
 const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47634310; //supposed to be genesis block 
+const ago = ENV.ago || 47659660; //supposed to be genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -343,6 +343,38 @@ function startApp() {
 
     processor.on('grant', function(json, from) {
         if(from=='etherchest'){state.users[json.to].v = 1}
+    });
+
+    //search for etherchest_register from user on blockchain since genesis
+    //steemconnect link
+    //https://app.steemconnect.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=qwoyn_water&json=%7B%22plants%22%3A%5B%22c35%22%5D%7D
+    processor.on('register', function(json, from) {
+        let usernames = json.usernames,
+            try {
+                try {
+                if (state.users[usernames] = undefined) {
+                    state.users[json.from] = {
+                        addrs: [],
+                        diamond: [],
+                        emerald: [],
+                        sapphire: [],
+                        ruby: [],
+                        ducats: 0,
+                        hero: 1,
+                        guild: "",
+                        friends: [],
+                        v: 0
+                    }
+
+                   state.userCount++;
+                }
+                } catch (e){
+                state.cs[`${json.block_num}:${from}`] = `${from} user already registered`
+                }
+            } catch {
+                (console.log(from + ' tried to register ' + plantnames +' but an error occured'))
+            }
+        state.cs[`${json.block_num}:${from}`] = `${from} succesfully watered ${usernames}`
     });
 
     // buying gems
