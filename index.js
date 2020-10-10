@@ -25,6 +25,9 @@ const { globSource } = IpfsHttpClient
 const ipfs = IpfsHttpClient()
  
 async function main () {
+    const version = await node.version()
+
+    console.log('Version:', version.version)
 const file = await ipfs.add(globSource('./state.js', { recursive: true }))
 console.log(file)
 
