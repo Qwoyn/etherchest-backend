@@ -334,7 +334,6 @@ function startApp() {
 
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
-            main();
 
             getEthToHive(1).then(price => {
 
@@ -765,6 +764,7 @@ function startApp() {
         }*/
     });
     processor.onStreamingStart(function() {
+        main();
         state.bal.c = 0
         console.log("At real time.")
     });
