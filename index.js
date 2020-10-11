@@ -727,8 +727,7 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
-        state.cs[`${json.block_num}:${username}`] = `started from block ${startingBlock}`
-        console.log("At real time.")
+        console.log("At real time. Started from " + startingBlock)
     });
 
     processor.start();
