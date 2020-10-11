@@ -171,11 +171,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47642400; //GENESIS BLOCK
-const username = ENV.ACCOUNT || 'etherchest'; //main account with all the SP
-const key = dhive.PrivateKey.from(ENV.KEY); //active key for account
+var startingBlock = ENV.STARTINGBLOCK || 47716099; //GENESIS BLOCK
+const username = ENV.ACCOUNT || 'etherchest'; 
+const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47642400; //supposed to be genesis block 
+const ago = ENV.ago || 47716099; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -308,6 +308,12 @@ function startApp() {
             console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
             
             })
+        }
+
+        // store block
+        if (num % 5 === 0 && processor.isStreaming()) {
+            state.stats.bi = blocknum - 1
+            console.log(state.stats.bi)
         }
 
        if (num % 1 === 0 && processor.isStreaming()) {
@@ -721,6 +727,7 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
+        state.cs[`${json.block_num}:${username}`] = `started from block ${startingBlock}`
         console.log("At real time.")
     });
 
