@@ -312,7 +312,7 @@ function startApp() {
 
         // store block
         if (num % 5 === 0 && processor.isStreaming()) {
-            state.stats.bi = blocknum - 1
+            state.stats.bi = num - 1
             console.log(state.stats.bi)
         }
 
