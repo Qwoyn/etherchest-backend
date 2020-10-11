@@ -275,7 +275,7 @@ function startApp() {
             });
         }
 
-        if (num % 1000 === 0 && processor.isStreaming()) {
+        if (num % 5 === 0 && processor.isStreaming()) {
             if(!state.blacklist)state.blacklist={}
             ipfsSaveState(num, JSON.stringify(state))
         }
