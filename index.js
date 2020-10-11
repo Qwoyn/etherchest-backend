@@ -171,11 +171,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47716099; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47716399; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47716099; //genesis block 
+const ago = ENV.ago || 47716399; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -276,7 +276,6 @@ function startApp() {
         }
 
         if (num % 5 === 0 && processor.isStreaming()) {
-            if(!state.blacklist)state.blacklist={}
             ipfsSaveState(num, JSON.stringify(state))
         }
 
@@ -310,7 +309,7 @@ function startApp() {
             })
         }
 
-        // store block
+        // store block number
         if (num % 5 === 0 && processor.isStreaming()) {
             state.stats.bi = num - 1
             console.log(state.stats.bi)
@@ -748,13 +747,16 @@ function startApp() {
 }
 }
 
-// Needs work, not saving state to ipfs ERROR
+// Needs work, not saving state
 function ipfsSaveState(blocknum, hashable) {
+    console.log('inside of ipfsSaveState')
     ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
         if (!err) {
+            console.log('755 inside first if ipfsSaveState')
             if (IpFsHash[0].hash === undefined){
                ipfsSaveState(blocknum, hashable) 
             } else {
+                console.log('759 inside first if ipfsSaveState')
                 state.stats.bu = IpFsHash[0].hash
                 state.stats.bi = blocknum
                 console.log(blocknum + `:Saved:  ${IpFsHash[0].hash}`)
@@ -766,7 +768,9 @@ function ipfsSaveState(blocknum, hashable) {
         } else {
             console.log('IPFS Error', err)
         }
+        console.log('771 inside first if ipfsSaveState')
     })
+    console.log('773 inside first if ipfsSaveState')
 };
 
 var bot = {

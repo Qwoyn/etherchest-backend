@@ -179,9 +179,5 @@ module.exports = {
             "maturityBlock": 57690034,
          },
       ],
-      "blacklist": {
-      "zonguin": true,
-      "steembeem": true
-      },
       "cs": {},
 }
