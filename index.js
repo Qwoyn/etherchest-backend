@@ -17,7 +17,7 @@ const IPFS = require('ipfs-http-client')
 });*/
 
 const IpfsHttpClient = require('ipfs-http-client')
-const { globSource } = IpfsHttpClient
+const { urlSource  } = IpfsHttpClient
 const ipfs = IpfsHttpClient()
  
 async function ipfers() {
