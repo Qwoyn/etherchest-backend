@@ -8,13 +8,14 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-const IPFS = require('ipfs-http-client');
-const ipfs = new IPFS({
+const ifpsClient = require('ipfs-http-client');
+/*const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     apiPath: '/api/v0',
     protocol: 'https'
-});
+});*/
+const ipfs = ipfsClient('http://localhost:5001')
 
 const init = require('./state');
 
@@ -172,11 +173,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47716699; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47717000; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47716699; //genesis block 
+const ago = ENV.ago || 47717000; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
