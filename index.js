@@ -8,14 +8,13 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-
-/*const ipfs = new IPFS({
+const IPFS = require('ipfs-http-client')
+const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     apiPath: '/api/v0',
     protocol: 'https'
-});*/
-//const ipfs = ipfsClient('http://localhost:5001')
+});
 
 const init = require('./state');
 
@@ -277,7 +276,7 @@ function startApp() {
             });
         }
 
-        if (num % 5 === 0 && processor.isStreaming()) {
+        if (num % 14400 === 0 && processor.isStreaming()) {
             ipfsSaveState(num, JSON.stringify(state))
         }
 
@@ -309,12 +308,6 @@ function startApp() {
             console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
             
             })
-        }
-
-        // store block number
-        if (num % 5 === 0 && processor.isStreaming()) {
-            state.stats.bi = num - 1
-            console.log(state.stats.bi)
         }
 
        if (num % 1 === 0 && processor.isStreaming()) {
@@ -749,16 +742,9 @@ function startApp() {
 }
 }
 
-const IPFS = require('ipfs-http-client')
-
 // Needs work, not saving state
-async function ipfsSaveState(blocknum, hashable) {
-    ipfs = new IPFS
-    console.log('inside of ipfsSaveState')
-    const node = await IPFS.create()
-     const version = await node.version()
-     console.log('Version:', version.version)
-    node.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
+function ipfsSaveState(blocknum, hashable) {
+    ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
         console.log('754 inside of ipfsSaveState')
         if (!err) {
             console.log('755 inside first if ipfsSaveState')
