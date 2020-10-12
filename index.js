@@ -15,7 +15,7 @@ const IPFS = require('ipfs-http-client')
     apiPath: '/api/v0',
     protocol: 'https'
 });*/
-const ipfs = ipfsClient('http://localhost:5001')
+//const ipfs = ipfsClient('http://localhost:5001')
 
 const init = require('./state');
 
