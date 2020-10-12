@@ -9,12 +9,21 @@ const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
 const IPFS = require('ipfs-http-client')
-const ipfs = new IPFS({
+/*const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     apiPath: '/api/v0',
     protocol: 'https'
-});
+});*/
+
+const IpfsHttpClient = require('ipfs-http-client')
+const { globSource } = IpfsHttpClient
+const ipfs = IpfsHttpClient()
+ 
+async function ipfers() {
+const file = await ipfs.add(globSource('./state.js', { recursive: true }))
+console.log(file)
+}
 
 const init = require('./state');
 
@@ -290,6 +299,8 @@ function startApp() {
 
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
+
+            ipfers()
 
             getEthToHive(1).then(price => {
 
