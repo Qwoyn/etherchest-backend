@@ -18,7 +18,7 @@ const IPFS = require('ipfs-http-client')
 
 const IpfsHttpClient = require('ipfs-http-client')
 const { urlSource  } = IpfsHttpClient
-const ipfs = IpfsHttpClient()
+const ipfs = IpfsHttpClient('http://localhost:5001')
  
 async function ipfers() {
     const file = await ipfs.add(urlSource('https://etherchest-backend.herokuapp.com/'))
