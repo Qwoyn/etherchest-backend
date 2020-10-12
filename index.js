@@ -8,7 +8,7 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-const ifpsClient = require('ipfs-http-client');
+const ipfsClient = require('ipfs-http-client')
 /*const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
