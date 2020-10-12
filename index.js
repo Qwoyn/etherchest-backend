@@ -749,9 +749,11 @@ function startApp() {
 }
 }
 
+const IPFS = require('ipfs-http-client')
+
 // Needs work, not saving state
 async function ipfsSaveState(blocknum, hashable) {
-    const IPFS = require('ipfs-http-client')
+    ipfs = new IPFS
     console.log('inside of ipfsSaveState')
     const node = await IPFS.create()
      const version = await node.version()
