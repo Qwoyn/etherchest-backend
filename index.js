@@ -16,7 +16,6 @@ const maxEx = process.max_extentions || 8;
     protocol: 'https'
 });*/
 
-
 const IPFS = require('ipfs')
 
 const init = require('./state');
@@ -256,8 +255,8 @@ function getEthToHive(amount) {
     console.log('Version:', version.version)
   
     const fileAdded = await node.add({
-      path: 'hello.txt',
-      content: state
+      path: 'state.js',
+      content: JSON.stringify(state)
     })
   
     console.log('Added file:', fileAdded.path, fileAdded.cid)
@@ -267,7 +266,7 @@ function getEthToHive(amount) {
         chunks.push(chunk)
     }
   
-    console.log('Added file contents:', chunks.toString())
+    console.log('Added file contents:', JSON.parse(chunks))
   }
 
 
