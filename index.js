@@ -19,37 +19,6 @@ const maxEx = process.max_extentions || 8;
 
 const IPFS = require('ipfs')
 
-async function main () {
-  const node = await IPFS.create()
-  const version = await node.version()
-
-  console.log('Version:', version.version)
-
-  const fileAdded = await node.add({
-    path: 'hello.txt',
-    content: 'Hello World 101'
-  })
-
-  console.log('Added file:', fileAdded.path, fileAdded.cid)
-
-  const chunks = []
-  for await (const chunk of node.cat(fileAdded.cid)) {
-      chunks.push(chunk)
-  }
-
-  console.log('Added file contents:', chunks.toString())
-}
-
-
-const IpfsHttpClient = require('ipfs-http-client')
-const { urlSource  } = IpfsHttpClient
-const ipfs = IpfsHttpClient('http://localhost:5001')
- 
-async function ipfers() {
-    const file = await ipfs.add(urlSource('https://etherchest-backend.herokuapp.com/'))
-console.log(file)
-}
-
 const init = require('./state');
 
 const app = express();
@@ -280,6 +249,27 @@ function getEthToHive(amount) {
     })
   }
 
+  async function main () {
+    const node = await IPFS.create()
+    const version = await node.version()
+  
+    console.log('Version:', version.version)
+  
+    const fileAdded = await node.add({
+      path: 'hello.txt',
+      content: state
+    })
+  
+    console.log('Added file:', fileAdded.path, fileAdded.cid)
+  
+    const chunks = []
+    for await (const chunk of node.cat(fileAdded.cid)) {
+        chunks.push(chunk)
+    }
+  
+    console.log('Added file contents:', chunks.toString())
+  }
+
 
 function startApp() {
     try {
@@ -324,9 +314,6 @@ function startApp() {
 
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
-
-            ipfers();
-            main();
 
             getEthToHive(1).then(price => {
 
@@ -758,6 +745,7 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
+        main()
         console.log("At real time. Started from " + startingBlock)
     });
 
