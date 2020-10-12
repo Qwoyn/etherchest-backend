@@ -750,7 +750,7 @@ function startApp() {
 }
 
 // Needs work, not saving state
-function ipfsSaveState(blocknum, hashable) {
+async function ipfsSaveState(blocknum, hashable) {
     console.log('inside of ipfsSaveState')
     const node = await IPFS.create()
      const version = await node.version()
