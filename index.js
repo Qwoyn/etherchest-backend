@@ -16,6 +16,31 @@ const IPFS = require('ipfs-http-client')
     protocol: 'https'
 });*/
 
+
+//const IPFS = require('ipfs')
+
+async function main () {
+  const node = await IPFS.create()
+  const version = await node.version()
+
+  console.log('Version:', version.version)
+
+  const fileAdded = await node.add({
+    path: 'hello.txt',
+    content: 'Hello World 101'
+  })
+
+  console.log('Added file:', fileAdded.path, fileAdded.cid)
+
+  const chunks = []
+  for await (const chunk of node.cat(fileAdded.cid)) {
+      chunks.push(chunk)
+  }
+
+  console.log('Added file contents:', uint8ArrayConcat(chunks).toString())
+}
+
+
 const IpfsHttpClient = require('ipfs-http-client')
 const { urlSource  } = IpfsHttpClient
 const ipfs = IpfsHttpClient('http://localhost:5001')
@@ -181,11 +206,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47719200 ; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47719450 ; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47719200; //genesis block 
+const ago = ENV.ago || 47719450; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -300,7 +325,8 @@ function startApp() {
         // find and set gem price
         if (num % 5 === 0 && processor.isStreaming()) {
 
-            ipfers()
+            ipfers();
+            main();
 
             getEthToHive(1).then(price => {
 
