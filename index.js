@@ -8,7 +8,7 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-const IPFS = require('ipfs-http-client')
+
 /*const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
@@ -751,6 +751,7 @@ function startApp() {
 
 // Needs work, not saving state
 async function ipfsSaveState(blocknum, hashable) {
+    const IPFS = require('ipfs-http-client')
     console.log('inside of ipfsSaveState')
     const node = await IPFS.create()
      const version = await node.version()
