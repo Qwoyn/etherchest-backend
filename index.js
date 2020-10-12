@@ -8,7 +8,7 @@ const cors = require('cors');
 const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
-const ipfsClient = require('ipfs-http-client')
+const IPFS = require('ipfs-http-client')
 /*const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
@@ -173,11 +173,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47717000; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47717300; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47717000; //genesis block 
+const ago = ENV.ago || 47717300; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -752,7 +752,10 @@ function startApp() {
 // Needs work, not saving state
 function ipfsSaveState(blocknum, hashable) {
     console.log('inside of ipfsSaveState')
-    ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
+    const node = await IPFS.create()
+     const version = await node.version()
+     console.log('Version:', version.version)
+    node.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
         console.log('754 inside of ipfsSaveState')
         if (!err) {
             console.log('755 inside first if ipfsSaveState')
