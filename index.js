@@ -203,6 +203,7 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
     console.log(mostRecent)
     startWith(mostRecent)
   }
+  state = init;
 });
 
 async function ipfsSaver() {
@@ -228,9 +229,6 @@ async function ipfsSaver() {
     console.log('Added file contents:', JSON.parse(chunks))
   }
 
-
-  
-
 /****ISSUE****/
 function startWith() {
     const hash = state.stats.bu;
@@ -255,7 +253,7 @@ function startWith() {
         });
     } else {
         console.log('Didnt start with ipfs')
-        state = init
+     //   state = init
         startApp()
     }
 }
