@@ -222,18 +222,18 @@ async function ipfsSaver() {
     for await (const chunk of node.cat(fileAdded.cid)) {
         chunks.push(chunk)
     }
-  
+    
+    state.stats.bu = fileAdded.cid
+
     console.log('Added file contents:', JSON.parse(chunks))
-
-    const hash = fileAdded.cid;
-
-    return hash;
   }
+
 
   
 
 /****ISSUE****/
-function startWith(hash) {
+function startWith() {
+    const hash = state.stats.bu;
     console.log("heres the variable "+ hash + " from startWith(hash)")
     console.log("this is sh" + sh)
     if (hash) {
