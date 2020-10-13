@@ -174,11 +174,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47751181; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47752052; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47751181; //genesis block 
+const ago = ENV.ago || 47752052; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -204,6 +204,33 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
     startWith(mostRecent)
   }
 });
+
+async function ipfsSaver() {
+    const node = await IPFS.create()
+    const version = await node.version()
+  
+    console.log('Version:', version.version)
+  
+    const fileAdded = await node.add({
+      path: 'state.js',
+      content: JSON.stringify(state)
+    })
+    
+    console.log('Added file:', fileAdded.path, fileAdded.cid)
+  
+    const chunks = []
+    for await (const chunk of node.cat(fileAdded.cid)) {
+        chunks.push(chunk)
+    }
+  
+    console.log('Added file contents:', JSON.parse(chunks))
+
+    const hash = fileAdded.cid;
+
+    return hash;
+  }
+
+  
 
 /****ISSUE****/
 function startWith(hash) {
@@ -248,28 +275,6 @@ function getEthToHive(amount) {
     })
   }
 
-  async function main () {
-    const node = await IPFS.create()
-    const version = await node.version()
-  
-    console.log('Version:', version.version)
-  
-    const fileAdded = await node.add({
-      path: 'state.js',
-      content: JSON.stringify(state)
-    })
-  
-    console.log('Added file:', fileAdded.path, fileAdded.cid)
-  
-    const chunks = []
-    for await (const chunk of node.cat(fileAdded.cid)) {
-        chunks.push(chunk)
-    }
-  
-    console.log('Added file contents:', JSON.parse(chunks))
-  }
-
-
 function startApp() {
     try {
   if(state.cs == null) {
@@ -300,7 +305,7 @@ function startApp() {
         }
 
         if (num % 14400 === 0 && processor.isStreaming()) {
-            ipfsSaveState(num, JSON.stringify(state))
+            ipfsSaver();
         }
 
         if (num % 28800 === 20000) {
@@ -744,7 +749,7 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
-        main()
+        ipfsSaver()
         console.log("At real time. Started from " + startingBlock)
     });
 
@@ -767,7 +772,7 @@ function startApp() {
 }
 
 // Needs work, not saving state
-function ipfsSaveState(blocknum, hashable) {
+/*function ipfsSaveState(blocknum, hashable) {
     ipfs.add(Buffer.from(JSON.stringify([blocknum, hashable]), 'ascii'), (err, IpFsHash) => {
         console.log('754 inside of ipfsSaveState')
         if (!err) {
@@ -790,7 +795,7 @@ function ipfsSaveState(blocknum, hashable) {
         console.log('771 inside first if ipfsSaveState')
     })
     console.log('773 inside first if ipfsSaveState')
-};
+};*/
 
 var bot = {
     xfer: function(toa, amount, memo) {
