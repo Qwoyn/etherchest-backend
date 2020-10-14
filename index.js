@@ -174,11 +174,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47752052; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47778500; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47752052; //genesis block 
+const ago = ENV.ago || 47778500; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
 var client = new dhive.Client(["https://api.openhive.network", "https://api.hivekings.com"]);
 var processor;
@@ -205,7 +205,7 @@ hivejs.api.getAccountHistory(username, -1, 100, function(err, result) {
   }
 });
 
-async function ipfsSaver() {
+/*async function ipfsSaver() {
     const node = await IPFS.create()
     const version = await node.version()
   
@@ -224,7 +224,7 @@ async function ipfsSaver() {
     }
 
     console.log('Added file contents:', JSON.parse(chunks))
-  }
+  }*/
 
 
 /****ISSUE****/
@@ -297,10 +297,6 @@ function startApp() {
                 state.bal.r = 0
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
             });
-        }
-
-        if (num % 14400 === 0 && processor.isStreaming()) {
-            ipfsSaver();
         }
 
         if (num % 28800 === 20000) {
@@ -744,7 +740,7 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
-        ipfsSaver()
+       // ipfsSaver()
         console.log("At real time. Started from " + startingBlock)
     });
 
