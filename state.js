@@ -20,10 +20,10 @@ module.exports = {
             "f": 20000,
             "t": 20000,
             "gems": {
-               "diamond": 5000,
-               "sapphire": 5000,
-               "emerald": 5000,
-               "ruby": 5000
+               "diamond": 5000000,
+               "sapphire": 5000000,
+               "emerald": 5000000,
+               "ruby": 5000000
             },
             "weapons": {
                "sword" : 1,
