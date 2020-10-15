@@ -14,7 +14,7 @@
   "author": "Daniel Pittman",
   "license": "MIT",
   "dependencies": {
-    "@esteemapp/dhive": "^0.14.15",
+    "@hiveio/dhive": "^0.14.7",
     "@hiveio/hive-js": "^0.8.4",
     "axios": "^0.20.0",
     "cors": "^2.8.5",
