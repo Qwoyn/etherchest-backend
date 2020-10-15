@@ -1,4 +1,4 @@
-var dhive = require("@esteemapp/dhive");
+var dhive = require("@hiveio/dhive");
 var axios = require('axios');
 var hivejs = require('@hiveio/hive-js');
 var hiveState = require('./processor');
