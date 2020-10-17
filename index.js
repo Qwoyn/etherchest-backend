@@ -180,7 +180,7 @@ const key = dhive.PrivateKey.from(ENV.KEY);
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47859693; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client("https://anyx.io", {rebrandedApi: true});
+var client = new dhive.Client("api.openhive.network", {rebrandedApi: true});
 var processor;
 var recents = [];
 
@@ -334,12 +334,12 @@ function startApp() {
         }
 
        if (num % 1 === 0 && processor.isStreaming()) {
-            var d = parseInt(state.bal.c / 4)
+            var d = parseInt(state.bal.c)
             state.bal.r += state.bal.c
             if (d > 0) {
                 state.bal.c = 0
                 state.bal.r = 0
-                state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                state.refund.push(['xfer', 'ec-vault', parseInt(d), 'To Validator'])
                 d = 0
             }
         }
@@ -744,7 +744,6 @@ function startApp() {
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
-       // ipfsSaver()
         console.log("At real time. Started from " + startingBlock)
     });
 
