@@ -180,7 +180,7 @@ const key = dhive.PrivateKey.from(ENV.KEY);
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47859693; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client(["https://api.hive.blog", "https://api.hivekings.com", "https://anyx.io", "https://api.openhive.network"]);
+var client = new dhive.Client(["https://anyx.io","https://api.hive.blog", "https://api.hivekings.com", "https://anyx.io", "https://api.openhive.network"]);
 var processor;
 var recents = [];
 //const transactor = steemTransact(client, dhive, prefix);
