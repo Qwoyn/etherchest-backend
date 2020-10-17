@@ -26,6 +26,9 @@ const wkey = ENV.wkey;
 const skey = dhive.PrivateKey.from(ENV.skey);
 const streamname = ENV.streamname;
 
+hivejs.config.set('rebranded_api', true)
+hivejs.broadcast.updateOperations()
+
 app.use(cors());
 
 app.get('/p/:addr', (req, res, next) => {

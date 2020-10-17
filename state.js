@@ -38,6 +38,9 @@ module.exports = {
             "potions": {
                "healing": 1,
                "poison": 1,
+            },
+            "tools": {
+               "anvil": 1,
             }
          },
          "purchase": {
@@ -152,9 +155,7 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "diamond": [
-            "gd1"
-         ],
+         "diamond": [],
          "sapphire": [],
          "emerald": [],
          "ruby": [],
@@ -165,19 +166,6 @@ module.exports = {
          "friends": []
       },
    },
-      "gemList": [
-         {
-            "stone": "diamond",
-            "owner": "etherchest",
-            "price": 0,
-            "forSale": false,
-            "pastValue": 2048000,
-            "guilded": true,
-            "guildTreasury": "etherchest",
-            "id": "gd1",
-            "mature": false,
-            "maturityBlock": 57690034,
-         },
-      ],
+      "gemList": [],
       "cs": {},
 }
