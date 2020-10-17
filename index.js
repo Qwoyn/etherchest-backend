@@ -26,9 +26,6 @@ const wkey = ENV.wkey;
 const skey = dhive.PrivateKey.from(ENV.skey);
 const streamname = ENV.streamname;
 
-hivejs.config.set('rebranded_api', true)
-hivejs.broadcast.updateOperations()
-
 app.use(cors());
 
 app.get('/p/:addr', (req, res, next) => {
@@ -186,6 +183,10 @@ const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on th
 var client = new dhive.Client("https://anyx.io", {rebrandedApi: true});
 var processor;
 var recents = [];
+
+hivejs.config.set('rebranded_api', true)
+hivejs.broadcast.updateOperations()
+
 //const transactor = steemTransact(client, dhive, prefix);
 
 /****ISSUE****/
