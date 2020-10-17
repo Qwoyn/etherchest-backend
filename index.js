@@ -172,6 +172,8 @@ app.get('/delegation/:user', (req, res, next) => {
     res.send(JSON.stringify(op, null, 3))
 });
 
+hivejs.config.set('rebranded_api', true);
+hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
 var startingBlock = ENV.STARTINGBLOCK || 47859693; //GENESIS BLOCK
@@ -180,12 +182,19 @@ const key = dhive.PrivateKey.from(ENV.KEY);
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47859693; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client("https://hive.roelandp.nl", {rebrandedApi: true});
+var client = new dhive.Client([
+    "https://anyx.io",
+    "https://api.deathwing.me",
+    "https://api.hivekings.com",
+    "https://api.hive.blog",
+    "https://api.openhive.network",
+    "https://rpc.ausbit.dev",
+    "https://hive-api.arcange.eu",
+    "https://hive.roelandp.nl"
+], {rebrandedApi: true});
 var processor;
 var recents = [];
 
-hivejs.config.set('rebranded_api', true)
-hivejs.broadcast.updateOperations()
 
 //const transactor = steemTransact(client, dhive, prefix);
 

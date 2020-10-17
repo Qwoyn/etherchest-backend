@@ -1,7 +1,7 @@
 /*
   args:
-    client: A dsteem client to use to get blocks, etc. [REQUIRED]
-    steem: A dsteem instance. [REQIURED]
+    client: A dhive client to use to get blocks, etc. [REQUIRED]
+    hive: A dhive instance. [REQIURED]
     currentBlockNumber: The last block that has been processed by this client; should be
       loaded from some sort of storage file. Default is block 1.
     blockComputeSpeed: The amount of milliseconds to wait before processing
@@ -10,7 +10,7 @@
       is using these transactions (interfering transaction with other Dappsids could cause
       errors)
     mode: Whether to stream blocks as `latest` or `irreversible`.
-    unexpectedStopCallback: A function to call when steem-state stops unexpectedly
+    unexpectedStopCallback: A function to call when hive-state stops unexpectedly
       due to an error.
 */
 module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed=100, prefix='etherchest_', mode='latest', unexpectedStopCallback=function(){}) {
