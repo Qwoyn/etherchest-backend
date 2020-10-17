@@ -180,7 +180,7 @@ const key = dhive.PrivateKey.from(ENV.KEY);
 const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 47859693; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during watering etc..
-var client = new dhive.Client("hive.roelandp.nl", {rebrandedApi: true});
+var client = new dhive.Client("https://hive.roelandp.nl", {rebrandedApi: true});
 var processor;
 var recents = [];
 
