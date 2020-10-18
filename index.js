@@ -176,11 +176,11 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47866748; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47889063; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47866748; //genesis block 
+const ago = ENV.ago || 47889063; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
 var client = new dhive.Client([
     "https://anyx.io",
@@ -288,7 +288,7 @@ function startApp() {
   if(state.cs == null) {
     state.cs = {}
   }
-    processor = hiveState(client, dhive, startingBlock, 10, prefix);
+    processor = hiveState(client, dhive, startingBlock, 100, prefix);
 
     processor.onBlock(function(num, block) {
         //process state.refunds
