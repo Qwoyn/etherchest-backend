@@ -718,7 +718,7 @@ function startApp() {
 
          
         } else if (
-                    want == 'diamond' && amount < 5000 || 
+                    want == 'diamond' && amount < state.stats.prices.listed.gems.diamond || 
                     want == 'sapphire' && amount < state.stats.prices.listed.gems.sapphire || 
                     want == 'emerald' && amount < state.stats.prices.listed.gems.emerald || 
                     want == 'ruby' && amount < state.stats.prices.listed.gems.ruby
