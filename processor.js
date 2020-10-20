@@ -37,7 +37,7 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         callback(result.last_irreversible_block_num);
       }
     }).catch(function (err) {
-      console.log("Error, hive-state is unexpectedly stopping:", err)
+      console.log("Error, hive-state is unexpectedly stopping restarting at getHeadOrIrreversibleBlockNumber(callback):", err)
       //unexpectedStopCallback(err)
       getHeadOrIrreversibleBlockNumber(callback)
     })
