@@ -176,11 +176,11 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48002200 ; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48002500; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 48002200; //genesis block 
+const ago = ENV.ago || 48002500; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
 var client = new dhive.Client([
     "https://rpc.ausbit.dev",
@@ -324,10 +324,10 @@ function startApp() {
 
             let gemPrice = price * 1;
             
-            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02) + 50;
-            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02) / 2) + 25;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02) / 4) + 15;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02) / 10) + 10;
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.007);
+            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007) / 2) + 1;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007) / 4) + 1;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 1;
             state.bal.c = 0
 
             console.log('bal.c is ' + state.bal.c);
