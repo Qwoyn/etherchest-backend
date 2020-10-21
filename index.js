@@ -324,10 +324,10 @@ function startApp() {
 
             let gemPrice = price * 1;
             
-            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.007);
-            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007) / 2) + 1;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007) / 4) + 1;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 1;
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.007) + 25;
+            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007) / 2) + 18;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007) / 4) + 10;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 5;
             state.bal.c = 0
 
             console.log('bal.c is ' + state.bal.c);
@@ -345,7 +345,7 @@ function startApp() {
             if (d > 0) {
                 state.bal.c = 0
                 state.bal.r = 0
-                state.refund.push(['xfer', 'ec-vault', parseInt(d), 'To Validator'])
+                state.refund.push(['xfer', 'swap.app', parseInt(d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
                 d = 0
             }
         }
@@ -412,13 +412,13 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
-                want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
-                want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
-                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
+                want == 'diamond' && amount == 40 ||//state.stats.prices.listed.gems.diamond || 
+                want == 'sapphire' && amount == 39 ||//state.stats.prices.listed.gems.sapphire || 
+                want == 'emerald' && amount == 38 ||//state.stats.prices.listed.gems.emerald || 
+                want == 'ruby' && amount == 37 ||state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond
+                         want == 'diamond' && amount == 40//state.stats.prices.listed.gems.diamond
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -475,7 +475,7 @@ function startApp() {
                         }
 
                         var d = amount / 4;
-                        state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
+                        state.refund.push(['xfer', 'swap.app', parseInt(4 * d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
 
                         state.bal.b += 0
                         state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
@@ -484,7 +484,7 @@ function startApp() {
 
                     
                     } else if (
-                        want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire
+                        want == 'sapphire' && amount == 39//state.stats.prices.listed.gems.sapphire
                        ) {
                        if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -540,28 +540,17 @@ function startApp() {
                            }
                        }
 
-                       var d = parseInt(state.bal.c / 4)
-                       state.bal.r += state.bal.c
-                       if (d > 0) {
-                           //state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                           //state.bal.c -= d * 4
-                           //d = parseInt(state.bal.c / 5) * 2
-                           state.bal.c = 0
-                       } else {
-                           state.bal.c = 0
-                       }
+                       var d = amount / 4;
+                       state.refund.push(['xfer', 'swap.app', parseInt(4 * d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
 
-                       const c = parseInt(amount)
-                       state.bal.c += c
                        state.bal.b += 0
                        state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                        state.cs[`${json.block_num}:gem prices posted`]
                        console.log(`${json.from} purchased a ${want}`)
-                
                 }  
              
                 if (
-                    want == 'emerald' && amount == state.stats.prices.listed.gems.emerald
+                    want == 'emerald' && amount == 38//state.stats.prices.listed.gems.emerald
                    ) {
                    if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -617,29 +606,16 @@ function startApp() {
                        }
                    }
 
-                   var d = parseInt(state.bal.c / 4)
-                   state.bal.r += state.bal.c
-                   if (d > 0) {
-                       //state.refund.push(['xfer', 'ec-vault', parseInt(4 * d), 'To Validator'])
-                       //state.bal.c -= d * 4
-                       //d = parseInt(state.bal.c / 5) * 2
-                       state.bal.c = 0
-                   } else {
-                       state.bal.c = 0
-                   }
+                   var d = amount / 4;
+                   state.refund.push(['xfer', 'swap.app', parseInt(4 * d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
 
-                   const c = parseInt(amount)
-                   state.bal.c += c
                    state.bal.b += 0
                    state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                    state.cs[`${json.block_num}:gem prices posted`]
                    console.log(`${json.from} purchased a ${want}`)
-
-               
-
             } 
             if (
-                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
+                want == 'ruby' && amount == 37//state.stats.prices.listed.gems.ruby
                ) {
                if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -694,26 +670,10 @@ function startApp() {
                        v: 0
                    }
                }
-               
-               var d = parseInt(state.bal.c / 4)
-               state.bal.r += state.bal.c
-               if (d > 0) {
-                const amount = parseInt(parseFloat(json.amount) * 1000)
-                for (var i = 0; i < state.refund.length; i++) {
-                    if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
-                        state.refund.splice(i, 1);
-                        state.bal.r = 0;
-                        state.cs[`${json.block_num}:${json.to}`] = `${json.to} refunded successfully`
-                        break;
-                    }
-                }
-                   state.bal.c = 0
-               } else {
-                   state.bal.c = 0
-               }
 
-               const c = parseInt(amount)
-               state.bal.c += c
+               var d = amount / 4;
+               state.refund.push(['xfer', 'swap.app', parseInt(4 * d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
+
                state.bal.b += 0
                state.cs[`${json.block_num}:${json.from}`] = `${json.from} purchased a ${want}`
                state.cs[`${json.block_num}:gem prices posted`]
