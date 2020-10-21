@@ -183,7 +183,7 @@ const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 48002500; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
 var client = new dhive.Client([
-    "https://rpc.ausbit.dev",
+    //"https://rpc.ausbit.dev",
     "https://hive-api.arcange.eu",
     "https://hive.roelandp.nl"
 ], {rebrandedApi: true});
