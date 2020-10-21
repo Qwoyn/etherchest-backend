@@ -176,11 +176,11 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 47955629; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 47985629; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 47955629; //genesis block 
+const ago = ENV.ago || 47985629; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
 var client = new dhive.Client([
     "https://hive-api.arcange.eu",
@@ -265,10 +265,12 @@ function startWith(hash) {
 // converts Eth to Hive
 function getEthToHive(amount) {
     return new Promise((resolve, reject) => {
-      axios.get('https://api.coingecko.com/api/v3/simple/price?ids=hive%2Cethereum&vs_currencies=usd').then((res) => {
+      axios.get('https://api.binance.com/api/v3/ticker/price').then((res) => {
         const { data } = res
-        const ethCost = data.ethereum.usd * amount
-        const hiveAmount = ethCost / data.hive.usd
+        const ethPrice = data.find(o => o.symbol === "ETHUSDT")
+        const hivePrice = data.find(o => o.symbol === "HIVEUSDT")
+        const ethCost = ethPrice.price * amount
+        const hiveAmount = ethCost / hivePrice.price
   
         resolve(hiveAmount.toFixed(3))
       }).catch((err) => {
