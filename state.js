@@ -79,24 +79,17 @@ module.exports = {
             "merchants",
          ]
       },
-      "gemCount": 1,
-      "diamondCount":1,
+      "gemCount": 0,
+      "diamondCount":0,
       "sapphireCount": 0,
       "emeraldCount": 0,
       "rubyCount": 0,
-      "stakers": 1,
+      "stakers": 0,
       "guilds": [
          {
             "name": "EtherChest",
             "founder": "etherchest",
-            "gems": [
-                  {
-                     "stone": "diamond",
-                     "owner": "etherchest",
-                     "id": "gd1",
-                     "stakedBlock": 0,
-                  },
-            ],
+            "gems": [],
             "ducats": [],
             "weapons": [],
             "badges": [],
