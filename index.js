@@ -324,10 +324,10 @@ function startApp() {
 
             let gemPrice = price * 1;
             
-            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.007) + 25;
-            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007) / 2) + 18;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007) / 4) + 10;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007) / 10) + 5;
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.007 * 1000) + 25;
+            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.007 * 1000) / 2) + 18;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.007 * 1000) / 4) + 10;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.007 * 1000) / 10) + 5;
             state.bal.c = 0
 
             console.log('bal.c is ' + state.bal.c);
@@ -339,7 +339,7 @@ function startApp() {
             })
         }
 
-       if (num % 1 === 0 && processor.isStreaming()) {
+       if (num % 2 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c)
             state.bal.r += state.bal.c
             if (d > 0) {
