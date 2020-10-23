@@ -326,8 +326,8 @@ function startApp() {
             
             state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02 * 1000) + 25;
             state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02 * 1000) / 2) + 18;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 10;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 5;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 20;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 10;
             state.bal.c = 0
 
             console.log('bal.c is ' + state.bal.c);
