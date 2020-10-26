@@ -1,4 +1,4 @@
-var dhive = require("@hiveio/dhive");
+var dhive = require("dhive-test-fix");
 var axios = require('axios');
 var hivejs = require('@hiveio/hive-js');
 var hiveState = require('./processor');
