@@ -1,6 +1,6 @@
 {
   "name": "etherchest-api",
-  "version": "0.40.1",
+  "version": "0.48.1",
   "description": "EtherChest API",
   "main": "index.js",
   "scripts": {
@@ -14,10 +14,10 @@
   "author": "Daniel Pittman",
   "license": "MIT",
   "dependencies": {
-    "@hiveio/dhive": "^0.14.8",
     "@hiveio/hive-js": "^0.8.5",
     "axios": "^0.20.0",
     "cors": "^2.8.5",
+    "dhive-test-fix": "0.0.1",
     "express": "^4.16.4",
     "ipfs": "^0.50.2",
     "ipfs-http-client": "^42.0.0-pre.2",
