@@ -181,10 +181,11 @@ const sh = ENV.sh || ''; //state hash
 const ago = ENV.ago || 48128018; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
 var client = new dhive.Client([
-    //"https://api.deathwing.me",
-    "https://hive-api.arcange.eu",
-    "https://hive.roelandp.nl"
-], {rebrandedApi: true});
+    "https://hive.roelandp.nl",
+    "https://api.pharesim.me",
+    "https://hived.privex.io",
+    "https://api.hive.blog"
+], {rebrandedApi: true, consoleOnFailover: true});
 var processor;
 var recents = [];
 
