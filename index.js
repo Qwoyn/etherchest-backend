@@ -278,7 +278,7 @@ function getEthToHive(amount) {
       })
     })
   }
-  try {
+  //try {
 function startApp() {
     
   if(state.cs == null) {
@@ -725,10 +725,10 @@ function startApp() {
     
 
 }
-} catch (error) {
+/*} catch (error) {
     console.log("shit crashed retrying")
     startApp();
- }
+ }*/
 
 // Needs work, not saving state
 /*function ipfsSaveState(blocknum, hashable) {
