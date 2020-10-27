@@ -328,6 +328,7 @@ function startApp() {
             state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 20;
             state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 10;
             state.bal.c = 0
+            state.blocknumber = num
 
             console.log('bal.c is ' + state.bal.c);
             console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);

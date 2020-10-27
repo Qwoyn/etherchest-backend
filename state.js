@@ -5,6 +5,7 @@ module.exports = {
          "vests": 0,
       },
    ],
+   "blocknumber": 0,
    "userCount": 1,
    "kudos": {},
    "stats": {
