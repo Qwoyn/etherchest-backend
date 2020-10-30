@@ -25,19 +25,23 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
   var stream;
 
   var stopping = false;
+  var headRetryAttempt = 0;
+  var computeRetryAttempt = 0;
   var stopCallback;
-
 
   // Returns the block number of the last block on the chain or the last irreversible block depending on mode.
   function getHeadOrIrreversibleBlockNumber(callback) {
     client.database.getDynamicGlobalProperties().then(function(result) {
+      headRetryAttempt = 0;
       if(mode === 'latest') {
         callback(result.head_block_number);
       } else {
         callback(result.last_irreversible_block_num);
       }
     }).catch(function (err) {
-      console.log("Error, hive-state is unexpectedly stopping restarting at getHeadOrIrreversibleBlockNumber(callback):", err)
+      headRetryAttempt++;
+      console.warn(`[Warning] Failed to get Head Block. Retrying. Attempt number ${headRetryAttempt}`)
+      console.warn(err)
       //unexpectedStopCallback(err)
       getHeadOrIrreversibleBlockNumber(callback)
     })
@@ -55,29 +59,31 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
 
   function beginBlockComputing() {
     function computeBlock() {
-
       var blockNum = currentBlockNumber;// Helper variable to prevent race condition
                                         // in getBlock()
       client.database.getBlock(blockNum)
         .then((result) => {
           processBlock(result, blockNum);
-        })
-        .catch((err) => {
-          throw err;
-        })
-
-      currentBlockNumber++;
-      if(!stopping) {
-        isAtRealTime(function(result) {
-          if(!result) {
-            setTimeout(computeBlock, blockComputeSpeed);
+          computeRetryAttempt = 0;
+          currentBlockNumber++;
+          if(!stopping) {
+            isAtRealTime(function(result) {
+              if(!result) {
+                setTimeout(computeBlock, blockComputeSpeed);
+              } else {
+                beginBlockStreaming();
+              }
+            })
           } else {
-            beginBlockStreaming();
+            setTimeout(stopCallback, 1000);
           }
         })
-      } else {
-        setTimeout(stopCallback,1000);
-      }
+        .catch((err) => {
+          computeRetryAttempt++;
+          console.warn(`[Warning] Failed to compute block. Retrying. Attempt number ${computeRetryAttempt}`)
+          console.warn(err)
+          computeBlock();
+        })
     }
 
     computeBlock();
@@ -85,12 +91,15 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
 
   function beginBlockStreaming() {
     isStreaming = true;
+
     onStreamingStart();
+
     if(mode === 'latest') {
       stream = client.blockchain.getBlockStream({mode: dhive.BlockchainMode.Latest});
     } else {
       stream = client.blockchain.getBlockStream();
     }
+
     stream.on('data', function(block) {
       var blockNum = parseInt(block.block_id.slice(0,8), 16);
       if(blockNum >= currentBlockNumber) {
@@ -98,12 +107,15 @@ module.exports = function(client, dhive, currentBlockNumber=1, blockComputeSpeed
         currentBlockNumber = blockNum+1;
       }
     })
+
     stream.on('end', function() {
       console.error("Block stream ended unexpectedly. Restarting block computing.")
       beginBlockComputing();
     })
+
     stream.on('error', function(err) {
-      throw err;
+      console.error("[Error] Whoops! We got an error! We may have missed a block!")
+      console.error(err)
     })
   }
 
