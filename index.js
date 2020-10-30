@@ -178,8 +178,8 @@ var startingBlock = ENV.STARTINGBLOCK || 48234284; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-const ago = ENV.ago || 48234284; //genesis block 
-const prefix = ENV.PREFIX || 'etherchest_'; // part of custom json visible on the blockchain during actions etc..
+//const ago = ENV.ago || 48234284; //genesis block 
+const prefix = ENV.PREFIX || 'etherchest_'; // string in the custom json visible on the hive blockchain
 var client = new dhive.Client([
     "https://hive.roelandp.nl",
     "https://api.pharesim.me",
@@ -244,7 +244,7 @@ function startWith(hash) {
             if (!err) {
                 var data = JSON.parse(file.toString())
                 startingBlock = data[0]
-                if (startingBlock == ago){startWith(hash)}
+                if (startingBlock == startingBlock){startWith(hash)}
                 else {
                 state = JSON.parse(data[1]);
                 startApp();
@@ -325,47 +325,38 @@ function startApp() {
 
             let gemPrice = price * 1;
             
-            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02 * 1000) + 25;
-            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02 * 1000) / 2) + 18;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 20;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 10;
+            // sets state to gem price + 2 percent and 30 HIVE to make up for price difference
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02 * 1000) + 30;
+            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02 * 1000) / 2) + 30;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 30;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 30;
+            //sets cut to 0 because bal.c is deprecated
             state.bal.c = 0
+            //keeping track of current block number in state
             state.blocknumber = num
-
+            
+            //logging for testing will remove after a while
+            console.log('at block ' + num)
             console.log('bal.c is ' + state.bal.c);
             console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);
             console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire);
             console.log('emerald price is ' + state.stats.prices.listed.gems.emerald);
             console.log('ruby price is ' + state.stats.prices.listed.gems.ruby);
-            
             })
         }
 
+       //checks to see if Etherchest recieved a purchase request every 2 blocks about every 6 seconds many times this is instant
        if (num % 2 === 0 && processor.isStreaming()) {
             var d = parseInt(state.bal.c)
             state.bal.r += state.bal.c
             if (d > 0) {
-                state.bal.c = 0
+                state.bal.c = 0 // set bal.c to 0 because bal.c is deprecated
                 state.bal.r = 0
                 state.refund.push(['xfer', 'swap.app', parseInt(d), '#eth 0x00e4f5F746242E4d115bD65aaC7C08fE5D38FB21'])
                 d = 0
             }
         }
   })
-
-   /* processor.on('redeem', function(j, f) {
-        state.cs[`${j.block_num}:${f}`] = `Redeem Op:${f} -> ${j}`
-        if (state.users[f]){if (state.users[f].v && state.users[f].v > 0) {
-            state.users[f].v--
-            let type = j.type || ''
-            if (state.stats.supply.gemss.indexOf(type) < 0) type = state.stats.supply.gemss[state.users.length % state.stats.supply.gemss.length]
-            var gem = {
-                gems: type,
-                xp: 50
-            }
-            state.users[f].gems.push(gem)
-        }}
-    });*/
 
     processor.on('adjust', function(json, from) {
         if (from == 'etherchest' && json.dust > 1) state.stats.dust = json.dust
@@ -380,10 +371,12 @@ function startApp() {
         }
     });
 
+    //vouchers are deprecated and will be removed in future versions
     processor.on('grant', function(json, from) {
         if(from=='etherchest'){state.users[json.to].v = 1}
     });
 
+    //allows user to register and create an account with attributes below in state
     processor.on('register', function(json, from) {
 
                 if (!state.users[json.from]) {
@@ -414,13 +407,13 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == 40000 ||//state.stats.prices.listed.gems.diamond || 
-                want == 'sapphire' && amount == 39000 ||//state.stats.prices.listed.gems.sapphire || 
-                want == 'emerald' && amount == 38000 ||//state.stats.prices.listed.gems.emerald || 
-                want == 'ruby' && amount == 37000 //state.stats.prices.listed.gems.ruby
+                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
+                want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == 40000//state.stats.prices.listed.gems.diamond
+                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -486,7 +479,7 @@ function startApp() {
 
                     
                     } else if (
-                        want == 'sapphire' && amount == 390000//state.stats.prices.listed.gems.sapphire
+                        want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire
                        ) {
                        if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -550,7 +543,7 @@ function startApp() {
                        state.cs[`${json.block_num}:gem prices posted`]
                        console.log(`${json.from} purchased a ${want}`)
                 } else if (
-                    want == 'emerald' && amount == 38//state.stats.prices.listed.gems.emerald
+                    want == 'emerald' && amount == state.stats.prices.listed.gems.emerald
                    ) {
                    if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -614,7 +607,7 @@ function startApp() {
                    state.cs[`${json.block_num}:gem prices posted`]
                    console.log(`${json.from} purchased a ${want}`)
             } else if (
-                want == 'ruby' && amount == 37//state.stats.prices.listed.gems.ruby
+                want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                ) {
                if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
@@ -695,17 +688,7 @@ function startApp() {
                 state.cs[`${json.block_num}:${json.from}`] = `${json.from} sent more than the price of gems...please check wallet`
             }
 
-        }/* else if (json.from == username) {
-            const amount = parseInt(parseFloat(json.amount) * 1000)
-            for (var i = 0; i < state.refund.length; i++) {
-                if (state.refund[i][1] == json.to && state.refund[i][2] == amount) {
-                    state.refund.splice(i, 1);
-                    state.bal.r -= amount;
-                    state.cs[`${json.block_num}:${json.to}`] = `${json.to} refunded successfully`
-                    break;
-                }
-            }
-        }*/
+        }
     });
     processor.onStreamingStart(function() {
         state.bal.c = 0
@@ -723,14 +706,7 @@ function startApp() {
             });
         });
     }
-
-    
-
 }
-/*} catch (error) {
-    console.log("shit crashed retrying")
-    startApp();
- }*/
 
 // Needs work, not saving state
 /*function ipfsSaveState(blocknum, hashable) {
