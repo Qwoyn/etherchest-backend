@@ -305,6 +305,8 @@ function startApp() {
                 state.bal.c = 0
                 state.bal.r = 0
                 console.log('At block', num, 'with', result.head_block_number - num, 'left until real-time.')
+            }).catch((err) => {
+                console.warn('[Warning] Failed to get Head block.')
             });
         }
 
