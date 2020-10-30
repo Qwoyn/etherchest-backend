@@ -336,7 +336,8 @@ function startApp() {
             state.blocknumber = num
             
             //logging for testing will remove after a while
-            console.log('at block ' + num)
+            console.log('------------------------');
+            console.log('at block ' + num);
             console.log('bal.c is ' + state.bal.c);
             console.log('diamond price is ' + state.stats.prices.listed.gems.diamond);
             console.log('sapphire price is ' + state.stats.prices.listed.gems.sapphire);
