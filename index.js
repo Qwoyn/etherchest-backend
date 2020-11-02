@@ -174,14 +174,14 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48234284; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48344369; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
 //const ago = ENV.ago || 48234284; //genesis block 
 const prefix = ENV.PREFIX || 'etherchest_'; // string in the custom json visible on the hive blockchain
 var client = new dhive.Client([
-    "https://hive.roelandp.nl",
+    //"https://hive.roelandp.nl",
     "https://api.pharesim.me",
     "https://hived.privex.io",
     "https://api.hive.blog"
@@ -396,6 +396,68 @@ function startApp() {
                    state.userCount++;
                 }
         state.cs[`${json.block_num}:${from}`] = `${from} succesfully registered`
+    });
+
+        //search for etherchest_alliance from user on blockchain since genesis
+    //steemconnect link
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_create_alliance&json=%7B%22newAlliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+    processor.on('create_guild', function(json, from) {
+        let newGuild = json.newGuild,
+            newGuildName = ''
+        if(state.users[from].diamond > 1){
+            for (var i = 0; i < 1; i++) {
+                    newGuildName += newGuild[i]
+                    var guildState = {
+                        name: newGuild,
+                        founder: from,
+                        members: 1,
+                        memberNames: [from],
+                    }
+                    state.stats.guild.push(guildState)
+                    //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'created_alliance']);
+
+                state.cs[`${json.block_num}:${from}`] = `${from} can't create an guild`
+            }
+            state.cs[`${json.block_num}:${from}`] = `${from} created guild named ${newGuildName}`
+        } else {
+            state.cs[`${json.block_num}:${from}`] = `${from} does not have enough diamonds to ${newGuildName}`
+        }
+    });
+
+    //search for etherchest_join_alliance from user on blockchain since genesis
+    //steemconnect link
+    //https://hivesigner.com/sign/custom-json?required_auths=%5B%5D&required_posting_auths=%5B%22USERNAME%22%5D&id=etherchest_join_alliance&json=%7B%22alliance%22%3A%5B%22NAMEOFALLIANCE%22%5D%7D
+   processor.on('join_guild', function(json, from) {
+        let guild = json.guild,
+            guildName = ''
+            try {
+        for (var i = 0; i < 1; i++) {
+                state.users[from].guild = guild[i];
+                guildName += guild[i]
+
+                try{
+                    for (var i = 0; i < state.users[from].alliance.length; i++){
+                        var myGuild = {
+                            guild: json.guild
+                        }
+                        
+                        if(state.users[from].guild != json.guild){state.users[from].guild = myGuild;break;}
+                        
+                        var newMember ={
+                            memberNames: [json.from]
+                        }
+                        state.stats.alliances[guild].members++;
+                        state.stats.alliances[guild].push(newMember);
+                        break;
+                    }
+                } catch (e) {}
+
+            state.cs[`${json.block_num}:${from}`] = `${from} can't change another users guild`
+        }
+    } catch {
+        (console.log(from + ' tried to join the ' + guildName + ' guild but an error occured'))
+    }
+    state.cs[`${json.block_num}:${from}`] = `${from} changed their guild to ${guildName}`
     });
 
     // buying gems
