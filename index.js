@@ -174,7 +174,7 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48578664; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48579974; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
@@ -384,9 +384,13 @@ function startApp() {
                     state.users[from] = {
                         addrs: [],
                         diamond: [],
+                        pre_sale_diamond: [],
                         emerald: [],
+                        pre_sale_emerald: [],
                         sapphire: [],
+                        pre_sale_sapphire: [],
                         ruby: [],
+                        pre_sale_ruby: [],
                         ducats: 0,
                         hero: 1,
                         guild: "",
@@ -519,7 +523,7 @@ function startApp() {
                             }
 
                             if(state.users[json.from]){
-                                state.users[json.from].pre_sale_diamond_count.push(gemCountNumber)
+                                state.users[json.from].pre_sale_diamond.push(diamond)
                                 state.gemList.push(diamond)
                             } else
                             
@@ -589,7 +593,7 @@ function startApp() {
                            }
 
                            if(state.users[json.from]){
-                               state.users[json.from].pre_sale_sapphire_count.push(gemCountNumber)
+                            state.users[json.from].pre_sale_sapphire.push(sapphire)
                                state.gemList.push(sapphire)
                            } else
                            
@@ -657,7 +661,7 @@ function startApp() {
                        }
 
                        if(state.users[json.from]){
-                           state.users[json.from].pre_sale_emerald_count.push(gemCountNumber)
+                           state.users[json.from].pre_sale_emerald.push(emerald)
                            state.gemList.push(emerald)
                        } else
                        
@@ -725,7 +729,7 @@ function startApp() {
                    }
 
                    if(state.users[json.from]){
-                       state.users[json.from].pre_sale_ruby_count.push(gemCountNumber)
+                       state.users[json.from].pre_sale_ruby.push(ruby)
                        state.gemList.push(ruby)
                    } else
                    
