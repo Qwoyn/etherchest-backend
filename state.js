@@ -81,6 +81,10 @@ module.exports = {
          ]
       },
       "gemCount": 0,
+      "pre_sale_diamondCount":0,
+      "pre_sale_sapphireCount": 0,
+      "pre_sale_emeraldCount": 0,
+      "pre_sale_rubyCount": 0,
       "diamondCount":0,
       "sapphireCount": 0,
       "emeraldCount": 0,
@@ -149,16 +153,12 @@ module.exports = {
          "addrs": [
             "a1"
          ],
-         "pre_sale_diamond_count": "",
          "diamond": [],
          "pre_sale_diamond": [],
-         "pre_sale_sapphire_count": "",
          "sapphire": [],
          "pre_sale_sapphire": [],
-         "pre_sale_emerald_count": "",
          "emerald": [],
          "pre_sale_emerald": [],
-         "pre_sale_ruby_count": "",
          "ruby": [],
          "pre_sale_ruby": [],
          "ducats" : 0,

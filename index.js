@@ -174,7 +174,7 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48582218; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48582571; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
@@ -474,18 +474,18 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == 5000 || 
+                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
                 want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
                 want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == 5000
+                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
                         state.stats.gemCount += 1
-                        state.stats.diamondCount += 1
+                        state.stats.pre_sale_diamondCount += 1
                         
                         let gemCountNumber = "pgd" + state.stats.diamondCount
 
@@ -555,7 +555,7 @@ function startApp() {
                        if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
                        state.stats.gemCount += 1
-                       state.stats.sapphireCount += 1
+                       state.stats.pre_sale_sapphireCount += 1
                        
                        let gemCountNumber = "pgs" + state.stats.sapphireCount
 
@@ -623,7 +623,7 @@ function startApp() {
                    if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
                    state.stats.gemCount += 1
-                   state.stats.emeraldCount += 1
+                   state.stats.pre_sale_emeraldCount += 1
                    
                    let gemCountNumber = "pge" + state.stats.emeraldCount
 
@@ -693,7 +693,7 @@ function startApp() {
                state.stats.gemCount += 1
                state.stats.rubyCount += 1
                
-               let gemCountNumber = "pgr" + state.stats.rubyCount
+               let gemCountNumber = "pgr" + pre_sale_state.stats.rubyCount
 
                if (!state.users[json.from]) {
                    state.users[json.from] = {
