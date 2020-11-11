@@ -480,7 +480,7 @@ function startApp() {
                 want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
                 ) {
                     if (
-                         want == 'diamond' && amount == state.stats.prices.listed.gems.diamond
+                         want == 'diamond' && amount == 5000
                         ) {
                         if (state.stats.supply.gems.indexOf(type) < 0){ type = state.stats.supply.gems[state.users.length % (state.stats.supply.gems.length -1)]}
 
