@@ -329,7 +329,7 @@ function startApp() {
             state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02 * 1000) + 45;
             state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02 * 1000) / 2) + 45;
             state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02 * 1000) / 4) + 45;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 55;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02 * 1000) / 10) + 65;
             //sets cut to 0 because bal.c is deprecated
             state.bal.c = 0
             //keeping track of current block number in state
