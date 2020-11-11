@@ -174,7 +174,7 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48581228; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48581425; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
@@ -326,10 +326,10 @@ function startApp() {
             let gemPrice = price * 1000;
             
             // sets state to gem price + 2 percent and 30 HIVE to make up for price difference
-            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02) + 2500;
-            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02) / 2) + 2500;
-            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02) / 4) + 2500;
-            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02) / 10) + 7000;
+            state.stats.prices.listed.gems.diamond = Math.ceil(gemPrice * 1.02) + 3000;
+            state.stats.prices.listed.gems.sapphire = Math.ceil((gemPrice * 1.02) / 2) + 3000;
+            state.stats.prices.listed.gems.emerald = Math.ceil((gemPrice * 1.02) / 4) + 3000;
+            state.stats.prices.listed.gems.ruby = Math.ceil((gemPrice * 1.02) / 10) + 8500;
             //sets cut to 0 because bal.c is deprecated
             state.bal.c = 0
             //keeping track of current block number in state
