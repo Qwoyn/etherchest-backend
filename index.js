@@ -174,7 +174,7 @@ hivejs.config.set('rebranded_api', true);
 hivejs.broadcast.updateOperations();
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48581705; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48582218; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
@@ -474,7 +474,7 @@ function startApp() {
                 owner = json.from
             if (
                 // gems 
-                want == 'diamond' && amount == state.stats.prices.listed.gems.diamond || 
+                want == 'diamond' && amount == 5000 || 
                 want == 'sapphire' && amount == state.stats.prices.listed.gems.sapphire || 
                 want == 'emerald' && amount == state.stats.prices.listed.gems.emerald || 
                 want == 'ruby' && amount == state.stats.prices.listed.gems.ruby
@@ -756,7 +756,7 @@ function startApp() {
 
          
         } else if (
-                    want == 'diamond' && amount < state.stats.prices.listed.gems.diamond || 
+                    want == 'diamond' && amount < 5000 || 
                     want == 'sapphire' && amount < state.stats.prices.listed.gems.sapphire || 
                     want == 'emerald' && amount < state.stats.prices.listed.gems.emerald || 
                     want == 'ruby' && amount < state.stats.prices.listed.gems.ruby
