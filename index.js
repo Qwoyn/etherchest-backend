@@ -416,7 +416,7 @@ function startApp() {
                     state.stats.guild.push(guildState)
                     //state.users[from].stats.unshift([processor.getCurrentBlockNumber(), 'created_alliance']);
 
-                state.cs[`${json.block_num}:${from}`] = `${from} can't create an guild`
+                state.cs[`${json.block_num}:${from}`] = `${from} can't create a guild`
             }
             state.cs[`${json.block_num}:${from}`] = `${from} created guild named ${newGuildName}`
         } else {
@@ -483,15 +483,19 @@ function startApp() {
                         state.stats.gemCount += 1
                         state.stats.diamondCount += 1
                         
-                        let gemCountNumber = "gd" + state.stats.diamondCount
+                        let gemCountNumber = "pgd" + state.stats.diamondCount
 
                         if (!state.users[json.from]) {
                             state.users[json.from] = {
                                 addrs: [],
                                 diamond: [],
+                                pre_sale_diamond: [],
                                 emerald: [],
+                                pre_sale_emerald: [],
                                 sapphire: [],
+                                pre_sale_sapphire: [],
                                 ruby: [],
+                                pre_sale_ruby: [],
                                 ducats: 0,
                                 hero: 1,
                                 guild: "",
@@ -515,7 +519,7 @@ function startApp() {
                             }
 
                             if(state.users[json.from]){
-                                state.users[json.from].diamond.push(gemCountNumber)
+                                state.users[json.from].pre_sale_diamond_count.push(gemCountNumber)
                                 state.gemList.push(diamond)
                             } else
                             
@@ -549,15 +553,19 @@ function startApp() {
                        state.stats.gemCount += 1
                        state.stats.sapphireCount += 1
                        
-                       let gemCountNumber = "gs" + state.stats.sapphireCount
+                       let gemCountNumber = "pgs" + state.stats.sapphireCount
 
                        if (!state.users[json.from]) {
                            state.users[json.from] = {
                                addrs: [],
                                diamond: [],
+                               pre_sale_diamond: [],
                                emerald: [],
+                               pre_sale_emerald: [],
                                sapphire: [],
+                               pre_sale_sapphire: [],
                                ruby: [],
+                               pre_sale_ruby: [],
                                ducats: 0,
                                hero: 1,
                                guild: "",
@@ -581,7 +589,7 @@ function startApp() {
                            }
 
                            if(state.users[json.from]){
-                               state.users[json.from].sapphire.push(gemCountNumber)
+                               state.users[json.from].pre_sale_sapphire_count.push(gemCountNumber)
                                state.gemList.push(sapphire)
                            } else
                            
@@ -589,7 +597,7 @@ function startApp() {
                            if (!state.users[json.from]) {
                            state.users[json.from] = {
                                addrs: [],
-                               gems: [sapphire],
+                               pre_sale_sapphire: [sapphire],
                                ducats: 0,
                                hero: 1,
                                guild: "",
@@ -613,15 +621,19 @@ function startApp() {
                    state.stats.gemCount += 1
                    state.stats.emeraldCount += 1
                    
-                   let gemCountNumber = "ge" + state.stats.emeraldCount
+                   let gemCountNumber = "pge" + state.stats.emeraldCount
 
                    if (!state.users[json.from]) {
                        state.users[json.from] = {
                            addrs: [],
                            diamond: [],
+                           pre_sale_diamond: [],
                            emerald: [],
+                           pre_sale_emerald: [],
                            sapphire: [],
+                           pre_sale_sapphire: [],
                            ruby: [],
+                           pre_sale_ruby: [],
                            ducats: 0,
                            hero: 1,
                            guild: "",
@@ -645,7 +657,7 @@ function startApp() {
                        }
 
                        if(state.users[json.from]){
-                           state.users[json.from].emerald.push(gemCountNumber)
+                           state.users[json.from].pre_sale_emerald_count.push(gemCountNumber)
                            state.gemList.push(emerald)
                        } else
                        
@@ -653,7 +665,7 @@ function startApp() {
                        if (!state.users[json.from]) {
                        state.users[json.from] = {
                            addrs: [],
-                           gems: [emerald],
+                           pre_sale_emerald: [emerald],
                            ducats: 0,
                            hero: 1,
                            guild: "",
@@ -677,15 +689,19 @@ function startApp() {
                state.stats.gemCount += 1
                state.stats.rubyCount += 1
                
-               let gemCountNumber = "gd" + state.stats.rubyCount
+               let gemCountNumber = "pgr" + state.stats.rubyCount
 
                if (!state.users[json.from]) {
                    state.users[json.from] = {
                        addrs: [],
                        diamond: [],
+                       pre_sale_diamond: [],
                        emerald: [],
+                       pre_sale_emerald: [],
                        sapphire: [],
+                       pre_sale_sapphire: [],
                        ruby: [],
+                       pre_sale_ruby: [],
                        ducats: 0,
                        hero: 1,
                        guild: "",
@@ -709,7 +725,7 @@ function startApp() {
                    }
 
                    if(state.users[json.from]){
-                       state.users[json.from].ruby.push(gemCountNumber)
+                       state.users[json.from].pre_sale_ruby_count.push(gemCountNumber)
                        state.gemList.push(ruby)
                    } else
                    
@@ -717,7 +733,7 @@ function startApp() {
                    if (!state.users[json.from]) {
                    state.users[json.from] = {
                        addrs: [],
-                       gems: [ruby],
+                       pre_sale_ruby: [ruby],
                        ducats: 0,
                        hero: 1,
                        guild: "",
