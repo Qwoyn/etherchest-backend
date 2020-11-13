@@ -234,8 +234,8 @@ hivejs.api.getAccountHistory(null, null, username, -1, 100, function(err, result
   }*/
 
 
-/****ISSUE****/
-function startWith(hash) {
+/****ISSUE***
+/function startWith(hash) {
     console.log("heres the variable "+ hash + " from startWith(hash)")
     console.log("this is sh" + sh)
     if (hash) {
@@ -260,7 +260,7 @@ function startWith(hash) {
         state = init
         startApp()
     }
-}
+}*/
 
 // converts Eth to Hive
 function getEthToHive(amount) {
