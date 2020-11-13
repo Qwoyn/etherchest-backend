@@ -16,7 +16,7 @@ const ipfs = new IPFS({
     protocol: 'https'
 });
 
-const IPFS = require('ipfs')
+//const IPFS = require('ipfs')
 
 const init = require('./state');
 
@@ -173,7 +173,7 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48642803; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48663742; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
