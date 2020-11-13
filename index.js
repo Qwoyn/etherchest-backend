@@ -195,7 +195,7 @@ const transactor = steemTransact(client, dhive, prefix);
 /****ISSUE****/
 //I think this is where the app can get the hash from etherchest_report that is saved in state.js and use it
 //to start the app.  this should prevent the app having to start from GENESIS BLOCK
-hivejs.api.getAccounts(username, -1, 100, function(err, result) {
+hivejs.api.getAccountHistory(null, null, username, -1, 100, function(err, result) {
   if (err){
     console.log(err)
     startWith(sh)
