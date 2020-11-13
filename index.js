@@ -9,12 +9,12 @@ const express = require('express')
 const ENV = process.env;
 const maxEx = process.max_extentions || 8;
 //const IPFS = require('ipfs-http-client')
-/*const ipfs = new IPFS({
+const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     apiPath: '/api/v0',
     protocol: 'https'
-});*/
+});
 
 const IPFS = require('ipfs')
 
@@ -234,8 +234,8 @@ hivejs.api.getAccountHistory(username, -1, 100, ...walletOperationsBitmask, func
   }*/
 
 
-/****ISSUE***
-/function startWith(hash) {
+/****ISSUE****/
+function startWith(hash) {
     console.log("heres the variable "+ hash + " from startWith(hash)")
     console.log("this is sh" + sh)
     if (hash) {
@@ -260,7 +260,7 @@ hivejs.api.getAccountHistory(username, -1, 100, ...walletOperationsBitmask, func
         state = init
         startApp()
     }
-}*/
+}
 
 // converts Eth to Hive
 function getEthToHive(amount) {
