@@ -170,8 +170,7 @@ app.get('/delegation/:user', (req, res, next) => {
     res.send(JSON.stringify(op, null, 3))
 });
 
-hivejs.config.set('rebranded_api', true);
-hivejs.broadcast.updateOperations();
+
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
 var startingBlock = ENV.STARTINGBLOCK || 48642803; //GENESIS BLOCK
@@ -188,8 +187,26 @@ var client = new dhive.Client([
 ], {rebrandedApi: true, consoleOnFailover: true});
 var processor;
 var recents = [];
-
-
+const { ChainTypes, makeBitMaskFilter } = require('@hiveio/hive-js/lib/auth/serializer')
+const op = ChainTypes.operations
+const walletOperationsBitmask = makeBitMaskFilter([
+    op.transfer,
+    op.transfer_to_vesting,
+    op.withdraw_vesting,
+    op.interest,
+    op.liquidity_reward,
+    op.transfer_to_savings,
+    op.transfer_from_savings,
+    op.escrow_transfer,
+    op.cancel_transfer_from_savings,
+    op.escrow_approve,
+    op.escrow_dispute,
+    op.escrow_release,
+    op.fill_convert_request,
+    op.fill_order,
+    op.claim_reward_balance
+  ])
+  
 const transactor = steemTransact(client, dhive, prefix);
 
 /****ISSUE****/
