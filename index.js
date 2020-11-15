@@ -184,7 +184,7 @@ var client = new dhive.Client([
     //"https://api.pharesim.me",
     "https://hived.privex.io",
     "https://api.hive.blog"
-], {rebrandedApi: true, consoleOnFailover: true});
+], {consoleOnFailover: true});
 var processor;
 var recents = [];
 const { ChainTypes, makeBitMaskFilter } = require('@hiveio/hive-js/lib/auth/serializer')
