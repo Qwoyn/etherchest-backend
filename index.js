@@ -173,11 +173,11 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48663742; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 48700589; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
-//const ago = ENV.ago || 48234284; //genesis block 
+//const ago = ENV.ago || 48234284; //genesis block for ipfs backup
 const prefix = ENV.PREFIX || 'etherchest_'; // string in the custom json visible on the hive blockchain
 var client = new dhive.Client([
     //"https://hive.roelandp.nl",
@@ -329,7 +329,7 @@ function startApp() {
 
         if (num % 28800 === 20000) {
             for (var item in state.cs){
-              if(item.split(':')[0] < num - 28800 || item.split(':')[0] == 'state.cs undefined #438i'){
+              if(item.split(':')[0] < num - 28800 || item.split(':')[0] == 'undefined'){
                 delete state.cs[item]
               }
             }
