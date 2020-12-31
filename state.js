@@ -165,7 +165,8 @@ module.exports = {
             "profile": [],
             "hero": 1,
             "guild": "etherchest",
-            "friends": []
+            "friends": [],
+            "vip": true
          },
          "qwoyn": {
             "addrs": [],
@@ -181,7 +182,8 @@ module.exports = {
             "hero": 1,
             "guild": "",
             "friends": [],
-            "v": 0
+            "v": 0,
+            "vip": true
          },
          "hundredthmonkey": {
             "addrs": [],
@@ -197,7 +199,8 @@ module.exports = {
             "hero": 1,
             "guild": "",
             "friends": [],
-            "v": 0
+            "v": 0,
+            "vip": true
          }
       },
       "gemList": [],

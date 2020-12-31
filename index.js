@@ -173,17 +173,17 @@ app.get('/delegation/:user', (req, res, next) => {
 
 app.listen(port, () => console.log(`EtherChest API listening on port ${port}!`))
 var state;
-var startingBlock = ENV.STARTINGBLOCK || 48700589; //GENESIS BLOCK
+var startingBlock = ENV.STARTINGBLOCK || 50018054; //GENESIS BLOCK
 const username = ENV.ACCOUNT || 'etherchest'; 
 const key = dhive.PrivateKey.from(ENV.KEY); 
 const sh = ENV.sh || ''; //state hash
 //const ago = ENV.ago || 48234284; //genesis block for ipfs backup
 const prefix = ENV.PREFIX || 'etherchest_'; // string in the custom json visible on the hive blockchain
 var client = new dhive.Client([
-    //"https://hive.roelandp.nl",
+    "https://hive.roelandp.nl",
     //"https://api.pharesim.me",
-    "https://hived.privex.io",
-    "https://api.hive.blog"
+    //"https://hived.privex.io",
+    //"https://api.hive.blog"
 ], {consoleOnFailover: true});
 var processor;
 var recents = [];
@@ -268,7 +268,7 @@ function startWith(hash) {
                 }
             } else {
                 const mostRecent = recents.shift()
-                console.log('Attempting start from:'+mostRecent)
+                console.log('Attempting start from:'+ mostRecent)
                 startWith(mostRecent)
             }
         });
